@@ -1,5 +1,6 @@
 package com.backgu.amaker.user.domain
 
+import com.backgu.amaker.common.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -21,5 +22,5 @@ class User(
     var picture: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: Role = Role.USER,
-)
+    val userRole: UserRole = UserRole.USER,
+) : BaseTimeEntity()

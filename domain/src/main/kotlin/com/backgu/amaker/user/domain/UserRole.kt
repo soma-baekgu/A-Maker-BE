@@ -1,6 +1,6 @@
 package com.backgu.amaker.user.domain
 
-enum class Role(
+enum class UserRole(
     var key: String,
     var value: String,
 ) {
