@@ -5,11 +5,14 @@ import com.backgu.amaker.user.dto.UserRequest
 import com.backgu.amaker.user.repository.UserRepository
 import java.util.UUID
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class UserService(
     val userRepository: UserRepository,
 ) {
+    @Transactional
     fun saveUser(request: UserRequest): UUID =
         userRepository
             .save(
