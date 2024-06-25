@@ -1,4 +1,4 @@
-package com.backgu.amaker.auth.service
+package com.backgu.amaker.auth.test
 
 import com.backgu.amaker.auth.dto.GoogleOAuth2AccessTokenDto
 import com.backgu.amaker.auth.infra.GoogleOAuthClient

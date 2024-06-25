@@ -1,4 +1,4 @@
-package com.backgu.amaker.auth.fixture
+package com.backgu.amaker.fixture
 
 import com.backgu.amaker.auth.config.AuthConfig
 

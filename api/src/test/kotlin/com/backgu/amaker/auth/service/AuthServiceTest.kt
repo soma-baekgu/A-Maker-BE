@@ -1,8 +1,12 @@
 package com.backgu.amaker.auth.service
 
-import com.backgu.amaker.auth.fixture.AuthFixture
 import com.backgu.amaker.auth.infra.GoogleApiClient
 import com.backgu.amaker.auth.infra.GoogleOAuthClient
+import com.backgu.amaker.auth.test.FailedFakeGoogleApiClient
+import com.backgu.amaker.auth.test.FailedFakeGoogleOAuthClient
+import com.backgu.amaker.auth.test.SuccessfulStubGoogleApiClient
+import com.backgu.amaker.auth.test.SuccessfulStubGoogleOAuthClient
+import com.backgu.amaker.fixture.AuthFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -60,5 +64,4 @@ class AuthServiceTest {
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("Failed to get user information")
     }
-
 }
