@@ -6,7 +6,7 @@ import com.backgu.amaker.chat.domain.ChatRoomUser
 import com.backgu.amaker.chat.repository.ChatRoomRepository
 import com.backgu.amaker.chat.repository.ChatRoomUserRepository
 import com.backgu.amaker.user.repository.UserRepository
-import com.backgu.amaker.workspace.domain.Role
+import com.backgu.amaker.workspace.domain.WorkspaceRole
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceUser
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
@@ -48,7 +48,7 @@ class WorkspaceService(
             WorkspaceUser(
                 userId = user.id,
                 workspaceId = workspace.id,
-                role = Role.LEADER,
+                workspaceRole = WorkspaceRole.LEADER,
             ),
         )
 

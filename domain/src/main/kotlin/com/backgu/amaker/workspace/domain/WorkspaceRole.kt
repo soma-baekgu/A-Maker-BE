@@ -1,6 +1,6 @@
 package com.backgu.amaker.workspace.domain
 
-enum class Role(
+enum class WorkspaceRole(
     var key: String,
     var value: String,
 ) {

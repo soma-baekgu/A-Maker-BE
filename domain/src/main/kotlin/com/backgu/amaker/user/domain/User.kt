@@ -22,5 +22,5 @@ class User(
     var picture: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: Role = Role.USER,
+    val userRole: UserRole = UserRole.USER,
 ) : BaseTimeEntity()

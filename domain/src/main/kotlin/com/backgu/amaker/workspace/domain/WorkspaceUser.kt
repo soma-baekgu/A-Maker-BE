@@ -16,5 +16,5 @@ class WorkspaceUser(
     val id: Long = 0L,
     val userId: UUID,
     val workspaceId: Long,
-    var role: Role = Role.MEMBER,
+    var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
 ) : BaseTimeEntity()
