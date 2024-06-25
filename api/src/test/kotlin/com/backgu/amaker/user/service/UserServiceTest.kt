@@ -1,6 +1,6 @@
 package com.backgu.amaker.user.service
 
-import com.backgu.amaker.user.fixture.UserFixture
+import com.backgu.amaker.fixture.UserFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
