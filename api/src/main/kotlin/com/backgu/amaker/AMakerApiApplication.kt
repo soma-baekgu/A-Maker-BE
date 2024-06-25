@@ -1,11 +1,13 @@
 package com.backgu.amaker
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class AMakerBeApplication
+@EntityScan(basePackages = ["com.backgu.amaker"])
+class AMakerApiApplication
 
 fun main(args: Array<String>) {
-    runApplication<AMakerBeApplication>(*args)
+    runApplication<AMakerApiApplication>(*args)
 }
