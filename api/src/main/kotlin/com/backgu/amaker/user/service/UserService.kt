@@ -3,9 +3,9 @@ package com.backgu.amaker.user.service
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.dto.UserRequest
 import com.backgu.amaker.user.repository.UserRepository
-import java.util.UUID
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
