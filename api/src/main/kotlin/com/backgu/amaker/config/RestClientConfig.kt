@@ -11,7 +11,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 @Configuration
 class RestClientConfig(
-    val authConfig: AuthConfig
+    val authConfig: AuthConfig,
 ) {
     @Bean
     fun googleOauth2Service(): GoogleOAuthClient {
