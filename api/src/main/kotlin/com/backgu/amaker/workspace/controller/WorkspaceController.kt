@@ -4,9 +4,11 @@ import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.service.WorkspaceService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/api/v1")
+@RestController
+@RequestMapping("/api/v1")
 class WorkspaceController(
     private val workspaceService: WorkspaceService,
 ) {
