@@ -33,11 +33,14 @@ class WorkspaceService(
     private val chatRoomUserRepository: ChatRoomUserRepository,
 ) {
     @Transactional
-    fun createWorkspace(request: WorkspaceCreateDto): Long {
+    fun createWorkspace(
+        userId: UUID,
+        request: WorkspaceCreateDto,
+    ): Long {
         val user =
-            userRepository.findByIdOrNull(request.userId) ?: run {
-                logger.error { "User not found : ${request.userId}" }
-                throw EntityNotFoundException("User not found : ${request.userId}")
+            userRepository.findByIdOrNull(userId) ?: run {
+                logger.error { "User not found : $userId" }
+                throw EntityNotFoundException("User not found : $userId")
             }
 
         val workspace =
