@@ -14,7 +14,7 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: create
-    open-in-view: true
+    open-in-view: false
 
 oauth:
   google:
