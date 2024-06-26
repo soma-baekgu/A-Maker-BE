@@ -2,43 +2,32 @@ package com.backgu.amaker.workspace.service
 
 import com.backgu.amaker.chat.repository.ChatRoomRepository
 import com.backgu.amaker.chat.repository.ChatRoomUserRepository
+import com.backgu.amaker.fixture.ChatRoomFixture
+import com.backgu.amaker.fixture.ChatRoomUserFixture
 import com.backgu.amaker.fixture.UserFixture
+import com.backgu.amaker.fixture.WorkspaceFixture
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
+import com.backgu.amaker.fixture.WorkspaceUserFixture
 import com.backgu.amaker.user.repository.UserRepository
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import com.backgu.amaker.workspace.repository.WorkspaceUserRepository
 import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.test.Test
 
 @DisplayName("WorkspaceService 테스트")
+@Transactional
 @SpringBootTest
 class WorkspaceServiceTest {
     @Autowired
     lateinit var workspaceService: WorkspaceService
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-
-    @Autowired
-    lateinit var workspaceRepository: WorkspaceRepository
-
-    @Autowired
-    lateinit var workspaceUserRepository: WorkspaceUserRepository
-
-    @Autowired
-    lateinit var chatRoomRepository: ChatRoomRepository
-
-    @Autowired
-    lateinit var chatRoomUserRepository: ChatRoomUserRepository
 
     @Test
     @DisplayName("워크 스페이스 생성 테스트")
@@ -50,20 +39,7 @@ class WorkspaceServiceTest {
         val result = workspaceService.createWorkspace(request)
 
         // then
-        assertThat(result).isNotNull
-
-        val workspace = workspaceRepository.findByIdOrNull(result)!!
-        assertThat(workspace).isNotNull
-        assertThat(workspace.name).isEqualTo(request.name)
-
-        val workspaceUserCount = workspaceUserRepository.count()
-        assertThat(workspaceUserCount).isOne
-
-        val chatRoomCount = chatRoomRepository.count()
-        assertThat(chatRoomCount).isOne
-
-        val chatRoomUserCount = chatRoomUserRepository.count()
-        assertThat(chatRoomUserCount).isOne
+        assertThat(result).isEqualTo(3L)
     }
 
     @Test
@@ -78,17 +54,35 @@ class WorkspaceServiceTest {
         }
     }
 
-    @BeforeEach
-    fun setUp() {
-        userRepository.save(UserFixture.createUser(userId = UserFixture.defaultUserId))
+    @Test
+    @DisplayName("유저의 워크스페이스 조회")
+    fun findWorkspaces() {
+        // given
+        val userId = UserFixture.defaultUserId
+
+        // when
+        val result = workspaceService.findWorkspaces(userId)
+
+        // then
+        assertThat(result.userId).isEqualTo(userId)
+        assertThat(result.workspaces.size).isEqualTo(2)
     }
 
-    @AfterEach
-    fun tearDown() {
-        chatRoomUserRepository.deleteAll()
-        chatRoomRepository.deleteAll()
-        workspaceUserRepository.deleteAll()
-        workspaceRepository.deleteAll()
-        userRepository.deleteAll()
+    companion object {
+        @JvmStatic
+        @BeforeAll
+        fun setUp(
+            @Autowired userRepository: UserRepository,
+            @Autowired workspaceRepository: WorkspaceRepository,
+            @Autowired workspaceUserRepository: WorkspaceUserRepository,
+            @Autowired chatRoomRepository: ChatRoomRepository,
+            @Autowired chatRoomUserRepository: ChatRoomUserRepository,
+        ) {
+            UserFixture(userRepository).testUserSetUp()
+            WorkspaceFixture(workspaceRepository).testWorkspaceSetUp()
+            WorkspaceUserFixture(workspaceUserRepository).testWorkspaceUserSetUp()
+            ChatRoomFixture(chatRoomRepository).testChatRoomSetUp()
+            ChatRoomUserFixture(chatRoomUserRepository).testChatRoomUserSetUp()
+        }
     }
 }
