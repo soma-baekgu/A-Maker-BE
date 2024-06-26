@@ -17,6 +17,7 @@ import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 
@@ -30,11 +31,14 @@ class WorkspaceService(
     private val chatRoomUserRepository: ChatRoomUserRepository,
 ) {
     @Transactional
-    fun createWorkspace(request: WorkspaceCreateDto): Long {
+    fun createWorkspace(
+        userId: UUID,
+        request: WorkspaceCreateDto,
+    ): Long {
         val user =
-            userRepository.findByIdOrNull(request.userId) ?: run {
-                logger.error { "User not found : ${request.userId}" }
-                throw EntityNotFoundException("User not found : ${request.userId}")
+            userRepository.findByIdOrNull(userId) ?: run {
+                logger.error { "User not found : $userId" }
+                throw EntityNotFoundException("User not found : $userId")
             }
 
         val workspace =
