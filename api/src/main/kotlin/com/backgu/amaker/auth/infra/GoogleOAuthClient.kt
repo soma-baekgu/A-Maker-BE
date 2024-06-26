@@ -1,6 +1,6 @@
 package com.backgu.amaker.auth.infra
 
-import com.backgu.amaker.auth.dto.GoogleOAuth2AccessTokenDto
+import com.backgu.amaker.auth.dto.oauth.google.GoogleOAuth2AccessTokenDto
 import com.backgu.amaker.config.CaughtHttpExchange
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestParam
