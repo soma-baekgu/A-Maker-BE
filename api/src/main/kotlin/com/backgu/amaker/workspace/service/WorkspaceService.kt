@@ -10,6 +10,8 @@ import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceRole
 import com.backgu.amaker.workspace.domain.WorkspaceUser
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
+import com.backgu.amaker.workspace.dto.WorkspaceDto
+import com.backgu.amaker.workspace.dto.WorkspacesDto
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import com.backgu.amaker.workspace.repository.WorkspaceUserRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -17,6 +19,7 @@ import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 
@@ -68,5 +71,29 @@ class WorkspaceService(
         )
 
         return workspace.id
+    }
+
+    fun findWorkspaces(userId: UUID): WorkspacesDto {
+        val user =
+            userRepository.findByIdOrNull(userId) ?: run {
+                logger.error { "User not found : $userId" }
+                throw EntityNotFoundException("User not found : $userId")
+            }
+
+        val workspaceUsers = workspaceUserRepository.findWorkspaceIdsByUserId(user.id)
+
+        val workspaceDtos =
+            workspaceRepository.findByWorkspaceIds(workspaceUsers).map {
+                WorkspaceDto(
+                    id = it.id,
+                    name = it.name,
+                    thumbnail = it.thumbnail,
+                )
+            }
+
+        return WorkspacesDto(
+            userId = user.id,
+            workspaces = workspaceDtos,
+        )
     }
 }
