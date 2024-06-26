@@ -14,3 +14,14 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: create
+
+oauth:
+  google:
+    client-id: a
+    client-secret: b
+    redirect-uri: c
+    base-url: d
+    oauth-url: e
+    api-url: f
+    client-name: Google
+    scope: email,profile
