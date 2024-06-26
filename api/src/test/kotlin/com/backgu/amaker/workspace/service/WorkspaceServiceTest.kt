@@ -44,10 +44,10 @@ class WorkspaceServiceTest {
     @DisplayName("워크 스페이스 생성 테스트")
     fun createWorkspace() {
         // given
-        val request = createWorkspaceRequest(UserFixture.defaultUserId)
+        val request = createWorkspaceRequest()
 
         // when
-        val result = workspaceService.createWorkspace(request)
+        val result = workspaceService.createWorkspace(UserFixture.defaultUserId, request)
 
         // then
         assertThat(result).isNotNull
@@ -70,11 +70,11 @@ class WorkspaceServiceTest {
     @DisplayName("유저를 찾을 수 없을 때 워크스페이스 생성 실패")
     fun createWorkspace_UserNotFound() {
         // given
-        val request = createWorkspaceRequest(UUID.randomUUID())
+        val request = createWorkspaceRequest()
 
         // when & then
         assertThrows<EntityNotFoundException> {
-            workspaceService.createWorkspace(request)
+            workspaceService.createWorkspace(UUID.randomUUID(), request)
         }
     }
 

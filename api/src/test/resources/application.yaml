@@ -25,3 +25,8 @@ oauth:
     api-url: f
     client-name: Google
     scope: email,profile
+
+jwt:
+  client-secret: 1234
+  expiration: 86400000
+  issuer: a-maker

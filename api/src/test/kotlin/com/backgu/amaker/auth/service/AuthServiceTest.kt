@@ -30,7 +30,7 @@ class AuthServiceTest {
         val result = authService.googleLogin("authCode")
 
         // then
-        assertThat(result).isEqualTo(email)
+        assertThat(result.email).isEqualTo(email)
     }
 
     @Test

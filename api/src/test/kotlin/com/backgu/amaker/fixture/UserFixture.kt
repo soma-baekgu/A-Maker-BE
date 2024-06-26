@@ -1,7 +1,7 @@
 package com.backgu.amaker.fixture
 
 import com.backgu.amaker.user.domain.User
-import com.backgu.amaker.user.dto.UserRequest
+import com.backgu.amaker.user.dto.UserCreateDto
 import java.util.UUID
 
 class UserFixture {
@@ -9,7 +9,7 @@ class UserFixture {
         val defaultUserId = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
         fun createUserRequest() =
-            UserRequest(
+            UserCreateDto(
                 name = "name",
                 email = "email",
                 picture = "picture",
