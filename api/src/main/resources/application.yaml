@@ -14,14 +14,21 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: create
+    open-in-view: true
 
 oauth:
   google:
     client-id: ${CLIENT_ID}
     client-secret: ${CLIENT_SECRET}
-    redirect-uri: "http://localhost:8080/auth/code/google"
+    redirect-uri: "http://localhost:8080/api/v1/auth/code/google"
     base-url: "https://accounts.google.com/o/oauth2/auth"
     oauth-url: "https://oauth2.googleapis.com"
     api-url: "https://www.googleapis.com"
     client-name: Google
     scope: email,profile
+
+
+jwt:
+  client-secret: ${JWT_SECRET}
+  expiration: 86400000
+  issuer: a-maker
