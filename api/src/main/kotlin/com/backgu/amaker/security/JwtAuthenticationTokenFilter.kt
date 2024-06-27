@@ -49,7 +49,6 @@ class JwtAuthenticationTokenFilter(
                 }
             } catch (e: Exception) {
                 // TODO exception handling
-                throw IllegalArgumentException("Invalid token")
             }
         }
         chain.doFilter(req, res)
