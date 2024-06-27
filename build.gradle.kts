@@ -45,8 +45,12 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("io.github.oshai:kotlin-logging-jvm:5.1.1")
         implementation("com.mysql:mysql-connector-j:8.4.0")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+        testImplementation("io.mockk:mockk:1.13.11")
+        testImplementation("com.ninja-squad:springmockk:4.0.2")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         testRuntimeOnly("com.h2database:h2")
     }

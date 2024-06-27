@@ -1,20 +1,20 @@
 package com.backgu.amaker.auth.service
 
 import com.backgu.amaker.auth.config.AuthConfig
-import com.backgu.amaker.auth.dto.GoogleOAuth2AccessTokenDto
-import com.backgu.amaker.auth.dto.GoogleUserInfoDto
+import com.backgu.amaker.auth.dto.oauth.google.GoogleOAuth2AccessTokenDto
+import com.backgu.amaker.auth.dto.oauth.google.GoogleUserInfoDto
 import com.backgu.amaker.auth.infra.GoogleApiClient
 import com.backgu.amaker.auth.infra.GoogleOAuthClient
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 
 @Service
-class AuthService(
-    val googleOAuthClient: GoogleOAuthClient,
-    val googleApiClient: GoogleApiClient,
-    val authConfig: AuthConfig,
+class OAuthService(
+    private val googleOAuthClient: GoogleOAuthClient,
+    private val googleApiClient: GoogleApiClient,
+    private val authConfig: AuthConfig,
 ) {
-    fun googleLogin(authorizationCode: String): String? {
+    fun googleLogin(authorizationCode: String): GoogleUserInfoDto {
         val accessTokenDto: GoogleOAuth2AccessTokenDto =
             googleOAuthClient.getGoogleOAuth2(
                 authorizationCode,
@@ -28,6 +28,6 @@ class AuthService(
             googleApiClient.getUserInfo(accessTokenDto.getBearerToken())
                 ?: throw IllegalArgumentException("Failed to get user information")
 
-        return userInfo.email
+        return userInfo
     }
 }
