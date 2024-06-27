@@ -43,19 +43,7 @@ class WorkspaceServiceTest {
     }
 
     @Test
-    @DisplayName("유저를 찾을 수 없을 때 워크스페이스 생성 실패")
-    fun createWorkspace_UserNotFound() {
-        // given
-        val request = createWorkspaceRequest()
-
-        // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceService.createWorkspace(UUID.randomUUID(), request)
-        }
-    }
-
-    @Test
-    @DisplayName("유저의 워크스페이스 조회")
+    @DisplayName("유저의 워크스페이스들 조회")
     fun findWorkspaces() {
         // given
         val userId = UserFixture.defaultUserId
@@ -66,6 +54,34 @@ class WorkspaceServiceTest {
         // then
         assertThat(result.userId).isEqualTo(userId)
         assertThat(result.workspaces.size).isEqualTo(2)
+    }
+
+    @Test
+    @DisplayName("유저의 기본 워크스페이스 조회")
+    fun findDefaultWorkspace() {
+        // given
+        val userId = UserFixture.defaultUserId
+
+        // when
+        val result = workspaceService.getDefaultWorkspace(userId)
+
+        // then
+        assertThat(result.id).isEqualTo(2L)
+        assertThat(result.name).isEqualTo("워크스페이스2")
+    }
+
+    @Test
+    @DisplayName("기본 워크스페이스를 찾을 수 없을 때 실패")
+    fun failFindDefaultWorkspace() {
+        // given
+        val userId = UUID.fromString("00000000-0000-0000-0000-000000000004")
+
+        // when & then
+        assertThrows<EntityNotFoundException> {
+            workspaceService.getDefaultWorkspace(userId)
+        }.message.let {
+            assertThat(it).isEqualTo("Default workspace not found : $userId")
+        }
     }
 
     companion object {

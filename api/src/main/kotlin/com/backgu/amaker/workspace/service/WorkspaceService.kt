@@ -99,4 +99,23 @@ class WorkspaceService(
             workspaces = workspaceDtos,
         )
     }
+
+    fun getDefaultWorkspace(userId: UUID): WorkspaceDto {
+        val user =
+            userRepository.findByIdOrNull(userId) ?: run {
+                logger.error { "User not found : $userId" }
+                throw EntityNotFoundException("User not found : $userId")
+            }
+
+        return workspaceRepository.getDefaultWorkspaceByUserId(user.id)?.let {
+            WorkspaceDto(
+                id = it.id,
+                name = it.name,
+                thumbnail = it.thumbnail,
+            )
+        } ?: run {
+            logger.error { "Default workspace not found : $userId" }
+            throw EntityNotFoundException("Default workspace not found : $userId")
+        }
+    }
 }
