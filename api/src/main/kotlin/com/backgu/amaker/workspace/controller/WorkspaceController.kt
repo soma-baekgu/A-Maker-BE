@@ -20,17 +20,12 @@ class WorkspaceController(
     fun createWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
         @RequestBody workspaceCreateDto: WorkspaceCreateDto,
-    ): ResponseEntity<Long>
-    {
-        // TODO : 로그인한 사용자의 아이디를 가져와서 넣어줘야함
-        return workspaceService.createWorkspace(token.id, workspaceCreateDto)
-    }
+    ): ResponseEntity<Long> = ResponseEntity.ok().body(workspaceService.createWorkspace(token.id, workspaceCreateDto))
 
     @GetMapping
     fun findWorkspaces(
         @AuthenticationPrincipal token: JwtAuthentication,
     ) {
-        // TODO : 로그인한 사용자의 아이디를 가져와서 넣어줘야함
         workspaceService.findWorkspaces(token.id)
     }
 }
