@@ -13,8 +13,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("AuthService 테스트")
-class AuthServiceTest {
-    private lateinit var authService: AuthService
+class OAuthServiceTest {
+    private lateinit var oauthService: OAuthService
     private lateinit var googleOAuthClient: GoogleOAuthClient
     private lateinit var googleApiClient: GoogleApiClient
 
@@ -25,10 +25,10 @@ class AuthServiceTest {
         val email = "abc@gmail.com"
         googleOAuthClient = SuccessfulStubGoogleOAuthClient()
         googleApiClient = SuccessfulStubGoogleApiClient(email)
-        authService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when
-        val result = authService.googleLogin("authCode")
+        val result = oauthService.googleLogin("authCode")
 
         // then
         assertThat(result.email).isEqualTo(email)
@@ -41,10 +41,10 @@ class AuthServiceTest {
         val email = "abc@gmail.com"
         googleOAuthClient = FailedFakeGoogleOAuthClient()
         googleApiClient = SuccessfulStubGoogleApiClient(email)
-        authService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when & then
-        assertThatThrownBy { authService.googleLogin("authCode") }
+        assertThatThrownBy { oauthService.googleLogin("authCode") }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("Failed to get access token")
     }
@@ -55,10 +55,10 @@ class AuthServiceTest {
         // given
         googleOAuthClient = SuccessfulStubGoogleOAuthClient()
         googleApiClient = FailedFakeGoogleApiClient()
-        authService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when & then
-        assertThatThrownBy { authService.googleLogin("authCode") }
+        assertThatThrownBy { oauthService.googleLogin("authCode") }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("Failed to get user information")
     }

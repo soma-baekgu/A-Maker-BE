@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class AuthFacade(
-    val authService: AuthService,
+    val oauthService: OAuthService,
     val jwtService: JwtService,
     val userService: UserService,
 ) {
     @Transactional
     fun googleLogin(authorizationCode: String): JwtTokenResponse {
-        val userInfo: GoogleUserInfoDto = authService.googleLogin(authorizationCode)
+        val userInfo: GoogleUserInfoDto = oauthService.googleLogin(authorizationCode)
         val savedUser: UserDto =
             userService.saveOrGetUser(UserCreateDto(userInfo.name, userInfo.email, userInfo.picture))
         val token: String = jwtService.create(savedUser.id, savedUser.userRole.key)
