@@ -19,12 +19,12 @@ class WorkspaceFixture(
             listOf(
                 Workspace(
                     id = 1L,
-                    name = "워크스페이습",
+                    name = "워크스페이스1",
                     thumbnail = "image/thumbnail1.png",
                 ),
                 Workspace(
                     id = 2L,
-                    name = "워크스페이습",
+                    name = "워크스페이스2",
                     thumbnail = "image/thumbnail2.png",
                 ),
             ),
