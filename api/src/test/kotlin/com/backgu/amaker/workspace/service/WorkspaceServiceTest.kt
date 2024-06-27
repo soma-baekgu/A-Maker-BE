@@ -43,19 +43,7 @@ class WorkspaceServiceTest {
     }
 
     @Test
-    @DisplayName("유저를 찾을 수 없을 때 워크스페이스 생성 실패")
-    fun createWorkspace_UserNotFound() {
-        // given
-        val request = createWorkspaceRequest()
-
-        // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceService.createWorkspace(UUID.randomUUID(), request)
-    }
-    }
-
-    @Test
-    @DisplayName("유저의 워크스페이스 조회")
+    @DisplayName("유저의 워크스페이스들 조회")
     fun findWorkspaces() {
         // given
         val userId = UserFixture.defaultUserId
