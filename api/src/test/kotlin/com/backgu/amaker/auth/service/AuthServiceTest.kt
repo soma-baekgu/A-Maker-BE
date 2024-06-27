@@ -12,6 +12,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@DisplayName("AuthService 테스트")
 class AuthServiceTest {
     private lateinit var authService: AuthService
     private lateinit var googleOAuthClient: GoogleOAuthClient
@@ -42,8 +43,7 @@ class AuthServiceTest {
         googleApiClient = SuccessfulStubGoogleApiClient(email)
         authService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
-        // when
-        // then
+        // when & then
         assertThatThrownBy { authService.googleLogin("authCode") }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("Failed to get access token")
@@ -53,13 +53,11 @@ class AuthServiceTest {
     @DisplayName("구글 oauth 서버에서 토큰 획득 실패 테스트")
     fun failedToUserInfo() {
         // given
-        val email = "abc@gmail.com"
         googleOAuthClient = SuccessfulStubGoogleOAuthClient()
         googleApiClient = FailedFakeGoogleApiClient()
         authService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
-        // when
-        // then
+        // when & then
         assertThatThrownBy { authService.googleLogin("authCode") }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("Failed to get user information")
