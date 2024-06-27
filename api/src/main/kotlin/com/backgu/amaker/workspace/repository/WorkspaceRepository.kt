@@ -13,7 +13,11 @@ interface WorkspaceRepository : JpaRepository<Workspace, Long> {
     ): List<Workspace>
 
     @Query(
-        "select w from Workspace w join WorkspaceUser wu on w.id = wu.workspaceId where wu.userId = :userId order by wu.createdAt desc , wu.id desc limit 1",
+        "select w " +
+            "from Workspace w " +
+            "join WorkspaceUser wu on w.id = wu.workspaceId " +
+            "where wu.userId = :userId " +
+            "order by wu.createdAt desc , wu.id desc limit 1",
     )
     fun getDefaultWorkspaceByUserId(userId: UUID): Workspace?
 }
