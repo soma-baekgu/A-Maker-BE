@@ -17,7 +17,7 @@ interface WorkspaceRepository : JpaRepository<Workspace, Long> {
             "from Workspace w " +
             "join WorkspaceUser wu on w.id = wu.workspaceId " +
             "where wu.userId = :userId " +
-            "order by wu.createdAt desc , wu.id desc limit 1",
+            "order by wu.id desc limit 1",
     )
     fun getDefaultWorkspaceByUserId(userId: UUID): Workspace?
 }
