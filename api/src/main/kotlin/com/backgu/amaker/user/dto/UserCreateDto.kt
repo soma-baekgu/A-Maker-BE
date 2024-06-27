@@ -2,15 +2,11 @@ package com.backgu.amaker.user.dto
 
 import com.backgu.amaker.user.domain.User
 
-class UserCreateDto(
-    name: String?,
-    email: String?,
-    picture: String?,
+data class UserCreateDto(
+    var name: String,
+    var email: String,
+    var picture: String,
 ) {
-    var name: String = name ?: ""
-    var email: String = email ?: ""
-    var picture: String = picture ?: ""
-
     fun toEntity(): User =
         User(
             name = name,
