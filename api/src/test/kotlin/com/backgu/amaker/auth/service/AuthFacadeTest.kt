@@ -3,7 +3,7 @@ package com.backgu.amaker.auth.service
 import com.backgu.amaker.auth.dto.JwtTokenResponse
 import com.backgu.amaker.fixture.AuthFixture
 import com.backgu.amaker.fixture.UserFixture
-import com.backgu.amaker.security.jwt.service.JwtService
+import com.backgu.amaker.security.jwt.component.JwtComponent
 import com.backgu.amaker.user.repository.UserRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -28,7 +28,7 @@ class AuthFacadeTest {
     lateinit var authFacade: AuthFacade
 
     @Autowired
-    lateinit var jwtService: JwtService
+    lateinit var jwtComponent: JwtComponent
 
     @MockkBean
     lateinit var oauthService: OAuthService
@@ -43,7 +43,7 @@ class AuthFacadeTest {
         val googleLogin: JwtTokenResponse = authFacade.googleLogin("authCode")
 
         // then
-        assertThat(jwtService.verify(googleLogin.token)).isNotNull()
+        assertThat(jwtComponent.verify(googleLogin.token)).isNotNull()
     }
 
     companion object {

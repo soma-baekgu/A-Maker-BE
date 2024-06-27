@@ -1,4 +1,4 @@
-package com.backgu.amaker.security.jwt.service
+package com.backgu.amaker.security.jwt.component
 
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.backgu.amaker.fixture.UserFixture
@@ -14,9 +14,9 @@ import kotlin.test.Test
 @DisplayName("JwtService 테스트")
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-class JwtServiceTest {
+class JwtComponentTest {
     @Autowired
-    lateinit var jwtService: JwtService
+    lateinit var jwtComponent: JwtComponent
 
     @Test
     @DisplayName("토큰 생성 테스트")
@@ -26,7 +26,7 @@ class JwtServiceTest {
         val userRole = UserRole.USER.key
 
         // when
-        val token = jwtService.create(userId, userRole)
+        val token = jwtComponent.create(userId, userRole)
 
         // then
         Assertions.assertThat(token).isNotNull()
@@ -38,10 +38,10 @@ class JwtServiceTest {
         // given
         val userId = UserFixture.defaultUserId
         val userRole = UserRole.USER.key
-        val token = jwtService.create(userId, userRole)
+        val token = jwtComponent.create(userId, userRole)
 
         // when
-        val verify = jwtService.verify(token)
+        val verify = jwtComponent.verify(token)
 
         // then
         Assertions.assertThat(verify).isNotNull()
@@ -55,7 +55,7 @@ class JwtServiceTest {
 
         // when & then
         Assertions
-            .assertThatThrownBy { jwtService.verify(token) }
+            .assertThatThrownBy { jwtComponent.verify(token) }
             .isInstanceOf(JWTDecodeException::class.java)
             .hasMessage("The token was expected to have 3 parts, but got 1.")
     }

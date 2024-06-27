@@ -1,6 +1,8 @@
-package com.backgu.amaker.security
+package com.backgu.amaker.security.filter
 
-import com.backgu.amaker.security.jwt.service.JwtService
+import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.security.JwtAuthenticationToken
+import com.backgu.amaker.security.jwt.component.JwtComponent
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -18,7 +20,7 @@ import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 class JwtAuthenticationTokenFilter(
-    private val jwtService: JwtService,
+    private val jwtComponent: JwtComponent,
 ) : OncePerRequestFilter() {
     private val bearerRegex: Pattern = Pattern.compile("^Bearer$", Pattern.CASE_INSENSITIVE)
     private val headerKey: String = "Authorization"
@@ -32,7 +34,7 @@ class JwtAuthenticationTokenFilter(
             val authorizationToken: String? = obtainAuthorizationToken(req)
             try {
                 if (authorizationToken != null) {
-                    val claims: JwtService.Claims = jwtService.verify(authorizationToken)
+                    val claims: JwtComponent.Claims = jwtComponent.verify(authorizationToken)
 
                     val id: UUID = UUID.fromString(claims.id.replace("\"", ""))
                     val authorities: List<GrantedAuthority> = obtainAuthorities(claims)
@@ -73,7 +75,7 @@ class JwtAuthenticationTokenFilter(
         return null
     }
 
-    private fun obtainAuthorities(claims: JwtService.Claims): List<GrantedAuthority> {
+    private fun obtainAuthorities(claims: JwtComponent.Claims): List<GrantedAuthority> {
         val roles: Array<String> = claims.roles
         return if (roles.isEmpty()) {
             emptyList()

@@ -1,8 +1,8 @@
 package com.backgu.amaker.security.config
 
-import com.backgu.amaker.security.JwtAccessDeniedHandler
-import com.backgu.amaker.security.JwtAuthenticationEntryPoint
-import com.backgu.amaker.security.JwtAuthenticationTokenFilter
+import com.backgu.amaker.security.filter.JwtAuthenticationTokenFilter
+import com.backgu.amaker.security.handler.AuthAccessDeniedHandler
+import com.backgu.amaker.security.handler.AuthEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtAuthenticationTokenFilter: JwtAuthenticationTokenFilter,
-    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
-    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+    private val authAccessDeniedHandler: AuthAccessDeniedHandler,
+    private val authEntryPoint: AuthEntryPoint,
 ) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -35,8 +35,8 @@ class SecurityConfig(
             }.addFilterBefore(jwtAuthenticationTokenFilter, ExceptionTranslationFilter::class.java)
             .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling {
-                it.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                it.accessDeniedHandler(jwtAccessDeniedHandler)
+                it.authenticationEntryPoint(authEntryPoint)
+                it.accessDeniedHandler(authAccessDeniedHandler)
             }.httpBasic {
                 it.disable()
             }.anonymous {
