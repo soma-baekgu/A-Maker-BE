@@ -1,6 +1,7 @@
 package com.backgu.amaker.fixture
 
 import com.backgu.amaker.auth.config.AuthConfig
+import com.backgu.amaker.auth.dto.oauth.google.GoogleUserInfoDto
 
 class AuthFixture {
     companion object {
@@ -16,5 +17,7 @@ class AuthFixture {
                 apiUrl = "https://www.googleapis.com"
                 grantType = "authorization_code"
             }
+
+        fun createGoogleUserInfoDto(): GoogleUserInfoDto = GoogleUserInfoDto("test", "test@gmail.com", true, "tester", "tester", "tester")
     }
 }
