@@ -29,7 +29,6 @@ class JwtService(
         builder.withExpiresAt(jwtConfig.getExpirationDate(now))
         builder.withClaim("id", claims.id.toString())
         builder.withArrayClaim("roles", claims.roles)
-        println(jwtHashAlgorithm.name)
         return builder.sign(jwtHashAlgorithm)
     }
 

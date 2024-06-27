@@ -32,7 +32,6 @@ class JwtAuthenticationTokenFilter(
             val authorizationToken: String? = obtainAuthorizationToken(req)
             try {
                 if (authorizationToken != null) {
-                    println(authorizationToken)
                     val claims: JwtService.Claims = jwtService.verify(authorizationToken)
 
                     val id: UUID = UUID.fromString(claims.id.replace("\"", ""))
