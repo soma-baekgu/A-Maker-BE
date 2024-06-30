@@ -22,5 +22,6 @@ class UserService(
         return userRepository.findByEmail(email)?.toDomain() ?: throw IllegalArgumentException("User not found")
     }
 
+    @Transactional
     fun saveOrGetUser(user: User): User = userRepository.findByEmail(user.email)?.toDomain() ?: save(user)
 }
