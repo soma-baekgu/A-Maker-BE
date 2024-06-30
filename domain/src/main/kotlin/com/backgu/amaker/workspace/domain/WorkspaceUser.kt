@@ -24,4 +24,7 @@ class WorkspaceUser(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var status: WorkspaceUserStatus = WorkspaceUserStatus.PENDING,
 ) : BaseTimeEntity()
