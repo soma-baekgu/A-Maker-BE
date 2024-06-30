@@ -1,6 +1,7 @@
 package com.backgu.amaker.user.jpa
 
 import com.backgu.amaker.common.jpa.BaseTimeEntity
+import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.domain.UserRole
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -24,4 +25,24 @@ class UserEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val userRole: UserRole = UserRole.USER,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    companion object {
+        fun of(userEntity: User): UserEntity =
+            UserEntity(
+                id = userEntity.id,
+                name = userEntity.name,
+                email = userEntity.email,
+                picture = userEntity.picture,
+                userRole = userEntity.userRole,
+            )
+    }
+
+    fun toDomain(): User =
+        User(
+            id = id,
+            name = name,
+            email = email,
+            picture = picture,
+            userRole = userRole,
+        )
+}

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("AuthService 테스트")
-class OAuthServiceTest {
-    private lateinit var oauthService: OAuthService
+class AuthServiceTest {
+    private lateinit var oauthService: AuthService
     private lateinit var googleOAuthClient: GoogleOAuthClient
     private lateinit var googleApiClient: GoogleApiClient
 
@@ -25,7 +25,7 @@ class OAuthServiceTest {
         val email = "abc@gmail.com"
         googleOAuthClient = SuccessfulStubGoogleOAuthClient()
         googleApiClient = SuccessfulStubGoogleApiClient(email)
-        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when
         val result = oauthService.googleLogin("authCode")
@@ -41,7 +41,7 @@ class OAuthServiceTest {
         val email = "abc@gmail.com"
         googleOAuthClient = FailedFakeGoogleOAuthClient()
         googleApiClient = SuccessfulStubGoogleApiClient(email)
-        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when & then
         assertThatThrownBy { oauthService.googleLogin("authCode") }
@@ -55,7 +55,7 @@ class OAuthServiceTest {
         // given
         googleOAuthClient = SuccessfulStubGoogleOAuthClient()
         googleApiClient = FailedFakeGoogleApiClient()
-        oauthService = OAuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
+        oauthService = AuthService(googleOAuthClient, googleApiClient, AuthFixture.createUserRequest())
 
         // when & then
         assertThatThrownBy { oauthService.googleLogin("authCode") }

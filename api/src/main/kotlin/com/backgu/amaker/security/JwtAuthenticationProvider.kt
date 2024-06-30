@@ -1,7 +1,7 @@
 package com.backgu.amaker.security
 
+import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.domain.UserRole
-import com.backgu.amaker.user.dto.UserDto
 import com.backgu.amaker.user.service.UserService
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
@@ -20,7 +20,8 @@ class JwtAuthenticationProvider(
         )
 
     private fun processOAuthAuthentication(email: String): Authentication {
-        val user: UserDto = userService.getByEmail(email)
+        // TODO exception handling
+        val user: User = userService.getByEmail(email) ?: throw IllegalArgumentException("User not found")
         val authenticated: JwtAuthenticationToken =
             JwtAuthenticationToken(
                 JwtAuthentication(user.id, user.name),

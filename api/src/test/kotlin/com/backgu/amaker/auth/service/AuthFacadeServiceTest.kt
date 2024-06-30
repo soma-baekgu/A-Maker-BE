@@ -23,15 +23,15 @@ import kotlin.test.Test
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class AuthFacadeTest {
+class AuthFacadeServiceTest {
     @Autowired
-    lateinit var authFacade: AuthFacade
+    lateinit var authFacadeService: AuthFacadeService
 
     @Autowired
     lateinit var jwtComponent: JwtComponent
 
     @MockkBean
-    lateinit var oauthService: OAuthService
+    lateinit var oauthService: AuthService
 
     @Test
     @DisplayName("googleLogin 테스트")
@@ -40,7 +40,7 @@ class AuthFacadeTest {
         every { oauthService.googleLogin(any()) } returns AuthFixture.createGoogleUserInfoDto()
 
         // then
-        val googleLogin: JwtTokenResponse = authFacade.googleLogin("authCode")
+        val googleLogin: JwtTokenResponse = authFacadeService.googleLogin("authCode")
 
         // then
         assertThat(jwtComponent.verify(googleLogin.token)).isNotNull()
