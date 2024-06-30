@@ -1,17 +1,17 @@
 package com.backgu.amaker.workspace.service
 
-import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
-import com.backgu.amaker.chat.domain.ChatRoomUser
+import com.backgu.amaker.chat.jpa.ChatRoomEntity
+import com.backgu.amaker.chat.jpa.ChatRoomUserEntity
 import com.backgu.amaker.chat.repository.ChatRoomRepository
 import com.backgu.amaker.chat.repository.ChatRoomUserRepository
 import com.backgu.amaker.user.repository.UserRepository
-import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceRole
-import com.backgu.amaker.workspace.domain.WorkspaceUser
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
+import com.backgu.amaker.workspace.jpa.WorkspaceEntity
+import com.backgu.amaker.workspace.jpa.WorkspaceUserEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import com.backgu.amaker.workspace.repository.WorkspaceUserRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -43,37 +43,37 @@ class WorkspaceService(
                 throw EntityNotFoundException("User not found : $userId")
             }
 
-        val workspace =
+        val workspaceEntity =
             workspaceRepository.save(
-                Workspace(
+                WorkspaceEntity(
                     name = request.name,
                 ),
             )
 
         workspaceUserRepository.save(
-            WorkspaceUser(
+            WorkspaceUserEntity(
                 userId = user.id,
-                workspaceId = workspace.id,
+                workspaceId = workspaceEntity.id,
                 workspaceRole = WorkspaceRole.LEADER,
             ),
         )
 
-        val chatRoom =
+        val chatRoomEntity =
             chatRoomRepository.save(
-                ChatRoom(
-                    workspaceId = workspace.id,
+                ChatRoomEntity(
+                    workspaceId = workspaceEntity.id,
                     chatRoomType = ChatRoomType.GROUP,
                 ),
             )
 
         chatRoomUserRepository.save(
-            ChatRoomUser(
+            ChatRoomUserEntity(
                 userId = user.id,
-                chatRoomId = chatRoom.id,
+                chatRoomId = chatRoomEntity.id,
             ),
         )
 
-        return workspace.id
+        return workspaceEntity.id
     }
 
     fun findWorkspaces(userId: UUID): WorkspacesDto {

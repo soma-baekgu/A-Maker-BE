@@ -1,7 +1,7 @@
 package com.backgu.amaker.fixture
 
-import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.dto.UserCreateDto
+import com.backgu.amaker.user.jpa.UserEntity
 import com.backgu.amaker.user.repository.UserRepository
 import java.util.UUID
 
@@ -19,7 +19,7 @@ class UserFixture(
             )
 
         fun createUser(userId: UUID) =
-            User(
+            UserEntity(
                 id = userId,
                 name = "name",
                 email = "email",

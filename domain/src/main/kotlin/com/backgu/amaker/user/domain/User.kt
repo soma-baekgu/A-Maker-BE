@@ -1,26 +1,12 @@
 package com.backgu.amaker.user.domain
 
-import com.backgu.amaker.common.BaseTimeEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.backgu.amaker.common.domain.BaseTime
 import java.util.UUID
 
-@Entity
-@Table(name = "users")
 class User(
-    @Id
     var id: UUID = UUID.randomUUID(),
-    @Column(nullable = false)
     var name: String,
-    @Column(nullable = false)
     val email: String,
-    @Column(nullable = false)
     var picture: String,
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     val userRole: UserRole = UserRole.USER,
-) : BaseTimeEntity()
+) : BaseTime()
