@@ -26,6 +26,15 @@ class UserEntity(
     @Column(nullable = false)
     val userRole: UserRole = UserRole.USER,
 ) : BaseTimeEntity() {
+    fun toDomain(): User =
+        User(
+            id = id,
+            name = name,
+            email = email,
+            picture = picture,
+            userRole = userRole,
+        )
+
     companion object {
         fun of(userEntity: User): UserEntity =
             UserEntity(
@@ -36,13 +45,4 @@ class UserEntity(
                 userRole = userEntity.userRole,
             )
     }
-
-    fun toDomain(): User =
-        User(
-            id = id,
-            name = name,
-            email = email,
-            picture = picture,
-            userRole = userRole,
-        )
 }

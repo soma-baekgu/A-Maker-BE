@@ -22,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.test.Test
 
-@DisplayName("WorkspaceService 테스트")
+@DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
 @SpringBootTest
-class WorkspaceEntityUserEntityServiceTest {
+class WorkspaceFacadeServiceTest {
     @Autowired
-    lateinit var workspaceService: WorkspaceService
+    lateinit var workspaceFacadeService: WorkspaceFacadeService
 
     @Test
     @DisplayName("워크 스페이스 생성 테스트")
@@ -36,10 +36,10 @@ class WorkspaceEntityUserEntityServiceTest {
         val request = createWorkspaceRequest()
 
         // when
-        val result = workspaceService.createWorkspace(UserFixture.defaultUserId, request)
+        val result = workspaceFacadeService.createWorkspace(UserFixture.defaultUserId, request)
 
         // then
-        assertThat(result).isEqualTo(3L)
+        assertThat(result.id).isEqualTo(3L)
     }
 
     @Test
@@ -49,7 +49,7 @@ class WorkspaceEntityUserEntityServiceTest {
         val userId = UserFixture.defaultUserId
 
         // when
-        val result = workspaceService.findWorkspaces(userId)
+        val result = workspaceFacadeService.findWorkspaces(userId)
 
         // then
         assertThat(result.userId).isEqualTo(userId)
@@ -63,7 +63,7 @@ class WorkspaceEntityUserEntityServiceTest {
         val userId = UserFixture.defaultUserId
 
         // when
-        val result = workspaceService.getDefaultWorkspace(userId)
+        val result = workspaceFacadeService.getDefaultWorkspace(userId)
 
         // then
         assertThat(result.id).isEqualTo(2L)
@@ -78,7 +78,7 @@ class WorkspaceEntityUserEntityServiceTest {
 
         // when & then
         assertThrows<EntityNotFoundException> {
-            workspaceService.getDefaultWorkspace(userId)
+            workspaceFacadeService.getDefaultWorkspace(userId)
         }.message.let {
             assertThat(it).isEqualTo("Default workspace not found : $userId")
         }

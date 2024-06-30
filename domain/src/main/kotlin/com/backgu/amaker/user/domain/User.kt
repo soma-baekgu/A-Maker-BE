@@ -1,6 +1,7 @@
 package com.backgu.amaker.user.domain
 
 import com.backgu.amaker.common.domain.BaseTime
+import com.backgu.amaker.workspace.domain.Workspace
 import java.util.UUID
 
 class User(
@@ -9,4 +10,9 @@ class User(
     val email: String,
     var picture: String,
     val userRole: UserRole = UserRole.USER,
-) : BaseTime()
+) : BaseTime() {
+    fun createWorkspace(name: String): Workspace {
+        val workspace = Workspace(name = name)
+        return workspace
+    }
+}

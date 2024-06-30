@@ -1,5 +1,5 @@
 package com.backgu.amaker.workspace.dto
 
-data class WorkspaceCreateDto(
+data class WorkspaceCreate(
     var name: String,
 )
