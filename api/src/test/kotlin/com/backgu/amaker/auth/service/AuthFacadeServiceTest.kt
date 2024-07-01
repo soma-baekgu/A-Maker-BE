@@ -2,13 +2,10 @@ package com.backgu.amaker.auth.service
 
 import com.backgu.amaker.auth.dto.JwtTokenResponse
 import com.backgu.amaker.fixture.AuthFixture
-import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.security.jwt.component.JwtComponent
-import com.backgu.amaker.user.repository.UserRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,15 +41,5 @@ class AuthFacadeServiceTest {
 
         // then
         assertThat(jwtComponent.verify(googleLogin.token)).isNotNull()
-    }
-
-    companion object {
-        @JvmStatic
-        @BeforeAll
-        fun setUp(
-            @Autowired userRepository: UserRepository,
-        ) {
-            UserFixture(userRepository).testUserSetUp()
-        }
     }
 }
