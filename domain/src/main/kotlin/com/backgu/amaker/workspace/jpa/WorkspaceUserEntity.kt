@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.util.UUID
 
 @Entity(name = "WorkspaceUser")
 @Table(name = "workspace_user")
@@ -20,7 +19,7 @@ class WorkspaceUserEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(nullable = false)
-    val userId: UUID,
+    val userId: String,
     @Column(nullable = false)
     val workspaceId: Long,
     @Enumerated(EnumType.STRING)

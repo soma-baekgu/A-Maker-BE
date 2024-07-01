@@ -1,7 +1,6 @@
 package com.backgu.amaker.security.jwt.component
 
 import com.auth0.jwt.exceptions.JWTDecodeException
-import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.user.domain.UserRole
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -22,7 +21,7 @@ class JwtComponentTest {
     @DisplayName("토큰 생성 테스트")
     fun createToken() {
         // given
-        val userId = UserFixture.defaultUserId
+        val userId = "tester"
         val userRole = UserRole.USER.key
 
         // when
@@ -36,7 +35,7 @@ class JwtComponentTest {
     @DisplayName("토큰 검증 테스트")
     fun verifyToken() {
         // given
-        val userId = UserFixture.defaultUserId
+        val userId = "tester"
         val userRole = UserRole.USER.key
         val token = jwtComponent.create(userId, userRole)
 

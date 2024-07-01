@@ -3,10 +3,8 @@ package com.backgu.amaker.user.service
 import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.domain.UserRole
-import com.backgu.amaker.user.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,14 +18,17 @@ class UserServiceTest {
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var userFixture: UserFixture
+
     @Test
     @DisplayName("사용자 저장 테스트")
     fun saveUser() {
         // given
-        val request = UserFixture.createUser()
+        val user = UserFixture.createUser()
 
         // when
-        val result = userService.save(request)
+        val result = userService.save(user)
 
         // then
         assertThat(result).isNotNull()
@@ -37,8 +38,8 @@ class UserServiceTest {
     @DisplayName("이메일로 사용자 조회 테스트")
     fun getByEmail() {
         // given
-        val user = User(name = "test", email = "test@gmail.com", picture = "test")
-        val saveUser = userService.save(user)
+        val email = "test@gmail.com"
+        val saveUser = userFixture.createPersistedUser(email = email)
 
         // when
         val result = userService.getByEmail(saveUser.email)
@@ -65,11 +66,10 @@ class UserServiceTest {
     @DisplayName("saveOrGetUser: 존재하는 사용자 조회 테스트")
     fun saveOrGetUserTest() {
         // given
-        val user = User(name = "pre", email = "pre@gmail.com", picture = "pre")
-        val saveUser = userService.save(user)
+        val saveUser = userFixture.createPersistedUser()
 
         // when
-        val result = userService.saveOrGetUser(user)
+        val result = userService.saveOrGetUser(saveUser)
 
         // then
         assertThat(result.id).isEqualTo(saveUser.id)
@@ -84,26 +84,16 @@ class UserServiceTest {
     fun saveOrGetUser_SaveTest() {
         // given
         val user = User(name = "new", email = "new@gmail.com", picture = "new")
-        val savedUser = userService.saveOrGetUser(user)
 
         // when
-        val result = userService.getByEmail(savedUser.email)
+        val savedUser = userService.saveOrGetUser(user)
 
         // then
+        val result = userService.getByEmail(savedUser.email)
         assertThat(result.id).isNotNull()
         assertThat(result.name).isEqualTo(user.name)
         assertThat(result.email).isEqualTo(user.email)
         assertThat(result.picture).isEqualTo(user.picture)
         assertThat(result.userRole).isEqualTo(UserRole.USER)
-    }
-
-    companion object {
-        @JvmStatic
-        @BeforeAll
-        fun setUp(
-            @Autowired userRepository: UserRepository,
-        ) {
-            UserFixture(userRepository).testUserSetUp()
-        }
     }
 }

@@ -11,7 +11,6 @@ import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +23,7 @@ class WorkspaceFacadeService(
 ) {
     @Transactional
     fun createWorkspace(
-        userId: UUID,
+        userId: String,
         workspaceCreateDto: WorkspaceCreateDto,
     ): WorkspaceDto {
         val leader: User = userService.getById(userId)
@@ -37,7 +36,7 @@ class WorkspaceFacadeService(
         return WorkspaceDto.of(workspace)
     }
 
-    fun findWorkspaces(userId: UUID): WorkspacesDto {
+    fun findWorkspaces(userId: String): WorkspacesDto {
         val user: User = userService.getById(userId)
 
         val workspaces: List<Workspace> =
@@ -49,7 +48,7 @@ class WorkspaceFacadeService(
         )
     }
 
-    fun getDefaultWorkspace(userId: UUID): WorkspaceDto {
+    fun getDefaultWorkspace(userId: String): WorkspaceDto {
         val user: User = userService.getById(userId)
         return workspaceService.getDefaultWorkspaceByUserId(user).let { WorkspaceDto.of(it) }
     }

@@ -15,7 +15,6 @@ import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.Arrays
 import java.util.Objects
-import java.util.UUID
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
@@ -36,7 +35,7 @@ class JwtAuthenticationTokenFilter(
                 if (authorizationToken != null) {
                     val claims: JwtComponent.Claims = jwtComponent.verify(authorizationToken)
 
-                    val id: UUID = UUID.fromString(claims.id.replace("\"", ""))
+                    val id: String = claims.id.replace("\"", "")
                     val authorities: List<GrantedAuthority> = obtainAuthorities(claims)
 
                     if (Objects.nonNull(id) && authorities.isNotEmpty()) {
