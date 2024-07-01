@@ -2,10 +2,9 @@ package com.backgu.amaker.user.domain
 
 import com.backgu.amaker.common.domain.BaseTime
 import com.backgu.amaker.workspace.domain.Workspace
-import java.util.UUID
 
 class User(
-    var id: String = UUID.randomUUID().toString(),
+    var id: String = "",
     var name: String,
     val email: String,
     var picture: String,
