@@ -5,7 +5,6 @@ import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.workspace.service.WorkspaceFacadeService
-import com.backgu.amaker.workspace.service.WorkspaceService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 @RequestMapping("/api/v1/workspaces")
 class WorkspaceController(
     private val workspaceFacadeService: WorkspaceFacadeService,
-    private val workspaceService: WorkspaceService,
 ) : WorkspaceSwagger {
     @PostMapping
     override fun createWorkspace(
@@ -31,7 +29,7 @@ class WorkspaceController(
                 ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
-                    .buildAndExpand(workspaceFacadeService.createWorkspace(token.id, request.toDto()))
+                    .buildAndExpand(workspaceFacadeService.createWorkspace(token.id, request.toDto()).workspaceId)
                     .toUri(),
             ).build()
 
