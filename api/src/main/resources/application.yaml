@@ -1,5 +1,3 @@
-
-
 spring:
   application:
     name: a-maker
@@ -32,3 +30,6 @@ jwt:
   client-secret: ${JWT_SECRET}
   expiration: 86400000
   issuer: a-maker
+
+swagger:
+  url: ${SWAGGER_URL}
