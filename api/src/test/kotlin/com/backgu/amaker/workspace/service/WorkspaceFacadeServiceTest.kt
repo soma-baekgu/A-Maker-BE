@@ -39,7 +39,7 @@ class WorkspaceFacadeServiceTest {
         val result = workspaceFacadeService.createWorkspace(UserFixture.defaultUserId, request)
 
         // then
-        assertThat(result.id).isEqualTo(3L)
+        assertThat(result.workspaceId).isEqualTo(3L)
     }
 
     @Test
@@ -66,7 +66,7 @@ class WorkspaceFacadeServiceTest {
         val result = workspaceFacadeService.getDefaultWorkspace(userId)
 
         // then
-        assertThat(result.id).isEqualTo(2L)
+        assertThat(result.workspaceId).isEqualTo(2L)
         assertThat(result.name).isEqualTo("워크스페이스2")
     }
 
