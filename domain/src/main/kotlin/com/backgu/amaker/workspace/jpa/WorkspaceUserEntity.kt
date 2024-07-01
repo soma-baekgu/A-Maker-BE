@@ -2,6 +2,7 @@ package com.backgu.amaker.workspace.jpa
 
 import com.backgu.amaker.common.jpa.BaseTimeEntity
 import com.backgu.amaker.workspace.domain.WorkspaceRole
+import com.backgu.amaker.workspace.domain.WorkspaceUser
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -25,4 +26,22 @@ class WorkspaceUserEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun toDomain(): WorkspaceUser =
+        WorkspaceUser(
+            id = id,
+            userId = userId,
+            workspaceId = workspaceId,
+            workspaceRole = workspaceRole,
+        )
+
+    companion object {
+        fun of(workspaceUser: WorkspaceUser): WorkspaceUserEntity =
+            WorkspaceUserEntity(
+                id = workspaceUser.id,
+                userId = workspaceUser.userId,
+                workspaceId = workspaceUser.workspaceId,
+                workspaceRole = workspaceUser.workspaceRole,
+            )
+    }
+}

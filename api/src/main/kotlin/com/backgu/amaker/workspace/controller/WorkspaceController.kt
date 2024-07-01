@@ -4,7 +4,7 @@ import com.backgu.amaker.security.JwtAuthentication
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
-import com.backgu.amaker.workspace.service.WorkspaceService
+import com.backgu.amaker.workspace.service.WorkspaceFacadeService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/workspaces")
 class WorkspaceController(
-    private val workspaceService: WorkspaceService,
+    private val workspaceFacadeService: WorkspaceFacadeService,
 ) {
     @PostMapping
     fun createWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
         @RequestBody workspaceCreateDto: WorkspaceCreateDto,
-    ): ResponseEntity<Long> = ResponseEntity.ok().body(workspaceService.createWorkspace(token.id, workspaceCreateDto))
+    ): ResponseEntity<Long> = ResponseEntity.ok().body(workspaceFacadeService.createWorkspace(token.id, workspaceCreateDto).id)
 
     @GetMapping
     fun findWorkspaces(
         @AuthenticationPrincipal token: JwtAuthentication,
-    ): ResponseEntity<WorkspacesDto> = ResponseEntity.ok().body(workspaceService.findWorkspaces(token.id))
+    ): ResponseEntity<WorkspacesDto> = ResponseEntity.ok().body(workspaceFacadeService.findWorkspaces(token.id))
 
     @GetMapping("/default")
     fun getDefaultWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
-    ): ResponseEntity<WorkspaceDto> = ResponseEntity.ok().body(workspaceService.getDefaultWorkspace(token.id))
+    ): ResponseEntity<WorkspaceDto> = ResponseEntity.ok().body(workspaceFacadeService.getDefaultWorkspace(token.id))
 }

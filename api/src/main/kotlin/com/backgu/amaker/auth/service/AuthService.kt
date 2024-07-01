@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 
 @Service
-class OAuthService(
+class AuthService(
     private val googleOAuthClient: GoogleOAuthClient,
     private val googleApiClient: GoogleApiClient,
     private val authConfig: AuthConfig,

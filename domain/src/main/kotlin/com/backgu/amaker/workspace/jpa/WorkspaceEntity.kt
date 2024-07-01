@@ -1,6 +1,7 @@
 package com.backgu.amaker.workspace.jpa
 
 import com.backgu.amaker.common.jpa.BaseTimeEntity
+import com.backgu.amaker.workspace.domain.Workspace
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -18,4 +19,20 @@ class WorkspaceEntity(
     var name: String,
     @Column(nullable = false)
     var thumbnail: String = "/images/default_thumbnail.png",
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun toDomain(): Workspace =
+        Workspace(
+            id = id,
+            name = name,
+            thumbnail = thumbnail,
+        )
+
+    companion object {
+        fun of(workspace: Workspace) =
+            WorkspaceEntity(
+                id = workspace.id,
+                name = workspace.name,
+                thumbnail = workspace.thumbnail,
+            )
+    }
+}

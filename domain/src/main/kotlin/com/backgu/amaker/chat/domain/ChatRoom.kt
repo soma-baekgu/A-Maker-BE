@@ -1,10 +1,12 @@
 package com.backgu.amaker.chat.domain
 
 import com.backgu.amaker.common.domain.BaseTime
-import java.util.UUID
+import com.backgu.amaker.user.domain.User
 
 class ChatRoom(
     val id: Long = 0L,
-    val userId: UUID,
-    val chatRoomId: Long,
-) : BaseTime()
+    val workspaceId: Long,
+    val chatRoomType: ChatRoomType,
+) : BaseTime() {
+    fun addUser(user: User): ChatRoomUser = ChatRoomUser(userId = user.id, chatRoomId = id)
+}

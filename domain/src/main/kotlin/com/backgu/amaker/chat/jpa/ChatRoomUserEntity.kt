@@ -1,5 +1,6 @@
 package com.backgu.amaker.chat.jpa
 
+import com.backgu.amaker.chat.domain.ChatRoomUser
 import com.backgu.amaker.common.jpa.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -19,4 +20,15 @@ class ChatRoomUserEntity(
     val userId: UUID,
     @Column(nullable = false)
     val chatRoomId: Long,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun toDomain(): ChatRoomUser = ChatRoomUser(id = id, userId = userId, chatRoomId = chatRoomId)
+
+    companion object {
+        fun of(chatRoomUser: ChatRoomUser): ChatRoomUserEntity =
+            ChatRoomUserEntity(
+                id = chatRoomUser.id,
+                userId = chatRoomUser.userId,
+                chatRoomId = chatRoomUser.chatRoomId,
+            )
+    }
+}
