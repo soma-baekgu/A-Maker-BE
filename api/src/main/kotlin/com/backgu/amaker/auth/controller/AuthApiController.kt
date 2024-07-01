@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class AuthApiController(
     val authConfig: AuthConfig,
     val authFacadeService: AuthFacadeService,
-) {
+) : AuthApiSwagger {
     @GetMapping("/oauth/google")
     fun googleAuth(): String = authConfig.oauthUrl()
 

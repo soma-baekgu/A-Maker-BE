@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 class WorkspaceController(
     private val workspaceFacadeService: WorkspaceFacadeService,
 ) {
+) : WorkspaceSwagger {
     @PostMapping
     fun createWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
