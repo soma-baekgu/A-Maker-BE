@@ -1,6 +1,6 @@
 package com.backgu.amaker.auth.service
 
-import com.backgu.amaker.auth.dto.JwtTokenResponse
+import com.backgu.amaker.auth.dto.JwtTokenDto
 import com.backgu.amaker.auth.dto.oauth.google.GoogleUserInfoDto
 import com.backgu.amaker.security.jwt.component.JwtComponent
 import com.backgu.amaker.user.domain.User
@@ -13,12 +13,12 @@ class AuthFacadeService(
     val jwtComponent: JwtComponent,
     val userService: UserService,
 ) {
-    fun googleLogin(authorizationCode: String): JwtTokenResponse {
+    fun googleLogin(authorizationCode: String): JwtTokenDto {
         val userInfo: GoogleUserInfoDto = oauthService.googleLogin(authorizationCode)
         val savedUser: User =
             userService.saveOrGetUser(userInfo.toDomain())
         val token: String = jwtComponent.create(savedUser.id, savedUser.userRole.key)
 
-        return JwtTokenResponse.of(token, savedUser)
+        return JwtTokenDto.of(token, savedUser)
     }
 }

@@ -1,6 +1,6 @@
 package com.backgu.amaker.auth.service
 
-import com.backgu.amaker.auth.dto.JwtTokenResponse
+import com.backgu.amaker.auth.dto.JwtTokenDto
 import com.backgu.amaker.fixture.AuthFixture
 import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.security.jwt.component.JwtComponent
@@ -40,7 +40,7 @@ class AuthFacadeServiceTest {
         every { oauthService.googleLogin(any()) } returns AuthFixture.createGoogleUserInfoDto()
 
         // then
-        val googleLogin: JwtTokenResponse = authFacadeService.googleLogin("authCode")
+        val googleLogin: JwtTokenDto = authFacadeService.googleLogin("authCode")
 
         // then
         assertThat(jwtComponent.verify(googleLogin.token)).isNotNull()

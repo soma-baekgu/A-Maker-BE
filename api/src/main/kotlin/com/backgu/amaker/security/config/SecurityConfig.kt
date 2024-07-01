@@ -28,8 +28,14 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }.authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**", "/api/v1/auth/**", "/error")
-                    .permitAll()
+                    .requestMatchers(
+                        "/auth/**",
+                        "/api/v1/auth/**",
+                        "/error",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**",
+                    ).permitAll()
                     .anyRequest()
                     .authenticated()
             }.addFilterBefore(jwtAuthenticationTokenFilter, ExceptionTranslationFilter::class.java)
