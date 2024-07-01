@@ -19,6 +19,6 @@ class AuthFacadeService(
             userService.saveOrGetUser(userInfo.toDomain())
         val token: String = jwtComponent.create(savedUser.id, savedUser.userRole.key)
 
-        return JwtTokenResponse(token, savedUser)
+        return JwtTokenResponse.of(token, savedUser)
     }
 }
