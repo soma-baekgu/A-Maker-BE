@@ -1,7 +1,7 @@
 package com.backgu.amaker.workspace.controller
 
 import com.backgu.amaker.security.JwtAuthentication
-import com.backgu.amaker.workspace.dto.WorkspaceCreate
+import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
 import com.backgu.amaker.workspace.service.WorkspaceFacadeService
@@ -21,8 +21,8 @@ class WorkspaceController(
     @PostMapping
     fun createWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @RequestBody workspaceCreate: WorkspaceCreate,
-    ): ResponseEntity<Long> = ResponseEntity.ok().body(workspaceFacadeService.createWorkspace(token.id, workspaceCreate).id)
+        @RequestBody workspaceCreateDto: WorkspaceCreateDto,
+    ): ResponseEntity<Long> = ResponseEntity.ok().body(workspaceFacadeService.createWorkspace(token.id, workspaceCreateDto).id)
 
     @GetMapping
     fun findWorkspaces(

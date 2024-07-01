@@ -1,6 +1,6 @@
 package com.backgu.amaker.fixture
 
-import com.backgu.amaker.workspace.dto.WorkspaceCreate
+import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 
@@ -9,7 +9,7 @@ class WorkspaceFixture(
 ) {
     companion object {
         fun createWorkspaceRequest() =
-            WorkspaceCreate(
+            WorkspaceCreateDto(
                 name = "name",
             )
     }

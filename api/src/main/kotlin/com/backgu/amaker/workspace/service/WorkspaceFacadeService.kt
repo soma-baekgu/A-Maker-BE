@@ -6,7 +6,7 @@ import com.backgu.amaker.chat.service.ChatRoomUserService
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
 import com.backgu.amaker.workspace.domain.Workspace
-import com.backgu.amaker.workspace.dto.WorkspaceCreate
+import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
 import org.springframework.stereotype.Service
@@ -25,10 +25,10 @@ class WorkspaceFacadeService(
     @Transactional
     fun createWorkspace(
         userId: UUID,
-        workspaceCreate: WorkspaceCreate,
+        workspaceCreateDto: WorkspaceCreateDto,
     ): WorkspaceDto {
         val leader: User = userService.getById(userId)
-        val workspace: Workspace = workspaceService.save(leader.createWorkspace(workspaceCreate.name))
+        val workspace: Workspace = workspaceService.save(leader.createWorkspace(workspaceCreateDto.name))
         workspaceUserService.save(workspace.assignLeader(leader))
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createGroupChatRoom())
@@ -41,7 +41,7 @@ class WorkspaceFacadeService(
         val user: User = userService.getById(userId)
 
         val workspaces: List<Workspace> =
-            workspaceService.getWorkspaceByIds(workspaceUserService.getWorkspaceIdsByUser(user))
+            workspaceService.getWorkspaceByIds(workspaceUserService.findWorkspaceIdsByUser(user))
 
         return WorkspacesDto(
             userId = user.id,
