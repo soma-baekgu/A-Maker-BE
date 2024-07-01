@@ -78,7 +78,7 @@ class WorkspaceFacadeServiceTest {
         val result = workspaceFacadeService.getDefaultWorkspace(userId)
 
         // then
-        assertThat(result.id).isEqualTo(workspace2.id)
+        assertThat(result.workspaceId).isEqualTo(workspace2.id)
         assertThat(result.name).isEqualTo("워크스페이스2")
     }
 
