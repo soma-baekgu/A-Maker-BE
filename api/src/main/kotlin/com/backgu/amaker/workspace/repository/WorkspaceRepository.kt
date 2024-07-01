@@ -4,7 +4,6 @@ import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import java.util.UUID
 
 interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
     @Query("select w from Workspace w where w.id in :workspaceIds")
@@ -19,5 +18,5 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
             "where wu.userId = :userId " +
             "order by wu.id desc limit 1",
     )
-    fun getDefaultWorkspaceByUserId(userId: UUID): WorkspaceEntity?
+    fun getDefaultWorkspaceByUserId(userId: String): WorkspaceEntity?
 }

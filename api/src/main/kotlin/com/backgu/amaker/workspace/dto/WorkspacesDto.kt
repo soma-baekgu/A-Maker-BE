@@ -1,8 +1,6 @@
 package com.backgu.amaker.workspace.dto
 
-import java.util.UUID
-
 class WorkspacesDto(
-    val userId: UUID,
+    val userId: String,
     val workspaces: List<WorkspaceDto>,
 )

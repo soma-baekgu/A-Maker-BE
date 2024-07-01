@@ -5,7 +5,7 @@ import com.backgu.amaker.workspace.domain.Workspace
 import java.util.UUID
 
 class User(
-    var id: UUID = UUID.randomUUID(),
+    var id: String = UUID.randomUUID().toString(),
     var name: String,
     val email: String,
     var picture: String,

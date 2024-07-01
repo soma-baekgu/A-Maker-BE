@@ -1,8 +1,6 @@
 package com.backgu.amaker.security
 
-import java.util.UUID
-
 class JwtAuthentication(
-    val id: UUID,
+    val id: String,
     val token: String,
 )
