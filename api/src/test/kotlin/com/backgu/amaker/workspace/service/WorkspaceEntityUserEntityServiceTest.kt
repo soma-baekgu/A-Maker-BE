@@ -25,7 +25,7 @@ import kotlin.test.Test
 @DisplayName("WorkspaceService 테스트")
 @Transactional
 @SpringBootTest
-class WorkspaceServiceTest {
+class WorkspaceEntityUserEntityServiceTest {
     @Autowired
     lateinit var workspaceService: WorkspaceService
 

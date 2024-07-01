@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @DisplayName("UserService 테스트")
 @Transactional
 @SpringBootTest
-class UserServiceTest {
+class UserEntityServiceTest {
     @Autowired
     private lateinit var userService: UserService
 

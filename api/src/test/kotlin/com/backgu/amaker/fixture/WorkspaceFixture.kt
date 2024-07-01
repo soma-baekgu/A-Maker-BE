@@ -1,7 +1,7 @@
 package com.backgu.amaker.fixture
 
-import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
+import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 
 class WorkspaceFixture(
@@ -17,12 +17,12 @@ class WorkspaceFixture(
     fun testWorkspaceSetUp() {
         workspaceRepository.saveAll(
             listOf(
-                Workspace(
+                WorkspaceEntity(
                     id = 1L,
                     name = "워크스페이스1",
                     thumbnail = "image/thumbnail1.png",
                 ),
-                Workspace(
+                WorkspaceEntity(
                     id = 2L,
                     name = "워크스페이스2",
                     thumbnail = "image/thumbnail2.png",

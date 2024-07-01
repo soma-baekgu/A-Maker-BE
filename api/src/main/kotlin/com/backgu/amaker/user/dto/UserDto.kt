@@ -1,7 +1,7 @@
 package com.backgu.amaker.user.dto
 
-import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.domain.UserRole
+import com.backgu.amaker.user.jpa.UserEntity
 import java.util.UUID
 
 class UserDto(
@@ -12,13 +12,13 @@ class UserDto(
     val userRole: UserRole,
 ) {
     companion object {
-        fun of(user: User): UserDto =
+        fun of(userEntity: UserEntity): UserDto =
             UserDto(
-                id = user.id,
-                name = user.name,
-                email = user.email,
-                picture = user.picture,
-                userRole = user.userRole,
+                id = userEntity.id,
+                name = userEntity.name,
+                email = userEntity.email,
+                picture = userEntity.picture,
+                userRole = userEntity.userRole,
             )
     }
 }

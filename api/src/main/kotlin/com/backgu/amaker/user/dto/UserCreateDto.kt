@@ -1,14 +1,14 @@
 package com.backgu.amaker.user.dto
 
-import com.backgu.amaker.user.domain.User
+import com.backgu.amaker.user.jpa.UserEntity
 
 data class UserCreateDto(
     var name: String,
     var email: String,
     var picture: String,
 ) {
-    fun toEntity(): User =
-        User(
+    fun toEntity(): UserEntity =
+        UserEntity(
             name = name,
             email = email,
             picture = picture,

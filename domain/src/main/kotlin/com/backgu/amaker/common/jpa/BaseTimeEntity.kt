@@ -1,4 +1,4 @@
-package com.backgu.amaker.common
+package com.backgu.amaker.common.jpa
 
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
