@@ -1,10 +1,14 @@
 package com.backgu.amaker.workspace.controller
 
+import com.backgu.amaker.common.dto.response.ApiResult
+import com.backgu.amaker.common.infra.ApiHandler
 import com.backgu.amaker.security.JwtAuthentication
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.workspace.service.WorkspaceFacadeService
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,11 +22,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 @RequestMapping("/api/v1/workspaces")
 class WorkspaceController(
     private val workspaceFacadeService: WorkspaceFacadeService,
+    private val apiHandler: ApiHandler,
 ) : WorkspaceSwagger {
     @PostMapping
     override fun createWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @RequestBody request: WorkspaceCreateRequest,
+        @RequestBody @Valid request: WorkspaceCreateRequest,
     ): ResponseEntity<Unit> =
         ResponseEntity
             .created(
@@ -36,16 +41,20 @@ class WorkspaceController(
     @GetMapping
     override fun findWorkspaces(
         @AuthenticationPrincipal token: JwtAuthentication,
-    ): ResponseEntity<WorkspacesResponse> =
-        ResponseEntity.ok().body(
-            WorkspacesResponse.of(workspaceFacadeService.findWorkspaces(token.id)),
+    ): ResponseEntity<ApiResult<WorkspacesResponse>> =
+        ResponseEntity.status(HttpStatus.CREATED).body(
+            apiHandler.onSuccess(
+                WorkspacesResponse.of(workspaceFacadeService.findWorkspaces(token.id)),
+            ),
         )
 
     @GetMapping("/default")
     override fun getDefaultWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
-    ): ResponseEntity<WorkspaceResponse> =
+    ): ResponseEntity<ApiResult<WorkspaceResponse>> =
         ResponseEntity.ok().body(
-            WorkspaceResponse.of(workspaceFacadeService.getDefaultWorkspace(token.id)),
+            apiHandler.onSuccess(
+                WorkspaceResponse.of(workspaceFacadeService.getDefaultWorkspace(token.id)),
+            ),
         )
 }
