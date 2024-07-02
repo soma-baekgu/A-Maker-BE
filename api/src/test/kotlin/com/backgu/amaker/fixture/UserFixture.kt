@@ -15,15 +15,15 @@ class UserFixture(
     companion object {
         fun createUser(
             id: String = UUID.randomUUID().toString(),
-            name: String? = null,
-            email: String? = null,
-            picture: String? = null,
+            name: String = nameBuilder(id),
+            email: String = emailBuilder(id),
+            picture: String = pictureBuilder(id),
         ): User =
             User(
                 id = id,
-                name = name ?: nameBuilder(id),
-                email = email ?: nameBuilder(id),
-                picture = picture ?: nameBuilder(id),
+                name = name,
+                email = email,
+                picture = picture,
             )
 
         private fun nameBuilder(id: Any): String = "name-$id"
@@ -35,9 +35,9 @@ class UserFixture(
 
     fun createPersistedUser(
         id: Any = stubIdPublisher.publishId(),
-        name: String? = null,
-        email: String? = null,
-        picture: String? = null,
+        name: String = nameBuilder(id),
+        email: String = emailBuilder(id),
+        picture: String = pictureBuilder(id),
     ) = userRepository
         .save(
             UserEntity.of(createUser(id.toString(), name, email, picture)),

@@ -4,10 +4,10 @@ import com.backgu.amaker.common.domain.BaseTime
 import com.backgu.amaker.workspace.domain.Workspace
 
 class User(
-    var id: String = "",
-    var name: String,
+    val id: String,
+    val name: String,
     val email: String,
-    var picture: String,
+    val picture: String,
     val userRole: UserRole = UserRole.USER,
 ) : BaseTime() {
     fun createWorkspace(name: String): Workspace {

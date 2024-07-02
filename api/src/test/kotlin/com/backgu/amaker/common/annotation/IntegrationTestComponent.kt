@@ -7,4 +7,4 @@ import org.springframework.stereotype.Component
 @Target(AnnotationTarget.CLASS)
 @Primary
 @Component
-annotation class IntegrationTestComponent()
+annotation class IntegrationTestComponent

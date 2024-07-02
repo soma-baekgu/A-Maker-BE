@@ -14,7 +14,7 @@ import jakarta.persistence.Table
 @Table(name = "users")
 class UserEntity(
     @Id
-    var id: String = "",
+    var id: String,
     @Column(nullable = false)
     var name: String,
     @Column(nullable = false)
