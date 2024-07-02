@@ -59,5 +59,4 @@ class WorkspaceController(
         workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId)
         return ResponseEntity.noContent().build()
     }
-
 }
