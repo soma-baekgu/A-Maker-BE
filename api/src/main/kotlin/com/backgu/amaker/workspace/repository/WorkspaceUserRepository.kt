@@ -10,4 +10,9 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
     fun findWorkspaceIdsByUserId(
         @Param("userId") userId: String,
     ): List<Long>
+
+    fun existsByUserIdAndWorkspaceId(
+        userId: String,
+        workspaceId: Long,
+    ): Boolean
 }

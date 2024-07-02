@@ -6,6 +6,7 @@ import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -31,5 +32,12 @@ class WorkspaceService(
         workspaceRepository.getDefaultWorkspaceByUserId(user.id)?.toDomain() ?: run {
             logger.error { "Default workspace not found : ${user.id}" }
             throw EntityNotFoundException("Default workspace not found : ${user.id}")
+        }
+
+    fun getWorkspaceById(workspaceId: Long): Workspace =
+        // TODO : 공통 에러처리 추후에 해줘야함
+        workspaceRepository.findByIdOrNull(workspaceId)?.toDomain() ?: run {
+            logger.error { "Workspace not found : $workspaceId" }
+            throw EntityNotFoundException("Workspace not found : $workspaceId")
         }
 }

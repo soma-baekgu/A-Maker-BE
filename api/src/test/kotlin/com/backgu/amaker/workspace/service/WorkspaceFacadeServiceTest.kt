@@ -1,13 +1,13 @@
 package com.backgu.amaker.workspace.service
 
+import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
-import com.backgu.amaker.user.domain.User
 import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -44,7 +44,7 @@ class WorkspaceFacadeServiceTest {
     fun findWorkspaces() {
         // given
         val userId = "tester"
-        val user: User = fixtures.user.createPersistedUser(userId)
+        fixtures.user.createPersistedUser(userId)
         val workspace1 = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace1.id, leaderId = userId)
         val workspace2 = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스2")
@@ -90,11 +90,28 @@ class WorkspaceFacadeServiceTest {
         fixtures.user.createPersistedUser(userId)
 
         // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceFacadeService.getDefaultWorkspace(userId)
-        }.message.let {
-            assertThat(it).isEqualTo("Default workspace not found : $userId")
-        }
+        assertThatThrownBy { workspaceFacadeService.getDefaultWorkspace(userId) }
+            .isInstanceOf(EntityNotFoundException::class.java)
+            .hasMessage("Default workspace not found : $userId")
+    }
+
+    @Test
+    @DisplayName("워크스페이스의 그룹 채팅방을 조회")
+    fun getGroupChatRoom() {
+        // given
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
+        val chatRoom =
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
+
+        // when
+        val result = workspaceFacadeService.getGroupChatRoom(workspace.id, userId)
+
+        // then
+        assertThat(result.chatRoomId).isEqualTo(chatRoom.id)
     }
 
     companion object {
