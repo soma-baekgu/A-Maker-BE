@@ -1,5 +1,6 @@
 package com.backgu.amaker.user.service
 
+import com.backgu.amaker.common.service.IdPublisher
 import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.domain.UserRole
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional
 class UserServiceTest {
     @Autowired
     private lateinit var userService: UserService
+
+    @Autowired
+    private lateinit var idPublisher: IdPublisher
 
     @Autowired
     private lateinit var userFixture: UserFixture
@@ -83,7 +87,7 @@ class UserServiceTest {
     @DisplayName("saveOrGetUser: 존재하지 않는 사용자 저장 테스트")
     fun saveOrGetUser_SaveTest() {
         // given
-        val user = User(name = "new", email = "new@gmail.com", picture = "new")
+        val user = User(id = idPublisher.publishId(), name = "new", email = "new@gmail.com", picture = "new")
 
         // when
         val savedUser = userService.saveOrGetUser(user)
