@@ -3,31 +3,41 @@ package com.backgu.amaker.fixture
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
+import org.springframework.stereotype.Component
+import java.util.concurrent.atomic.AtomicLong
 
+@Component
 class WorkspaceFixture(
     private val workspaceRepository: WorkspaceRepository,
 ) {
     companion object {
-        fun createWorkspaceRequest() =
+        private var idValue: AtomicLong = AtomicLong(0L)
+
+        fun createWorkspace(
+            id: Long = idValue.incrementAndGet(),
+            name: String = nameBuilder(id),
+            thumbnail: String = thumbnailBuilder(id),
+        ) = WorkspaceEntity(
+            name = name,
+            thumbnail = thumbnail,
+        )
+
+        fun createWorkspaceRequest(name: String = "default-test") =
             WorkspaceCreateDto(
-                name = "name",
+                name = name,
             )
+
+        private fun nameBuilder(id: Any): String = "name-$id"
+
+        private fun thumbnailBuilder(id: Any): String = "http://server/thumbnail-$id"
     }
 
-    fun testWorkspaceSetUp() {
-        workspaceRepository.saveAll(
-            listOf(
-                WorkspaceEntity(
-                    id = 1L,
-                    name = "워크스페이스1",
-                    thumbnail = "image/thumbnail1.png",
-                ),
-                WorkspaceEntity(
-                    id = 2L,
-                    name = "워크스페이스2",
-                    thumbnail = "image/thumbnail2.png",
-                ),
-            ),
-        )
-    }
+    fun createPersistedWorkspace(
+        id: Long = idValue.incrementAndGet(),
+        name: String = nameBuilder(id),
+        thumbnail: String = thumbnailBuilder(id),
+    ) = workspaceRepository
+        .save(
+            createWorkspace(name = name, thumbnail = thumbnail),
+        ).toDomain()
 }

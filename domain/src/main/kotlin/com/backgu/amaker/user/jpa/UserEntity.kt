@@ -9,13 +9,12 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.util.UUID
 
 @Entity(name = "User")
 @Table(name = "users")
 class UserEntity(
     @Id
-    var id: UUID = UUID.randomUUID(),
+    var id: String,
     @Column(nullable = false)
     var name: String,
     @Column(nullable = false)

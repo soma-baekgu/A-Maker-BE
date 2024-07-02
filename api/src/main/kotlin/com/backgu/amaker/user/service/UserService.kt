@@ -7,7 +7,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,7 +22,7 @@ class UserService(
     }
 
     // TODO exception handling
-    fun getById(id: UUID): User =
+    fun getById(id: String): User =
         userRepository.findByIdOrNull(id)?.toDomain() ?: run {
             logger.error { "User not found : $id" }
             throw IllegalArgumentException("User not found : $id")

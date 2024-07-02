@@ -7,7 +7,6 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.backgu.amaker.security.jwt.config.JwtConfig
 import org.springframework.stereotype.Component
 import java.util.Date
-import java.util.UUID
 
 @Component
 class JwtComponent(
@@ -17,7 +16,7 @@ class JwtComponent(
     private val jwtVerifier = JWT.require(jwtHashAlgorithm).withIssuer(jwtConfig.issuer).build()
 
     fun create(
-        userId: UUID,
+        userId: String,
         role: String,
     ): String = this.create(Claims.of(userId, role))
 
@@ -51,7 +50,7 @@ class JwtComponent(
 
         companion object {
             fun of(
-                id: UUID,
+                id: String,
                 role: String,
             ): Claims {
                 val claims = Claims()
