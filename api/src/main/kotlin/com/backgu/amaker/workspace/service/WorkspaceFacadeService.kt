@@ -1,6 +1,8 @@
 package com.backgu.amaker.workspace.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
+import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.chat.dto.ChatRoomDto
 import com.backgu.amaker.chat.service.ChatRoomService
 import com.backgu.amaker.chat.service.ChatRoomUserService
 import com.backgu.amaker.user.domain.User
@@ -51,5 +53,17 @@ class WorkspaceFacadeService(
     fun getDefaultWorkspace(userId: String): WorkspaceDto {
         val user: User = userService.getById(userId)
         return workspaceService.getDefaultWorkspaceByUserId(user).let { WorkspaceDto.of(it) }
+    }
+
+    fun getGroupChatRoom(
+        workspaceId: Long,
+        userId: String,
+    ): ChatRoomDto {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
+
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        return ChatRoomDto.of(chatRoomService.getGroupChatRoomByWorkspace(workspace, ChatRoomType.GROUP))
     }
 }
