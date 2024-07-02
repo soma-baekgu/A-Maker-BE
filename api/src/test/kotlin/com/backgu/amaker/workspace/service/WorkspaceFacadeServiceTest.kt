@@ -113,8 +113,7 @@ class WorkspaceFacadeServiceTest {
         val result = workspaceFacadeService.getGroupChatRoom(workspace.id, userId)
 
         // then
-        assertThat(result.chatRoomDto.chatRoomId).isEqualTo(chatRoom.id)
-        assertThat(result.workspaceName).isEqualTo("워크스페이스1")
+        assertThat(result.chatRoomId).isEqualTo(chatRoom.id)
     }
 
     companion object {
