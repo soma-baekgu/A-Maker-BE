@@ -51,7 +51,7 @@ class WorkspaceController(
             WorkspaceResponse.of(workspaceFacadeService.getDefaultWorkspace(token.id)),
         )
 
-    @GetMapping("{workspace-id}/group-chatroom")
+    @GetMapping("{workspace-id}/group-chat-room")
     fun findGroupChatRoom(
         @PathVariable("workspace-id") workspaceId: Long,
         @AuthenticationPrincipal token: JwtAuthentication,
