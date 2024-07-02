@@ -46,4 +46,8 @@ class UserFixture(
     fun createPersistedUsers(count: Long): List<User> = (1..count).map { createPersistedUser(id = it) }
 
     fun createPersistedUsers(vararg ids: Any): List<User> = ids.map { createPersistedUser(it.toString()) }
+
+    fun deleteAll() {
+        userRepository.deleteAll()
+    }
 }

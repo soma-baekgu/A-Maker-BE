@@ -3,25 +3,39 @@ package com.backgu.amaker.workspace.service
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
+import com.backgu.amaker.workspace.domain.WorkspaceRole
+import com.backgu.amaker.workspace.domain.WorkspaceUser
+import com.backgu.amaker.workspace.domain.WorkspaceUserStatus
 import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeAll
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import kotlin.test.Test
 
 @DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
 @SpringBootTest
 class WorkspaceFacadeServiceTest {
     @Autowired
+    private lateinit var workspaceFixtureFacade: WorkspaceFixtureFacade
+
+    @Autowired
     lateinit var workspaceFacadeService: WorkspaceFacadeService
 
     @Autowired
     lateinit var fixtures: WorkspaceFixtureFacade
+
+    @Autowired
+    lateinit var workspaceUserService: WorkspaceUserService
+
+    @BeforeEach
+    fun setUp() {
+        workspaceFixtureFacade.setUp()
+    }
 
     @Test
     @DisplayName("워크 스페이스 생성 테스트")
@@ -90,20 +104,60 @@ class WorkspaceFacadeServiceTest {
         fixtures.user.createPersistedUser(userId)
 
         // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceFacadeService.getDefaultWorkspace(userId)
-        }.message.let {
-            assertThat(it).isEqualTo("Default workspace not found : $userId")
-        }
+        assertThatThrownBy { workspaceFacadeService.getDefaultWorkspace(userId) }
+            .isInstanceOf(EntityNotFoundException::class.java)
+            .hasMessage("Default workspace not found : $userId")
     }
 
-    companion object {
-        @JvmStatic
-        @BeforeAll
-        fun setUp(
-            @Autowired workspaceFixtureFacade: WorkspaceFixtureFacade,
-        ) {
-            workspaceFixtureFacade.setUp()
-        }
+    @Test
+    @DisplayName("워크스페이스 유저 활성화")
+    fun activateWorkspaceUser() {
+        // given
+        val leaderId = "leader"
+        val leader: User = fixtures.user.createPersistedUser(leaderId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스")
+
+        val memberId = "member"
+        val member: User = fixtures.user.createPersistedUser(memberId)
+
+        fixtures.workspaceUser.createPersistedWorkspaceUser(
+            workspaceId = workspace.id,
+            leaderId = leaderId,
+            memberIds = listOf(memberId),
+        )
+
+        // when
+        workspaceFacadeService.activateWorkspaceUser(memberId, workspace.id)
+        val workspaceUser: WorkspaceUser = workspaceUserService.getWorkspaceUser(workspace, member)
+
+        // then
+        assertThat(workspaceUser).isNotNull
+        assertThat(workspaceUser.status).isEqualTo(WorkspaceUserStatus.ACTIVE)
+        assertThat(workspaceUser.userId).isEqualTo(memberId)
+        assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
+        assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 워크스페이스에 대한 유저 활성화 실패")
+    fun activateFailWorkspaceUser() {
+        // given
+        workspaceFixtureFacade.deleteAll()
+        val leaderId = "leader"
+        val leader: User = fixtures.user.createPersistedUser(leaderId)
+
+        val memberId = "member"
+        val member: User = fixtures.user.createPersistedUser(memberId)
+
+        fixtures.workspaceUser.createPersistedWorkspaceUser(
+            workspaceId = 0L,
+            leaderId = leaderId,
+            memberIds = listOf(memberId),
+        )
+
+        // when & then
+        assertThatThrownBy { workspaceFacadeService.activateWorkspaceUser(memberId, 0L) }
+            .isInstanceOf(EntityNotFoundException::class.java)
+            .hasMessage("Workspace not found : 0")
     }
 }
