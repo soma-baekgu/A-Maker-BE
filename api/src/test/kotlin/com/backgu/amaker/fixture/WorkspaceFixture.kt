@@ -4,20 +4,22 @@ import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import org.springframework.stereotype.Component
+import java.util.concurrent.atomic.AtomicLong
 
 @Component
 class WorkspaceFixture(
     private val workspaceRepository: WorkspaceRepository,
 ) {
     companion object {
+        private var idValue: AtomicLong = AtomicLong(0L)
+
         fun createWorkspace(
-            id: Long = 0L,
-            name: String?,
-            thumbnail: String?,
+            id: Long = idValue.incrementAndGet(),
+            name: String = nameBuilder(id),
+            thumbnail: String = thumbnailBuilder(id),
         ) = WorkspaceEntity(
-            id = id,
-            name = name ?: nameBuilder(id),
-            thumbnail = thumbnail ?: thumbnailBuilder(id),
+            name = name,
+            thumbnail = thumbnail,
         )
 
         fun createWorkspaceRequest(name: String = "default-test") =
@@ -31,8 +33,9 @@ class WorkspaceFixture(
     }
 
     fun createPersistedWorkspace(
-        name: String? = null,
-        thumbnail: String? = null,
+        id: Long = idValue.incrementAndGet(),
+        name: String = nameBuilder(id),
+        thumbnail: String = thumbnailBuilder(id),
     ) = workspaceRepository
         .save(
             createWorkspace(name = name, thumbnail = thumbnail),
