@@ -39,4 +39,11 @@ class WorkspaceService(
             logger.error { "Default workspace not found : ${user.id}" }
             throw EntityNotFoundException("Default workspace not found : ${user.id}")
         }
+
+    fun getWorkspaceById(workspaceId: Long): Workspace =
+        // TODO : 공통 에러처리 추후에 해줘야함
+        workspaceRepository.findByIdOrNull(workspaceId)?.toDomain() ?: run {
+            logger.error { "Workspace not found : $workspaceId" }
+            throw EntityNotFoundException("Workspace not found : $workspaceId")
+        }
 }

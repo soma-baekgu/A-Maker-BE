@@ -1,5 +1,6 @@
 package com.backgu.amaker.workspace.service
 
+import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
@@ -58,7 +59,7 @@ class WorkspaceFacadeServiceTest {
     fun findWorkspaces() {
         // given
         val userId = "tester"
-        val user: User = fixtures.user.createPersistedUser(userId)
+        fixtures.user.createPersistedUser(userId)
         val workspace1 = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace1.id, leaderId = userId)
         val workspace2 = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스2")
@@ -136,6 +137,24 @@ class WorkspaceFacadeServiceTest {
         assertThat(workspaceUser.userId).isEqualTo(memberId)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+    }
+
+    @DisplayName("워크스페이스의 그룹 채팅방을 조회")
+    fun getGroupChatRoom() {
+        // given
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
+        val chatRoom =
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
+
+        // when
+        val result = workspaceFacadeService.getGroupChatRoom(workspace.id, userId)
+
+        // then
+        assertThat(result.chatRoomId).isEqualTo(chatRoom.id)
     }
 
     @Test

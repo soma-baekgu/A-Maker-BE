@@ -1,17 +1,20 @@
 package com.backgu.amaker.workspace.controller
 
+import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.security.JwtAuthentication
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 
 @Tag(name = "workspaces", description = "워크스페이스 API")
 interface WorkspaceSwagger {
@@ -57,6 +60,23 @@ interface WorkspaceSwagger {
     fun getDefaultWorkspace(
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<WorkspaceResponse>
+
+    @Operation(summary = "그룹 채팅방 조회", description = "워크스페이스의 그룹 채팅방을 조회합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "그룹 채팅방 조회 성공",
+                content = [Content(schema = Schema(implementation = ChatRoomResponse::class))],
+            ),
+        ],
+    )
+    fun getGroupChatRoom(
+        @PathVariable
+        @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
+        workspaceId: Long,
+        @Parameter(hidden = true) token: JwtAuthentication,
+    ): ResponseEntity<ChatRoomResponse>
 
     @Operation(summary = "워크스페이스 유저 활성화", description = "워크스페이스에 대해 초대된 사용자가 초대를 수락합니다.")
     @ApiResponses(
