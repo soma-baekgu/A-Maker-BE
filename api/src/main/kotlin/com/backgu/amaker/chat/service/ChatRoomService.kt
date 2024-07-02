@@ -13,4 +13,7 @@ class ChatRoomService(
 ) {
     @Transactional
     fun save(chatRoom: ChatRoom): ChatRoom = chatRoomRepository.save(ChatRoomEntity.of(chatRoom)).toDomain()
+
+    fun findGroupChatRoomByWorkspaceId(workspaceId: Long): List<ChatRoom> =
+        chatRoomRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
 }

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
 
 @Tag(name = "workspaces", description = "워크스페이스 API")
 interface WorkspaceSwagger {
@@ -41,7 +40,6 @@ interface WorkspaceSwagger {
             ),
         ],
     )
-    @GetMapping
     fun findWorkspaces(
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<WorkspacesResponse>
@@ -56,8 +54,22 @@ interface WorkspaceSwagger {
             ),
         ],
     )
-    @GetMapping("/default")
     fun getDefaultWorkspace(
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<WorkspaceResponse>
+
+    @Operation(summary = "워크스페이스 유저 활성화", description = "워크스페이스에 대해 초대된 사용자가 초대를 수락합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "204",
+                description = "워크스페이스 유저 활성화 성공",
+                content = [Content(schema = Schema(implementation = Unit::class))],
+            ),
+        ],
+    )
+    fun activateWorkspaceInvite(
+        @Parameter(hidden = true) token: JwtAuthentication,
+        workspaceId: Long,
+    ): ResponseEntity<Unit>
 }

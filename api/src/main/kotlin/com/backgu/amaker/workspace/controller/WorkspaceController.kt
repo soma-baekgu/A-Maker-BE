@@ -8,7 +8,9 @@ import com.backgu.amaker.workspace.service.WorkspaceFacadeService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -48,4 +50,14 @@ class WorkspaceController(
         ResponseEntity.ok().body(
             WorkspaceResponse.of(workspaceFacadeService.getDefaultWorkspace(token.id)),
         )
+
+    @PutMapping("/{workspaceId}/invite/activate")
+    override fun activateWorkspaceInvite(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable workspaceId: Long,
+    ): ResponseEntity<Unit> {
+        workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId)
+        return ResponseEntity.noContent().build()
+    }
+
 }

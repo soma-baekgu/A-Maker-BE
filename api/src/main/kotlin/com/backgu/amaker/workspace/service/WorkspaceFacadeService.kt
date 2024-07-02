@@ -52,4 +52,19 @@ class WorkspaceFacadeService(
         val user: User = userService.getById(userId)
         return workspaceService.getDefaultWorkspaceByUserId(user).let { WorkspaceDto.of(it) }
     }
+
+    @Transactional
+    fun activateWorkspaceUser(
+        userId: String,
+        workspaceId: Long,
+    ) {
+        val user = userService.getById(userId)
+        val workspace = workspaceService.getById(workspaceId)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        workspaceUser.activate()
+        workspaceUserService.save(workspaceUser)
+
+        chatRoomService.findGroupChatRoomByWorkspaceId(workspaceId).forEach { chatRoomUserService.save(it.addUser(user)) }
+    }
 }

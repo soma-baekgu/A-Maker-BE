@@ -10,4 +10,10 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
     fun findWorkspaceIdsByUserId(
         @Param("userId") userId: String,
     ): List<Long>
+
+    @Query("select wu from WorkspaceUser wu where wu.userId = :userId and wu.workspaceId = :workspaceId")
+    fun findByUserIdAndWorkspaceId(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUserEntity?
 }

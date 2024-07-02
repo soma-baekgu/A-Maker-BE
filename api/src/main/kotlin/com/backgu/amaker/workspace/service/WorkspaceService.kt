@@ -6,6 +6,7 @@ import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,6 +22,12 @@ class WorkspaceService(
         val saveWorkspace = workspaceRepository.save(WorkspaceEntity.of(workspace))
         return saveWorkspace.toDomain()
     }
+
+    fun getById(id: Long): Workspace =
+        workspaceRepository.findByIdOrNull(id)?.toDomain() ?: run {
+            logger.error { "Workspace not found : $id" }
+            throw EntityNotFoundException("Workspace not found : $id")
+        }
 
     fun getWorkspaceByIds(workspaceIds: List<Long>): List<Workspace> =
         workspaceRepository.findByWorkspaceIds(workspaceIds).map {
