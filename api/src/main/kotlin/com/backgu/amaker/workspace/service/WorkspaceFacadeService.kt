@@ -1,7 +1,6 @@
 package com.backgu.amaker.workspace.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
-import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.chat.dto.ChatRoomDto
 import com.backgu.amaker.chat.service.ChatRoomService
 import com.backgu.amaker.chat.service.ChatRoomUserService
@@ -64,6 +63,6 @@ class WorkspaceFacadeService(
 
         workspaceUserService.validUserInWorkspace(user, workspace)
 
-        return ChatRoomDto.of(chatRoomService.getGroupChatRoomByWorkspace(workspace, ChatRoomType.GROUP))
+        return ChatRoomDto.of(chatRoomService.getGroupChatRoomByWorkspace(workspace))
     }
 }

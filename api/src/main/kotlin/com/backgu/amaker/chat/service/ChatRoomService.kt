@@ -20,10 +20,7 @@ class ChatRoomService(
     @Transactional
     fun save(chatRoom: ChatRoom): ChatRoom = chatRoomRepository.save(ChatRoomEntity.of(chatRoom)).toDomain()
 
-    fun getGroupChatRoomByWorkspace(
-        workspace: Workspace,
-        group: ChatRoomType,
-    ): ChatRoom =
+    fun getGroupChatRoomByWorkspace(workspace: Workspace): ChatRoom =
         chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspace.id, ChatRoomType.GROUP)?.toDomain()
             // TODO : 공통 에러처리 추후에 해줘야함
             ?: run {
