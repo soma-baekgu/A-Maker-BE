@@ -4,10 +4,9 @@ import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import jakarta.persistence.EntityNotFoundException
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -90,11 +89,9 @@ class WorkspaceFacadeServiceTest {
         fixtures.user.createPersistedUser(userId)
 
         // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceFacadeService.getDefaultWorkspace(userId)
-        }.message.let {
-            assertThat(it).isEqualTo("Default workspace not found : $userId")
-        }
+        assertThatThrownBy { workspaceFacadeService.getDefaultWorkspace(userId) }
+            .isInstanceOf(EntityNotFoundException::class.java)
+            .hasMessage("Default workspace not found : $userId")
     }
 
     @Test

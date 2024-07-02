@@ -4,10 +4,9 @@ import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
 import jakarta.persistence.EntityNotFoundException
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -36,9 +35,9 @@ class WorkspaceUserServiceTest {
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
         // when & then
-        assertDoesNotThrow {
+        assertThatCode {
             workspaceUserService.validUserInWorkspace(user, workspace)
-        }
+        }.doesNotThrowAnyException()
     }
 
     @Test
@@ -57,10 +56,8 @@ class WorkspaceUserServiceTest {
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(diffUser))
 
         // when & then
-        assertThrows<EntityNotFoundException> {
-            workspaceUserService.validUserInWorkspace(user, workspace)
-        }.message.let {
-            assertThat(it).isEqualTo("User ${user.id} is not in Workspace ${workspace.id}")
-        }
+        assertThatThrownBy { workspaceUserService.validUserInWorkspace(user, workspace) }
+            .isInstanceOf(EntityNotFoundException::class.java)
+            .hasMessage("User ${user.id} is not in Workspace ${workspace.id}")
     }
 }
