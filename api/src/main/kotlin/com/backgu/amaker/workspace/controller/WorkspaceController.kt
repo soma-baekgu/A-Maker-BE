@@ -52,7 +52,7 @@ class WorkspaceController(
         )
 
     @GetMapping("{workspace-id}/group-chat-room")
-    fun findGroupChatRoom(
+    override fun getGroupChatRoom(
         @PathVariable("workspace-id") workspaceId: Long,
         @AuthenticationPrincipal token: JwtAuthentication,
     ): ResponseEntity<ChatRoomResponse> =
