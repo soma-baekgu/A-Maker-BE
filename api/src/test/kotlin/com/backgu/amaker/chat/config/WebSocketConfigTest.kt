@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.stomp.StompHeaders
 import org.springframework.messaging.simp.stomp.StompSession
 import org.springframework.messaging.simp.stomp.StompSessionHandler
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter
-import org.springframework.web.socket.WebSocketHttpHeaders
 import org.springframework.web.socket.client.standard.StandardWebSocketClient
 import org.springframework.web.socket.messaging.WebSocketStompClient
 import java.util.concurrent.CompletableFuture
@@ -36,15 +35,10 @@ class WebSocketConfigTest {
     @DisplayName("웹소켓 연결 테스트")
     fun testWebSocketConnection() {
         // given
-        val jwtToken = jwtComponent.create("test", "ROLE_USER")
-        val headers =
-            WebSocketHttpHeaders().apply {
-                add("Authorization", "Bearer $jwtToken")
-            }
 
         // when
         val connectFuture: CompletableFuture<StompSession> =
-            stompClient.connectAsync("ws://localhost:$port/ws", headers, stompHandler)
+            stompClient.connectAsync("ws://localhost:$port/ws", stompHandler)
         val session: StompSession = connectFuture.get(1, TimeUnit.SECONDS)
 
         // then
