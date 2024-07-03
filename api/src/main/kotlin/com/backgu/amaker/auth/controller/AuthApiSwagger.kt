@@ -2,9 +2,8 @@ package com.backgu.amaker.auth.controller
 
 import com.backgu.amaker.auth.dto.response.JwtTokenResponse
 import com.backgu.amaker.auth.dto.response.OAuthUrlResponse
+import com.backgu.amaker.common.dto.response.ApiResult
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -18,11 +17,10 @@ interface AuthApiSwagger {
             ApiResponse(
                 responseCode = "200",
                 description = "구글 oauth url 조회 성공",
-                content = [Content(schema = Schema(implementation = OAuthUrlResponse::class))],
             ),
         ],
     )
-    fun googleAuth(): ResponseEntity<OAuthUrlResponse>
+    fun googleAuth(): ResponseEntity<ApiResult<OAuthUrlResponse>>
 
     @Operation(summary = "구글 로그인 요청", description = "구글 로그인을 요청합니다.")
     @ApiResponses(
@@ -30,7 +28,6 @@ interface AuthApiSwagger {
             ApiResponse(
                 responseCode = "200",
                 description = "구글 로그인 성공",
-                content = [Content(schema = Schema(implementation = JwtTokenResponse::class))],
             ),
         ],
     )
@@ -39,5 +36,5 @@ interface AuthApiSwagger {
         scope: String,
         authUser: String,
         prompt: String,
-    ): ResponseEntity<JwtTokenResponse>
+    ): ResponseEntity<ApiResult<JwtTokenResponse>>
 }
