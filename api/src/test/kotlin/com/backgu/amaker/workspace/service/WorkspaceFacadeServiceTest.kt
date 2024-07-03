@@ -1,5 +1,6 @@
 package com.backgu.amaker.workspace.service
 
+import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
@@ -127,8 +128,12 @@ class WorkspaceFacadeServiceTest {
             memberIds = listOf(memberId),
         )
 
+        val chatRoom: ChatRoom =
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(leaderId))
+
         // when
-        workspaceFacadeService.activateWorkspaceUser(memberId, workspace.id)
+        val result = workspaceFacadeService.activateWorkspaceUser(memberId, workspace.id)
         val workspaceUser: WorkspaceUser = workspaceUserService.getWorkspaceUser(workspace, member)
 
         // then
