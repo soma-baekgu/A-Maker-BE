@@ -88,5 +88,5 @@ interface WorkspaceSwagger {
     fun activateWorkspaceInvite(
         @Parameter(hidden = true) token: JwtAuthentication,
         workspaceId: Long,
-    ): ResponseEntity<WorkspaceUserDto>
+    ): ResponseEntity<ApiResult<WorkspaceUserDto>>
 }

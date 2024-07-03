@@ -79,5 +79,8 @@ class WorkspaceController(
     override fun activateWorkspaceInvite(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
-    ): ResponseEntity<WorkspaceUserDto> = ResponseEntity.ok().body(workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId))
+    ): ResponseEntity<ApiResult<WorkspaceUserDto>> =
+        ResponseEntity
+            .ok()
+            .body(apiHandler.onSuccess(workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId)))
 }
