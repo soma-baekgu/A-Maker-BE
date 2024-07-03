@@ -1,10 +1,8 @@
 package com.backgu.amaker.chat.config
 
-import com.backgu.amaker.security.jwt.component.JwtComponent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.lang.Nullable
@@ -24,9 +22,6 @@ import kotlin.test.Test
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WebSocketConfigTest {
     var stompClient: WebSocketStompClient = WebSocketStompClient(StandardWebSocketClient())
-
-    @Autowired
-    lateinit var jwtComponent: JwtComponent
 
     @LocalServerPort
     var port: Int = 0
