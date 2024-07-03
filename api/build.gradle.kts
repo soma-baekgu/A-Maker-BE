@@ -15,6 +15,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.auth0:java-jwt:3.18.3")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
