@@ -35,6 +35,7 @@ class SecurityConfig(
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**",
+                        "/ws/**",
                     ).permitAll()
                     .anyRequest()
                     .authenticated()
