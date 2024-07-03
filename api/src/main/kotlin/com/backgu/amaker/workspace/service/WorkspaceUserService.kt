@@ -31,4 +31,14 @@ class WorkspaceUserService(
             throw EntityNotFoundException("User ${user.id} is not in Workspace ${workspace.id}")
         }
     }
+
+    @Transactional
+    fun getWorkspaceUser(
+        workspace: Workspace,
+        user: User,
+    ): WorkspaceUser =
+        workspaceUserRepository
+            .findByUserIdAndWorkspaceId(workspaceId = workspace.id, userId = user.id)
+            ?.toDomain()
+            ?: throw IllegalArgumentException("User is not a member of the workspace")
 }

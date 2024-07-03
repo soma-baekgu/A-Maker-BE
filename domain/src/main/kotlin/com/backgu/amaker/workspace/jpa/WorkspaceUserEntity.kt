@@ -3,6 +3,7 @@ package com.backgu.amaker.workspace.jpa
 import com.backgu.amaker.common.jpa.BaseTimeEntity
 import com.backgu.amaker.workspace.domain.WorkspaceRole
 import com.backgu.amaker.workspace.domain.WorkspaceUser
+import com.backgu.amaker.workspace.domain.WorkspaceUserStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -25,6 +26,9 @@ class WorkspaceUserEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var status: WorkspaceUserStatus = WorkspaceUserStatus.PENDING,
 ) : BaseTimeEntity() {
     fun toDomain(): WorkspaceUser =
         WorkspaceUser(
@@ -32,6 +36,7 @@ class WorkspaceUserEntity(
             userId = userId,
             workspaceId = workspaceId,
             workspaceRole = workspaceRole,
+            status = status,
         )
 
     companion object {
@@ -41,6 +46,7 @@ class WorkspaceUserEntity(
                 userId = workspaceUser.userId,
                 workspaceId = workspaceUser.workspaceId,
                 workspaceRole = workspaceUser.workspaceRole,
+                status = workspaceUser.status,
             )
     }
 }

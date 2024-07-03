@@ -9,6 +9,7 @@ import com.backgu.amaker.user.service.UserService
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
+import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -64,5 +65,24 @@ class WorkspaceFacadeService(
         workspaceUserService.validUserInWorkspace(user, workspace)
 
         return ChatRoomDto.of(chatRoomService.getGroupChatRoomByWorkspace(workspace))
+    }
+
+    @Transactional
+    fun activateWorkspaceUser(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+        val workspace = workspaceService.getById(workspaceId)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        workspaceUser.activate()
+        workspaceUserService.save(workspaceUser)
+
+        chatRoomService
+            .findGroupChatRoomByWorkspaceId(workspaceId)
+            .addUser(user)
+
+        return WorkspaceUserDto.of(workspaceUser)
     }
 }

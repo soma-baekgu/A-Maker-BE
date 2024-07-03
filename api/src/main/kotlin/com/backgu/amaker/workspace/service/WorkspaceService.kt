@@ -23,6 +23,12 @@ class WorkspaceService(
         return saveWorkspace.toDomain()
     }
 
+    fun getById(id: Long): Workspace =
+        workspaceRepository.findByIdOrNull(id)?.toDomain() ?: run {
+            logger.error { "Workspace not found : $id" }
+            throw EntityNotFoundException("Workspace not found : $id")
+        }
+
     fun getWorkspaceByIds(workspaceIds: List<Long>): List<Workspace> =
         workspaceRepository.findByWorkspaceIds(workspaceIds).map {
             it.toDomain()
