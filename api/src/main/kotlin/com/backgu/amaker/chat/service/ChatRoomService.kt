@@ -28,6 +28,7 @@ class ChatRoomService(
                 throw EntityNotFoundException("Group ChatRoom not found in Workspace ${workspace.id}")
             }
 
-    fun findGroupChatRoomByWorkspaceId(workspaceId: Long): List<ChatRoom> =
-        chatRoomRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
+    fun findGroupChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
+        chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspaceId, ChatRoomType.GROUP)?.toDomain()
+            ?: throw EntityNotFoundException("Group ChatRoom not found in Workspace $workspaceId")
 }

@@ -2,6 +2,7 @@ package com.backgu.amaker.workspace.controller
 
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
@@ -91,5 +92,5 @@ interface WorkspaceSwagger {
     fun activateWorkspaceInvite(
         @Parameter(hidden = true) token: JwtAuthentication,
         workspaceId: Long,
-    ): ResponseEntity<Unit>
+    ): ResponseEntity<WorkspaceUserDto>
 }

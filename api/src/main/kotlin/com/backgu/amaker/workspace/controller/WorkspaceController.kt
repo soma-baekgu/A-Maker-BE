@@ -2,6 +2,7 @@ package com.backgu.amaker.workspace.controller
 
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
@@ -63,12 +64,9 @@ class WorkspaceController(
             ),
         )
 
-    @PutMapping("/{workspaceId}/invite/activate")
+    @PutMapping("/{workspace-id}/invite/activate")
     override fun activateWorkspaceInvite(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @PathVariable workspaceId: Long,
-    ): ResponseEntity<Unit> {
-        workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId)
-        return ResponseEntity.noContent().build()
-    }
+        @PathVariable("workspace-id") workspaceId: Long,
+    ): ResponseEntity<WorkspaceUserDto> = ResponseEntity.ok().body(workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId))
 }
