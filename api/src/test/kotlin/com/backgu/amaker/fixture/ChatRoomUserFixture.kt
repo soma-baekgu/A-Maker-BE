@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ChatRoomUserFixture(
-    private val chatRoomUserRepository: ChatRoomUserRepository,
+    val chatRoomUserRepository: ChatRoomUserRepository,
 ) {
     fun createPersistedChatRoomUser(
         chatRoomId: Long,
@@ -21,4 +21,8 @@ class ChatRoomUserFixture(
                     ),
                 )
         }
+
+    fun deleteAll() {
+        chatRoomUserRepository.deleteAll()
+    }
 }

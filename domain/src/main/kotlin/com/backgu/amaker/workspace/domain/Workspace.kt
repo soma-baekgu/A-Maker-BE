@@ -10,7 +10,7 @@ class Workspace(
     var name: String,
     var thumbnail: String = "/images/default_thumbnail.png",
 ) : BaseTime() {
-    fun assignLeader(user: User): WorkspaceUser = WorkspaceUser(userId = user.id, workspaceId = id, workspaceRole = WorkspaceRole.LEADER)
+    fun assignLeader(user: User): WorkspaceUser = WorkspaceUser.makeWorkspaceLeader(workspace = this, user = user)
 
     fun createGroupChatRoom(): ChatRoom = ChatRoom(workspaceId = id, chatRoomType = ChatRoomType.GROUP)
 }

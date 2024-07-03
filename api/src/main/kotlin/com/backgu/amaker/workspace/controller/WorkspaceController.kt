@@ -2,6 +2,7 @@ package com.backgu.amaker.workspace.controller
 
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -61,4 +63,10 @@ class WorkspaceController(
                 workspaceFacadeService.getGroupChatRoom(workspaceId, token.id),
             ),
         )
+
+    @PutMapping("/{workspace-id}/invite/activate")
+    override fun activateWorkspaceInvite(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+    ): ResponseEntity<WorkspaceUserDto> = ResponseEntity.ok().body(workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId))
 }

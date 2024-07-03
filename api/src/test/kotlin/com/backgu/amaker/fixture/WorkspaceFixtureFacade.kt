@@ -36,4 +36,12 @@ class WorkspaceFixtureFacade(
             )
         }
     }
+
+    fun deleteAll() {
+        chatRoom.deleteAll()
+        chatRoomUser.deleteAll()
+        workspace.deleteAll()
+        workspaceUser.deleteAll()
+        user.deleteAll()
+    }
 }

@@ -39,4 +39,8 @@ class WorkspaceUserFixture(
 
         return workspaceUsers
     }
+
+    fun deleteAll() {
+        workspaceUserRepository.deleteAll()
+    }
 }

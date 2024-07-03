@@ -2,6 +2,7 @@ package com.backgu.amaker.workspace.controller
 
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
@@ -77,4 +78,19 @@ interface WorkspaceSwagger {
         workspaceId: Long,
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<ChatRoomResponse>
+
+    @Operation(summary = "워크스페이스 유저 활성화", description = "워크스페이스에 대해 초대된 사용자가 초대를 수락합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "204",
+                description = "워크스페이스 유저 활성화 성공",
+                content = [Content(schema = Schema(implementation = Unit::class))],
+            ),
+        ],
+    )
+    fun activateWorkspaceInvite(
+        @Parameter(hidden = true) token: JwtAuthentication,
+        workspaceId: Long,
+    ): ResponseEntity<WorkspaceUserDto>
 }

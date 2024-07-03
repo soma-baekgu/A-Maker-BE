@@ -28,4 +28,8 @@ class ChatRoomFixture(
         (1..count).map {
             createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = chatRoomType ?: ChatRoomType.GROUP)
         }
+
+    fun deleteAll() {
+        chatRoomRepository.deleteAll()
+    }
 }

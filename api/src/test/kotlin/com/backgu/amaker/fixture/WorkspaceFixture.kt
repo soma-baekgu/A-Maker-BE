@@ -40,4 +40,8 @@ class WorkspaceFixture(
         .save(
             createWorkspace(name = name, thumbnail = thumbnail),
         ).toDomain()
+
+    fun deleteAll() {
+        workspaceRepository.deleteAll()
+    }
 }
