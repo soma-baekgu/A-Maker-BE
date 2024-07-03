@@ -14,8 +14,6 @@ class ChatRoomTest {
         val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
         val user1 =
             User(id = "user1", name = "user1", email = "user1@gmail.com", picture = "/images/default_thumbnail.png")
-        val user2 =
-            User(id = "user2", name = "user2", email = "user2@gmail.com", picture = "/images/default_thumbnail.png")
 
         // when
         val chatRoomUser: ChatRoomUser = chatRoom.addUser(user = user1)

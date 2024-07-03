@@ -116,7 +116,7 @@ class WorkspaceFacadeServiceTest {
     fun activateWorkspaceUser() {
         // given
         val leaderId = "leader"
-        val leader: User = fixtures.user.createPersistedUser(leaderId)
+        fixtures.user.createPersistedUser(leaderId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스")
 
         val memberId = "member"
@@ -133,7 +133,7 @@ class WorkspaceFacadeServiceTest {
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(leaderId))
 
         // when
-        val result = workspaceFacadeService.activateWorkspaceUser(memberId, workspace.id)
+        workspaceFacadeService.activateWorkspaceUser(memberId, workspace.id)
         val workspaceUser: WorkspaceUser = workspaceUserService.getWorkspaceUser(workspace, member)
 
         // then
@@ -168,10 +168,10 @@ class WorkspaceFacadeServiceTest {
         // given
         workspaceFixtureFacade.deleteAll()
         val leaderId = "leader"
-        val leader: User = fixtures.user.createPersistedUser(leaderId)
+        fixtures.user.createPersistedUser(leaderId)
 
         val memberId = "member"
-        val member: User = fixtures.user.createPersistedUser(memberId)
+        fixtures.user.createPersistedUser(memberId)
 
         fixtures.workspaceUser.createPersistedWorkspaceUser(
             workspaceId = 0L,
