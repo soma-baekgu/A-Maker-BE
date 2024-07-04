@@ -38,13 +38,13 @@ class WebSocketConfigTest {
         // given
         val jwtToken = jwtComponent.create("test", "ROLE_USER")
         val headers =
-            WebSocketHttpHeaders().apply {
+            StompHeaders().apply {
                 add("Authorization", "Bearer $jwtToken")
             }
 
         // when
         val connectFuture: CompletableFuture<StompSession> =
-            stompClient.connectAsync("ws://localhost:$port/ws", headers, stompHandler)
+            stompClient.connectAsync("ws://localhost:$port/ws", WebSocketHttpHeaders(), headers, stompHandler)
         val session: StompSession = connectFuture.get(1, TimeUnit.SECONDS)
 
         // then
