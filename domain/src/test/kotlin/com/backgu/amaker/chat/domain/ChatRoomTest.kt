@@ -23,4 +23,21 @@ class ChatRoomTest {
         assertThat(chatRoomUser.userId).isEqualTo("user1")
         assertThat(chatRoomUser.chatRoomId).isEqualTo(chatRoom.id)
     }
+
+    @Test
+    @DisplayName("채팅방에 일반 채팅을 생성할 수 있다")
+    fun createGeneralChat() {
+        // given
+        val user =
+            User(id = "user1", name = "user1", email = "user1@gmail.com", picture = "/images/default_thumbnail.png")
+        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
+        val content = "안녕하세요"
+
+        // when
+        val chat: Chat = chatRoom.createGeneralChat(user = user, chatRoom = chatRoom, content = content)
+
+        // then
+        assertThat(chat.chatType).isEqualTo(ChatType.GENERAL)
+        assertThat(chat.content).isEqualTo(content)
+    }
 }
