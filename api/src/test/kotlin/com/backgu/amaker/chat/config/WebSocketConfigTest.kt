@@ -1,8 +1,10 @@
 package com.backgu.amaker.chat.config
 
+import com.backgu.amaker.security.jwt.component.JwtComponent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.lang.Nullable
@@ -12,6 +14,7 @@ import org.springframework.messaging.simp.stomp.StompHeaders
 import org.springframework.messaging.simp.stomp.StompSession
 import org.springframework.messaging.simp.stomp.StompSessionHandler
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter
+import org.springframework.web.socket.WebSocketHttpHeaders
 import org.springframework.web.socket.client.standard.StandardWebSocketClient
 import org.springframework.web.socket.messaging.WebSocketStompClient
 import java.util.concurrent.CompletableFuture
@@ -23,6 +26,9 @@ import kotlin.test.Test
 class WebSocketConfigTest {
     var stompClient: WebSocketStompClient = WebSocketStompClient(StandardWebSocketClient())
 
+    @Autowired
+    lateinit var jwtComponent: JwtComponent
+
     @LocalServerPort
     var port: Int = 0
 
@@ -30,10 +36,15 @@ class WebSocketConfigTest {
     @DisplayName("웹소켓 연결 테스트")
     fun testWebSocketConnection() {
         // given
+        val jwtToken = jwtComponent.create("test", "ROLE_USER")
+        val headers =
+            StompHeaders().apply {
+                add("Authorization", "Bearer $jwtToken")
+            }
 
         // when
         val connectFuture: CompletableFuture<StompSession> =
-            stompClient.connectAsync("ws://localhost:$port/ws", stompHandler)
+            stompClient.connectAsync("ws://localhost:$port/ws", WebSocketHttpHeaders(), headers, stompHandler)
         val session: StompSession = connectFuture.get(1, TimeUnit.SECONDS)
 
         // then
