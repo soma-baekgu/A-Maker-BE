@@ -2,10 +2,11 @@ package com.backgu.amaker.common.infra
 
 import com.backgu.amaker.common.dto.response.ApiError
 import com.backgu.amaker.common.dto.response.ApiResult
+import com.backgu.amaker.common.dto.response.ApiSuccess
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.common.service.ClockHolder
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,24 +17,24 @@ class ApiHandler(
 ) {
     fun <T> onSuccess(
         data: T,
-        status: HttpStatus = HttpStatus.OK,
+        code: StatusCode = StatusCode.SUCCESS,
     ): ApiResult<T> =
-        ApiResult(
+        ApiSuccess(
             timestamp = clockHolder.now(),
             path = request.requestURI,
-            status = status.value(),
+            status = code.code,
             data = data,
         )
 
     fun <T> onFailure(
-        error: T,
-        status: HttpStatus = HttpStatus.BAD_REQUEST,
+        statusCode: StatusCode,
+        data: T? = null,
     ): ApiError<T> =
-        ApiError<T>(
+        ApiError.of(
             timestamp = clockHolder.now(),
+            status = statusCode.code,
             path = request.requestURI,
-            status = status.value(),
-            data = error,
-            error = status.reasonPhrase,
+            message = statusCode.message,
+            data = data,
         )
 }

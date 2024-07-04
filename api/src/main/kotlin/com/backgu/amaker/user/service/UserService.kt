@@ -1,5 +1,7 @@
 package com.backgu.amaker.user.service
 
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.jpa.UserEntity
 import com.backgu.amaker.user.repository.UserRepository
@@ -21,17 +23,17 @@ class UserService(
         return savedUser.toDomain()
     }
 
-    // TODO exception handling
     fun getById(id: String): User =
         userRepository.findByIdOrNull(id)?.toDomain() ?: run {
+            // TODO 로깅 전략 세우기
             logger.error { "User not found : $id" }
-            throw IllegalArgumentException("User not found : $id")
+            throw BusinessException(StatusCode.USER_NOT_FOUND)
         }
 
-    fun getByEmail(email: String): User {
-        // TODO exception handling
-        return userRepository.findByEmail(email)?.toDomain() ?: throw IllegalArgumentException("User not found")
-    }
+    fun getByEmail(email: String): User =
+        userRepository.findByEmail(email)?.toDomain() ?: throw BusinessException(
+            StatusCode.USER_NOT_FOUND,
+        )
 
     @Transactional
     fun saveOrGetUser(user: User): User = userRepository.findByEmail(user.email)?.toDomain() ?: save(user)
