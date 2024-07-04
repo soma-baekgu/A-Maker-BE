@@ -8,6 +8,8 @@ import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.workspace.domain.Workspace
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,4 +34,8 @@ class ChatRoomService(
     fun findGroupChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
         chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspaceId, ChatRoomType.GROUP)?.toDomain()
             ?: throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
+
+    fun getById(chatRoomId: Long): ChatRoom =
+        chatRoomRepository.findByIdOrNull(chatRoomId)?.toDomain()
+            ?: throw EntityNotFoundException("ChatRoom not found $chatRoomId")
 }
