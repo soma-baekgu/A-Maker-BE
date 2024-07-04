@@ -9,4 +9,15 @@ class ChatRoom(
     val chatRoomType: ChatRoomType,
 ) : BaseTime() {
     fun addUser(user: User): ChatRoomUser = ChatRoomUser(userId = user.id, chatRoomId = id)
+
+    fun createGeneralChat(
+        user: User,
+        chatRoom: ChatRoom,
+        content: String,
+    ) = Chat(
+        userId = user.id,
+        chatRoomId = chatRoom.id,
+        content = content,
+        chatType = ChatType.GENERAL,
+    )
 }
