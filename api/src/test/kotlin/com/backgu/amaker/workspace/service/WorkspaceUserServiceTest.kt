@@ -1,6 +1,5 @@
 package com.backgu.amaker.workspace.service
 
-import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
@@ -24,16 +23,13 @@ class WorkspaceUserServiceTest {
     lateinit var fixtures: WorkspaceFixtureFacade
 
     @Test
-    @DisplayName("유저가 속한 워크스페이스의 그룹 채팅방 조회 성공")
-    fun getGroupChatRoomIn() {
+    @DisplayName("유저가 속한 워크스페이스의 그룹 조회 성공")
+    fun getWorkspaceIn() {
         // given
         val userId = "tester"
         val user = fixtures.user.createPersistedUser(userId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
-        val chatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
-        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
         // when & then
         assertThatCode {
@@ -42,8 +38,8 @@ class WorkspaceUserServiceTest {
     }
 
     @Test
-    @DisplayName("유저가 속하지 않는 워크스페이스의 그룹 채팅방 조회 실패")
-    fun failGetGroupChatRoomNotIn() {
+    @DisplayName("유저가 속하지 않는 워크스페이스의 그룹 조회 실패")
+    fun failGetWorkspaceNotIn() {
         // given
         val userId = "tester"
         val user: User = fixtures.user.createPersistedUser(userId)
@@ -52,9 +48,6 @@ class WorkspaceUserServiceTest {
         fixtures.user.createPersistedUser(diffUser)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = diffUser)
-        val chatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
-        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(diffUser))
 
         // when & then
         assertThatThrownBy { workspaceUserService.validUserInWorkspace(user, workspace) }

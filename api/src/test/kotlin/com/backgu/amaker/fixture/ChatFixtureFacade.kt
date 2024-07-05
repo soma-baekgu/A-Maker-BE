@@ -1,21 +1,27 @@
 package com.backgu.amaker.fixture
 
+import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceUser
 import org.springframework.stereotype.Component
 
 @Component
-class WorkspaceFixtureFacade(
+class ChatFixtureFacade(
     val chatRoom: ChatRoomFixture,
     val chatRoomUser: ChatRoomUserFixture,
     val workspace: WorkspaceFixture,
     val workspaceUser: WorkspaceUserFixture,
     val user: UserFixture,
 ) {
-    fun setUp() {
-        val leader: User = user.createPersistedUser(name = "김리더", email = "leader@amaker.com")
-        val workspace: Workspace = workspace.createPersistedWorkspace(name = "테스트 워크스페이스")
+    fun setUp(
+        userId: String = "test-user-id",
+        name: String = "김리더",
+        email: String = "leader@amaker.com",
+        workspaceName: String = "테스트 워크스페이스",
+    ): ChatRoom {
+        val leader: User = user.createPersistedUser(id = userId, name = name, email = email)
+        val workspace: Workspace = workspace.createPersistedWorkspace(name = workspaceName)
         val members: List<User> = user.createPersistedUsers(10)
 
         val workspaceUsers: List<WorkspaceUser> =
@@ -31,6 +37,8 @@ class WorkspaceFixtureFacade(
             chatRoomId = chatRoom.id,
             userIds = workspaceUsers.map { it.userId },
         )
+
+        return chatRoom
     }
 
     fun deleteAll() {

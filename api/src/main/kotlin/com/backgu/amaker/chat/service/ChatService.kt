@@ -1,13 +1,16 @@
 package com.backgu.amaker.chat.service
 
-import com.backgu.amaker.chat.repository.ChatRoomRepository
-import com.backgu.amaker.chat.repository.ChatRoomUserRepository
+import com.backgu.amaker.chat.domain.Chat
+import com.backgu.amaker.chat.jpa.ChatEntity
+import com.backgu.amaker.chat.repository.ChatRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class ChatService(
-    private val chatRoomRepository: ChatRoomRepository,
-    private val chatRoomUserRepository: ChatRoomUserRepository,
-)
+    private val chatRepository: ChatRepository,
+) {
+    @Transactional
+    fun save(chat: Chat): Chat = chatRepository.save(ChatEntity.of(chat)).toDomain()
+}
