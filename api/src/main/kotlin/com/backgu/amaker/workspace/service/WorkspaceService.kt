@@ -1,11 +1,12 @@
 package com.backgu.amaker.workspace.service
 
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.jpa.WorkspaceEntity
 import com.backgu.amaker.workspace.repository.WorkspaceRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +27,7 @@ class WorkspaceService(
     fun getById(id: Long): Workspace =
         workspaceRepository.findByIdOrNull(id)?.toDomain() ?: run {
             logger.error { "Workspace not found : $id" }
-            throw EntityNotFoundException("Workspace not found : $id")
+            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
         }
 
     fun getWorkspaceByIds(workspaceIds: List<Long>): List<Workspace> =
@@ -37,13 +38,13 @@ class WorkspaceService(
     fun getDefaultWorkspaceByUserId(user: User): Workspace =
         workspaceRepository.getDefaultWorkspaceByUserId(user.id)?.toDomain() ?: run {
             logger.error { "Default workspace not found : ${user.id}" }
-            throw EntityNotFoundException("Default workspace not found : ${user.id}")
+            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
         }
 
     fun getWorkspaceById(workspaceId: Long): Workspace =
-        // TODO : 공통 에러처리 추후에 해줘야함
+        // TODO : 로깅
         workspaceRepository.findByIdOrNull(workspaceId)?.toDomain() ?: run {
             logger.error { "Workspace not found : $workspaceId" }
-            throw EntityNotFoundException("Workspace not found : $workspaceId")
+            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
         }
 }

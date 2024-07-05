@@ -1,9 +1,10 @@
 package com.backgu.amaker.workspace.service
 
 import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
-import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -57,7 +58,9 @@ class WorkspaceUserServiceTest {
 
         // when & then
         assertThatThrownBy { workspaceUserService.validUserInWorkspace(user, workspace) }
-            .isInstanceOf(EntityNotFoundException::class.java)
-            .hasMessage("User ${user.id} is not in Workspace ${workspace.id}")
+            .isInstanceOf(BusinessException::class.java)
+            .hasMessage("워크스페이스에 접근할 수 없습니다.")
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
     }
 }

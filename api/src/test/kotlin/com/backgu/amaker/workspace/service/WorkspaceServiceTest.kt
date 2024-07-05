@@ -1,9 +1,10 @@
 package com.backgu.amaker.workspace.service
 
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
-import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
@@ -80,8 +81,10 @@ class WorkspaceServiceTest {
 
         // when & then
         assertThatThrownBy { workspaceService.getDefaultWorkspaceByUserId(user) }
-            .isInstanceOf(EntityNotFoundException::class.java)
-            .hasMessage("Default workspace not found : tester")
+            .isInstanceOf(BusinessException::class.java)
+            .hasMessage("워크스페이스를 찾을 수 없습니다.")
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_NOT_FOUND)
     }
 
     companion object {

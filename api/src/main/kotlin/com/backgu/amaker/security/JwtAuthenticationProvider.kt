@@ -20,8 +20,7 @@ class JwtAuthenticationProvider(
         )
 
     private fun processOAuthAuthentication(email: String): Authentication {
-        // TODO exception handling
-        val user: User = userService.getByEmail(email) ?: throw IllegalArgumentException("User not found")
+        val user: User = userService.getByEmail(email)
         val authenticated: JwtAuthenticationToken =
             JwtAuthenticationToken(
                 JwtAuthentication(user.id, user.name),

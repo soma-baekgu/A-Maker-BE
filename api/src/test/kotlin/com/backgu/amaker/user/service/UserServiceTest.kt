@@ -1,5 +1,7 @@
 package com.backgu.amaker.user.service
 
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.common.service.IdPublisher
 import com.backgu.amaker.fixture.UserFixture
 import com.backgu.amaker.user.domain.User
@@ -62,8 +64,10 @@ class UserServiceTest {
     fun getNoEmailUserTest() {
         // given & when & then
         assertThatThrownBy { userService.getByEmail("no@gmail.com") }
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("User not found")
+            .isInstanceOf(BusinessException::class.java)
+            .hasMessage("사용자를 찾을 수 없습니다.")
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.USER_NOT_FOUND)
     }
 
     @Test

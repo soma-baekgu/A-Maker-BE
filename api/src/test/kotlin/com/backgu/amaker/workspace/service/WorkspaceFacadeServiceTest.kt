@@ -2,13 +2,14 @@ package com.backgu.amaker.workspace.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.WorkspaceRole
 import com.backgu.amaker.workspace.domain.WorkspaceUser
 import com.backgu.amaker.workspace.domain.WorkspaceUserStatus
-import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -107,8 +108,10 @@ class WorkspaceFacadeServiceTest {
 
         // when & then
         assertThatThrownBy { workspaceFacadeService.getDefaultWorkspace(userId) }
-            .isInstanceOf(EntityNotFoundException::class.java)
-            .hasMessage("Default workspace not found : $userId")
+            .isInstanceOf(BusinessException::class.java)
+            .hasMessage("워크스페이스를 찾을 수 없습니다.")
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_NOT_FOUND)
     }
 
     @Test
@@ -181,7 +184,9 @@ class WorkspaceFacadeServiceTest {
 
         // when & then
         assertThatThrownBy { workspaceFacadeService.activateWorkspaceUser(memberId, 0L) }
-            .isInstanceOf(EntityNotFoundException::class.java)
-            .hasMessage("Workspace not found : 0")
+            .isInstanceOf(BusinessException::class.java)
+            .hasMessage("워크스페이스를 찾을 수 없습니다.")
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_NOT_FOUND)
     }
 }

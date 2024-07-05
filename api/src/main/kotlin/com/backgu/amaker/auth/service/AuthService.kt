@@ -5,8 +5,9 @@ import com.backgu.amaker.auth.dto.oauth.google.GoogleOAuth2AccessTokenDto
 import com.backgu.amaker.auth.dto.oauth.google.GoogleUserInfoDto
 import com.backgu.amaker.auth.infra.GoogleApiClient
 import com.backgu.amaker.auth.infra.GoogleOAuthClient
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
 
 @Service
 class AuthService(
@@ -22,11 +23,11 @@ class AuthService(
                 authConfig.grantType,
                 authConfig.clientSecret,
                 authConfig.clientId,
-            ) ?: throw IllegalArgumentException("Failed to get access token")
+            ) ?: throw BusinessException(StatusCode.OAUTH_SOCIAL_LOGIN_FAILED)
 
         val userInfo: GoogleUserInfoDto =
             googleApiClient.getUserInfo(accessTokenDto.getBearerToken())
-                ?: throw IllegalArgumentException("Failed to get user information")
+                ?: throw BusinessException(StatusCode.OAUTH_SOCIAL_LOGIN_FAILED)
 
         return userInfo
     }
