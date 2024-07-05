@@ -31,3 +31,15 @@ jwt:
 
 swagger:
   url: http://localhost:8080
+
+cors:
+  allowed-origins:
+    - "*"
+  allowed-headers:
+    - GET
+    - HEAD
+    - POST
+    - PUT
+    - DELETE
+    - PATCH
+    - OPTIONS
