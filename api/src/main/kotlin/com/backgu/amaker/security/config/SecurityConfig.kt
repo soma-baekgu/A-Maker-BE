@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.ExceptionTranslationFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +20,7 @@ class SecurityConfig(
     private val jwtAuthenticationTokenFilter: JwtAuthenticationTokenFilter,
     private val authAccessDeniedHandler: AuthAccessDeniedHandler,
     private val authEntryPoint: AuthEntryPoint,
+    private val corsConfig: CorsConfig,
 ) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -51,5 +54,17 @@ class SecurityConfig(
             }
 
         return http.build()
+    }
+
+    @Bean
+    fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowedOrigins = corsConfig.allowedOrigins
+        config.allowedMethods = corsConfig.allowedMethods
+        config.allowedHeaders = corsConfig.allowedHeaders
+        config.allowCredentials = true
+        source.registerCorsConfiguration("/**", config)
+        return source
     }
 }
