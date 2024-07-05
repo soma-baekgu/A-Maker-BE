@@ -1,11 +1,14 @@
 package com.backgu.amaker.chat.service
 
+import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
-import com.backgu.amaker.fixture.WorkspaceFixtureFacade
+import com.backgu.amaker.fixture.ChatFixtureFacade
 import com.backgu.amaker.user.domain.User
+import com.backgu.amaker.workspace.domain.Workspace
 import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -19,18 +22,29 @@ class ChatRoomUserServiceTest {
     @Autowired
     lateinit var chatRoomUserService: ChatRoomUserService
 
-    @Autowired
-    lateinit var fixtures: WorkspaceFixtureFacade
+    companion object {
+        private lateinit var fixtures: ChatFixtureFacade
+        private const val TEST_USER_ID: String = "default-user"
+
+        @JvmStatic
+        @BeforeAll
+        fun setUp(
+            @Autowired fixtures: ChatFixtureFacade,
+        ) {
+            fixtures.setUp()
+            this.fixtures = fixtures
+        }
+    }
 
     @Test
     @DisplayName("유저가 속한 채팅방 조회 성공")
     fun getChatRoomIn() {
         // given
-        val userId = "tester"
-        val user = fixtures.user.createPersistedUser(userId)
-        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        val userId: String = TEST_USER_ID
+        val user: User = fixtures.user.createPersistedUser(userId)
+        val workspace: Workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
-        val chatRoom =
+        val chatRoom: ChatRoom =
             fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
@@ -44,16 +58,11 @@ class ChatRoomUserServiceTest {
     @DisplayName("유저가 속하지 않는는 채팅방 조회 실패")
     fun failGetChatRoomNoIn() {
         // given
-        val userId = "tester"
+        val userId: String = TEST_USER_ID
         val user: User = fixtures.user.createPersistedUser(userId)
 
-        val diffUser = "diff tester"
-        fixtures.user.createPersistedUser(diffUser)
-        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
-        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = diffUser)
-        val chatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
-        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(diffUser))
+        val diffUserId = "diff tester"
+        val chatRoom = fixtures.setUp(userId = diffUserId)
 
         // when & then
         assertThatThrownBy { chatRoomUserService.validateUserInChatRoom(user, chatRoom) }

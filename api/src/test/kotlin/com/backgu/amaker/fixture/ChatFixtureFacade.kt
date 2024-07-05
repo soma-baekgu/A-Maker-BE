@@ -14,9 +14,14 @@ class ChatFixtureFacade(
     val workspaceUser: WorkspaceUserFixture,
     val user: UserFixture,
 ) {
-    fun setUp() {
-        val leader: User = user.createPersistedUser(name = "김리더", email = "leader@amaker.com")
-        val workspace: Workspace = workspace.createPersistedWorkspace(name = "테스트 워크스페이스")
+    fun setUp(
+        userId: String = "test-user-id",
+        name: String = "김리더",
+        email: String = "leader@amaker.com",
+        workspaceName: String = "테스트 워크스페이스",
+    ): ChatRoom {
+        val leader: User = user.createPersistedUser(id = userId, name = name, email = email)
+        val workspace: Workspace = workspace.createPersistedWorkspace(name = workspaceName)
         val members: List<User> = user.createPersistedUsers(10)
 
         val workspaceUsers: List<WorkspaceUser> =
@@ -26,15 +31,14 @@ class ChatFixtureFacade(
                 memberIds = members.map { it.id },
             )
 
-        val chatRooms: List<ChatRoom> =
-            chatRoom.testChatRoomSetUp(count = 10, workspace = workspace)
+        val chatRoom = chatRoom.testGroupChatRoomSetUp(workspace = workspace)
 
-        chatRooms.forEach { chatRoom ->
-            chatRoomUser.createPersistedChatRoomUser(
-                chatRoomId = chatRoom.id,
-                userIds = workspaceUsers.map { it.userId },
-            )
-        }
+        chatRoomUser.createPersistedChatRoomUser(
+            chatRoomId = chatRoom.id,
+            userIds = workspaceUsers.map { it.userId },
+        )
+
+        return chatRoom
     }
 
     fun deleteAll() {
