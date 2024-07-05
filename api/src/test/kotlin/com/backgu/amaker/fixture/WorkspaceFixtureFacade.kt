@@ -1,6 +1,5 @@
 package com.backgu.amaker.fixture
 
-import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceUser
@@ -26,15 +25,12 @@ class WorkspaceFixtureFacade(
                 memberIds = members.map { it.id },
             )
 
-        val chatRooms: List<ChatRoom> =
-            chatRoom.testChatRoomSetUp(count = 10, workspace = workspace)
+        val chatRoom = chatRoom.testGroupChatRoomSetUp(workspace = workspace)
 
-        chatRooms.forEach { chatRoom ->
-            chatRoomUser.createPersistedChatRoomUser(
-                chatRoomId = chatRoom.id,
-                userIds = workspaceUsers.map { it.userId },
-            )
-        }
+        chatRoomUser.createPersistedChatRoomUser(
+            chatRoomId = chatRoom.id,
+            userIds = workspaceUsers.map { it.userId },
+        )
     }
 
     fun deleteAll() {

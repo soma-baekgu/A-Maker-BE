@@ -20,14 +20,8 @@ class ChatRoomFixture(
                 ChatRoomEntity(workspaceId = workspaceId, chatRoomType = chatRoomType),
             ).toDomain()
 
-    fun testChatRoomSetUp(
-        count: Int,
-        workspace: Workspace,
-        chatRoomType: ChatRoomType? = null,
-    ): List<ChatRoom> =
-        (1..count).map {
-            createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = chatRoomType ?: ChatRoomType.GROUP)
-        }
+    fun testGroupChatRoomSetUp(workspace: Workspace): ChatRoom =
+        createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
 
     fun deleteAll() {
         chatRoomRepository.deleteAll()
