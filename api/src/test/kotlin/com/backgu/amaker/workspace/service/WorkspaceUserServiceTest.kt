@@ -1,6 +1,5 @@
 package com.backgu.amaker.workspace.service
 
-import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.WorkspaceFixtureFacade
