@@ -11,6 +11,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class GlobalExceptionHandler(
     private val apiHandler: ApiHandler,
 ) {
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(e: RuntimeException): ResponseEntity<ApiError<Unit>> {
+        e.printStackTrace()
+        return ResponseEntity
+            .internalServerError()
+            .body(apiHandler.onFailure(StatusCode.INTERNAL_SERVER_ERROR))
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ApiError<Map<String, String>>> {
         val errorMap: Map<String, String>? =
