@@ -57,6 +57,25 @@ class WorkspaceFacadeServiceTest {
     }
 
     @Test
+    @DisplayName("워크스페이스 리더가 초대자로 들어가 있는 테스트")
+    fun createWorkspaceWithDuplicatedInvitees() {
+        // given
+        val userId = "tester"
+        val userEmail = "tester@gmail.com"
+        fixtures.user.createPersistedUser(id = userId, name = "tester", email = userEmail, picture = "http://server/picture-tester")
+
+        val inviteeEmail = "abc@gmail.com"
+        fixtures.user.createPersistedUser(name = "abc", email = inviteeEmail, picture = "http://server/picture-abc")
+
+        val request = createWorkspaceRequest("워크스페이스 생성", setOf(userEmail, inviteeEmail))
+
+        // when & then
+        assertThatThrownBy { workspaceFacadeService.createWorkspace(userId, request) }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("User $userId is already in the workspace")
+    }
+
+    @Test
     @DisplayName("유저의 워크스페이스들 조회")
     fun findWorkspaces() {
         // given

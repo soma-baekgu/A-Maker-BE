@@ -4,6 +4,8 @@ import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.dto.ChatRoomDto
 import com.backgu.amaker.chat.service.ChatRoomService
 import com.backgu.amaker.chat.service.ChatRoomUserService
+import com.backgu.amaker.mail.event.EmailEvent
+import com.backgu.amaker.mail.service.EmailService
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
 import com.backgu.amaker.workspace.domain.Workspace
@@ -11,8 +13,16 @@ import com.backgu.amaker.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.workspace.dto.WorkspaceDto
 import com.backgu.amaker.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.workspace.dto.WorkspacesDto
+import com.backgu.amaker.workspace.event.WorkspaceInvitedEvent
+import com.backgu.amaker.workspace.event.WorkspaceJoinedEvent
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.event.TransactionalEventListener
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 @Transactional(readOnly = true)
@@ -22,6 +32,8 @@ class WorkspaceFacadeService(
     private val workspaceUserService: WorkspaceUserService,
     private val chatRoomService: ChatRoomService,
     private val chatRoomUserService: ChatRoomUserService,
+    private val emailService: EmailService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun createWorkspace(
@@ -31,6 +43,14 @@ class WorkspaceFacadeService(
         val leader: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.save(leader.createWorkspace(workspaceCreateDto.name))
         workspaceUserService.save(workspace.assignLeader(leader))
+        eventPublisher.publishEvent(WorkspaceJoinedEvent(leader, workspace))
+
+        val invitees = workspaceCreateDto.inviteesEmails.map { userService.getByEmail(it) }
+        invitees.forEach {
+            leader.isNonInvitee(it) || throw IllegalArgumentException("User ${it.id} is already in the workspace")
+            workspaceUserService.save(workspace.inviteWorkspace(it))
+            eventPublisher.publishEvent(WorkspaceInvitedEvent(it, workspace))
+        }
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createGroupChatRoom())
         chatRoomUserService.save(chatRoom.addUser(leader))
@@ -76,6 +96,7 @@ class WorkspaceFacadeService(
         val workspace = workspaceService.getById(workspaceId)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        eventPublisher.publishEvent(WorkspaceJoinedEvent(user, workspace))
         workspaceUser.activate()
         workspaceUserService.save(workspaceUser)
 
@@ -84,5 +105,12 @@ class WorkspaceFacadeService(
             .addUser(user)
 
         return WorkspaceUserDto.of(workspaceUser)
+    }
+
+    @Async
+    @TransactionalEventListener
+    fun handleWorkspaceCreatedEvent(event: EmailEvent) {
+        logger.info { "email send to ${event.email}" }
+        emailService.sendEmailEvent(event)
     }
 }

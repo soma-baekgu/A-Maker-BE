@@ -8,7 +8,7 @@ class WorkspaceUser(
     val userId: String,
     val workspaceId: Long,
     var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
-    var status: WorkspaceUserStatus,
+    var status: WorkspaceUserStatus = WorkspaceUserStatus.PENDING,
 ) : BaseTime() {
     fun activate() {
         this.status = WorkspaceUserStatus.ACTIVE
