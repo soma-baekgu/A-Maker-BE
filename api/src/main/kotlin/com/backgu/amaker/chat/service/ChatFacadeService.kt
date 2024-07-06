@@ -19,9 +19,10 @@ class ChatFacadeService(
     @Transactional
     fun createGeneralChat(
         generalChatCreateDto: GeneralChatCreateDto,
+        userId: String,
         chatRoomId: Long,
     ): ChatDto {
-        val user: User = userService.getById(generalChatCreateDto.userId)
+        val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
 
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
