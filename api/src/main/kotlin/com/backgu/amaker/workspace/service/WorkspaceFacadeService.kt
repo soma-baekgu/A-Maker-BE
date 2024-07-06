@@ -44,7 +44,7 @@ class WorkspaceFacadeService(
 
         val invitees = workspaceCreateDto.inviteesEmails.map { userService.getByEmail(it) }
         invitees.forEach {
-            leader.isNonInvitee(it) || throw BusinessException(StatusCode.INVALID_WORKSPACE_CREATE)
+            if (!leader.isNonInvitee(it)) throw BusinessException(StatusCode.INVALID_WORKSPACE_CREATE)
             workspaceUserService.save(workspace.inviteWorkspace(it))
             eventPublisher.publishEvent(WorkspaceInvitedEvent(it, workspace))
         }
