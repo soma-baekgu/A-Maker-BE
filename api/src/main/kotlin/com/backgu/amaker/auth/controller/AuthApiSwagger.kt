@@ -31,10 +31,5 @@ interface AuthApiSwagger {
             ),
         ],
     )
-    fun login(
-        authorizationCode: String,
-        scope: String,
-        authUser: String,
-        prompt: String,
-    ): ResponseEntity<ApiResult<JwtTokenResponse>>
+    fun login(authorizationCode: String): ResponseEntity<ApiResult<JwtTokenResponse>>
 }
