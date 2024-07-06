@@ -25,6 +25,9 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .cors {
+                it.configurationSource(corsConfigurationSource())
+            }
             .csrf {
                 it.disable()
             }.sessionManagement {
