@@ -35,7 +35,7 @@ oauth:
     base-url: "https://accounts.google.com/o/oauth2/auth"
     oauth-url: "https://oauth2.googleapis.com"
     api-url: "https://www.googleapis.com"
-    client-name: Googled
+    client-name: Google
     scope: email,profile
 
 
