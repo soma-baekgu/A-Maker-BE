@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("User 테스트")
 class UserTest {
     @Test
+    @DisplayName("워크스페이스 생성 테스트")
     fun createWorkspace() {
         // given
         val user =
@@ -20,4 +21,19 @@ class UserTest {
         assertThat(workspace).isNotNull
         assertThat(workspace.name).isEqualTo("workspace1")
     }
+
+    @Test
+    @DisplayName("초대받은 사용자가 아닌지 확인")
+    fun isNonInvitee() {
+        // given
+        val leader = User(id = "me", name = "me", email = "me@gmail.com", picture = "/images/default_thumbnail.png")
+        val invitee = User(id = "invitee", name = "invitee", email = "invitee@gmail.com", picture = "/images/default_thumbnail.png")
+
+        // when
+        val result = leader.isNonInvitee(invitee)
+
+        // then
+        assertThat(result).isTrue
+    }
+
 }

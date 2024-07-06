@@ -14,4 +14,6 @@ class User(
         val workspace = Workspace(name = name)
         return workspace
     }
+
+    fun isNonInvitee(invitee: User) = email != invitee.email
 }
