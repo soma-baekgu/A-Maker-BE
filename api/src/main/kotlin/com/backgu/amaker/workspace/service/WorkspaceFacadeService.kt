@@ -6,8 +6,6 @@ import com.backgu.amaker.chat.service.ChatRoomService
 import com.backgu.amaker.chat.service.ChatRoomUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
-import com.backgu.amaker.mail.event.EmailEvent
-import com.backgu.amaker.mail.service.EmailService
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
 import com.backgu.amaker.workspace.domain.Workspace
@@ -19,10 +17,8 @@ import com.backgu.amaker.workspace.event.WorkspaceInvitedEvent
 import com.backgu.amaker.workspace.event.WorkspaceJoinedEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.event.TransactionalEventListener
 
 private val logger = KotlinLogging.logger {}
 
@@ -34,7 +30,6 @@ class WorkspaceFacadeService(
     private val workspaceUserService: WorkspaceUserService,
     private val chatRoomService: ChatRoomService,
     private val chatRoomUserService: ChatRoomUserService,
-    private val emailService: EmailService,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
@@ -107,12 +102,5 @@ class WorkspaceFacadeService(
             .addUser(user)
 
         return WorkspaceUserDto.of(workspaceUser)
-    }
-
-    @Async
-    @TransactionalEventListener
-    fun handleWorkspaceCreatedEvent(event: EmailEvent) {
-        logger.info { "email send to ${event.email}" }
-        emailService.sendEmailEvent(event)
     }
 }
