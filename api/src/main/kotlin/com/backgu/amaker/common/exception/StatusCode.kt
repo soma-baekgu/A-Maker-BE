@@ -21,6 +21,7 @@ enum class StatusCode(
 
     // workspace
     WORKSPACE_NOT_FOUND("4000", "워크스페이스를 찾을 수 없습니다."),
+    INVALID_WORKSPACE_CREATE("4000", "잘못된 워크스페이스 생성 요청입니다."),
 
     // workspaceUser
     WORKSPACE_UNREACHABLE("4000", "워크스페이스에 접근할 수 없습니다."),

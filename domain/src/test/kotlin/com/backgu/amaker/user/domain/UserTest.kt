@@ -27,7 +27,13 @@ class UserTest {
     fun isNonInvitee() {
         // given
         val leader = User(id = "me", name = "me", email = "me@gmail.com", picture = "/images/default_thumbnail.png")
-        val invitee = User(id = "invitee", name = "invitee", email = "invitee@gmail.com", picture = "/images/default_thumbnail.png")
+        val invitee =
+            User(
+                id = "invitee",
+                name = "invitee",
+                email = "invitee@gmail.com",
+                picture = "/images/default_thumbnail.png",
+            )
 
         // when
         val result = leader.isNonInvitee(invitee)
@@ -35,5 +41,4 @@ class UserTest {
         // then
         assertThat(result).isTrue
     }
-
 }

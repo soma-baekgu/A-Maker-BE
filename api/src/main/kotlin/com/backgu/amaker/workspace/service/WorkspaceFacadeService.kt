@@ -4,6 +4,8 @@ import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.dto.ChatRoomDto
 import com.backgu.amaker.chat.service.ChatRoomService
 import com.backgu.amaker.chat.service.ChatRoomUserService
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.mail.event.EmailEvent
 import com.backgu.amaker.mail.service.EmailService
 import com.backgu.amaker.user.domain.User
@@ -47,7 +49,7 @@ class WorkspaceFacadeService(
 
         val invitees = workspaceCreateDto.inviteesEmails.map { userService.getByEmail(it) }
         invitees.forEach {
-            leader.isNonInvitee(it) || throw IllegalArgumentException("User ${it.id} is already in the workspace")
+            leader.isNonInvitee(it) || throw BusinessException(StatusCode.INVALID_WORKSPACE_CREATE)
             workspaceUserService.save(workspace.inviteWorkspace(it))
             eventPublisher.publishEvent(WorkspaceInvitedEvent(it, workspace))
         }

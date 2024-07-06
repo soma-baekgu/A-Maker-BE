@@ -71,8 +71,9 @@ class WorkspaceFacadeServiceTest {
 
         // when & then
         assertThatThrownBy { workspaceFacadeService.createWorkspace(userId, request) }
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("User $userId is already in the workspace")
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.INVALID_WORKSPACE_CREATE)
     }
 
     @Test
