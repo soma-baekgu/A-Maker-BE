@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>워크스페이스 초대</title>
+</head>
+<body>
+  <h1>워크스페이스에 초대되었습니다.</h1>
+  <p th:text="${name} + '님은 ' + ${workspaceName} + '에 초대되었습니다.'">이승환님은 조별과제1 워크스페이스에 초대되었습니다.</p>
+  <a th:href="@{'https://a-maker.com/invite?id=' + ${workspaceId}}">초대 수락하시겠습니까?</a>
+</body>
+</html>

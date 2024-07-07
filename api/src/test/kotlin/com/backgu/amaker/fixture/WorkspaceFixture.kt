@@ -22,10 +22,13 @@ class WorkspaceFixture(
             thumbnail = thumbnail,
         )
 
-        fun createWorkspaceRequest(name: String = "default-test") =
-            WorkspaceCreateDto(
-                name = name,
-            )
+        fun createWorkspaceRequest(
+            name: String = "default-test",
+            inviteesEmails: Set<String> = emptySet(),
+        ) = WorkspaceCreateDto(
+            name = name,
+            inviteesEmails = inviteesEmails,
+        )
 
         private fun nameBuilder(id: Any): String = "name-$id"
 
