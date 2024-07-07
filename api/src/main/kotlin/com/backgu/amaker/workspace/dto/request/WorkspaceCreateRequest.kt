@@ -10,11 +10,11 @@ data class WorkspaceCreateRequest(
     @Schema(description = "워크스페이스 이름", example = "백구팀 워크스페이스")
     val name: String,
     @field:ValidEmailList(message = "이메일을 확인해주세요.")
-    val inviteesEmails: Set<String>? = null,
+    val inviteesEmails: Set<String> = emptySet(),
 ) {
     fun toDto() =
         WorkspaceCreateDto(
             name = name,
-            inviteesEmails = inviteesEmails ?: emptySet(),
+            inviteesEmails = inviteesEmails,
         )
 }
