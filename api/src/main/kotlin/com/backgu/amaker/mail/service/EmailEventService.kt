@@ -1,0 +1,14 @@
+package com.backgu.amaker.mail.service
+
+import com.backgu.amaker.mail.event.EmailEvent
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.stereotype.Service
+
+@Service
+class EmailEventService(
+    private val eventPublisher: ApplicationEventPublisher,
+) {
+    fun publishEmailEvent(emailEvent: EmailEvent) {
+        eventPublisher.publishEvent(emailEvent)
+    }
+}

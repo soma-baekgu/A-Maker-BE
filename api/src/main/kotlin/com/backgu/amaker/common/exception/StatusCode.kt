@@ -7,6 +7,9 @@ enum class StatusCode(
     // OK
     SUCCESS("2000", "성공"),
 
+    // INTERNAL_SERVER_ERROR
+    INTERNAL_SERVER_ERROR("5000", "죄송합니다. 다음에 다시 시도해주세요."),
+
     // general
     INVALID_INPUT_VALUE("4000", "잘못된 입력입니다."),
 
@@ -21,6 +24,7 @@ enum class StatusCode(
 
     // workspace
     WORKSPACE_NOT_FOUND("4000", "워크스페이스를 찾을 수 없습니다."),
+    INVALID_WORKSPACE_CREATE("4000", "잘못된 워크스페이스 생성 요청입니다."),
 
     // workspaceUser
     WORKSPACE_UNREACHABLE("4000", "워크스페이스에 접근할 수 없습니다."),
