@@ -40,3 +40,5 @@ out/
 .kotlin
 
 .Ds_Store
+
+docker-compose.yaml
