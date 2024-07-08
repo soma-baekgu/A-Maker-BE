@@ -63,5 +63,5 @@ jobs:
           script: |
             docker-compose -f $COMPOSE down
             docker pull ${{ secrets.DOCKER_ID }}/backgu:dev
-            docker-compose -f $COMPOSE up -d
+             docker-compose -f $COMPOSE up -d
 

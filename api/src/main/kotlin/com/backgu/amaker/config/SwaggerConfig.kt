@@ -16,6 +16,7 @@ class SwaggerConfig {
     @Bean
     fun customOpenAPI(
         @Value("\${swagger.url}") url: String,
+        @Value("\${swagger.locate}") locate: String,
     ): OpenAPI {
         val info =
             Info()
@@ -23,7 +24,7 @@ class SwaggerConfig {
                 .description("Api Documentation")
 
         return OpenAPI()
-            .addServersItem(Server().url(url).description("Local Server"))
+            .addServersItem(Server().url(url).description("$locate Server"))
             .addSecurityItem(SecurityRequirement().addList("bearerAuth"))
             .components(
                 Components().addSecuritySchemes(
