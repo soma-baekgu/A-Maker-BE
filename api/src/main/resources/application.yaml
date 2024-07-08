@@ -46,6 +46,7 @@ jwt:
 
 swagger:
   url: ${SWAGGER_URL}
+  locate: ${SWAGGER_LOCATE}
 
 cors:
   allowed-origins:

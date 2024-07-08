@@ -1,0 +1,39 @@
+services:
+  database:
+    container_name: backgu_dev_db
+    image: mysql:8.0.22
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: amaker
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Seoul'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+    networks:
+      - backgu_dev_net
+
+  application:
+    container_name: backgu
+    image: gnivy303/backgu:dev
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - database
+    networks:
+      - backgu_dev_net
+
+networks:
+  backgu_dev_net: {}
