@@ -1,8 +1,10 @@
 package com.backgu.amaker.chat.controller
 
+import com.backgu.amaker.chat.annotation.ChattingLoginUser
 import com.backgu.amaker.chat.dto.request.GeneralChatCreateRequest
 import com.backgu.amaker.chat.dto.response.ChatResponse
 import com.backgu.amaker.chat.service.ChatFacadeService
+import com.backgu.amaker.security.JwtAuthentication
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -18,5 +20,6 @@ class ChatController(
     fun sendGeneralChat(
         @Payload generalChatCreateRequest: GeneralChatCreateRequest,
         @DestinationVariable("chat-rooms-id") chatRoomId: Long,
-    ): ChatResponse = ChatResponse.of(chatFacadeService.createGeneralChat(generalChatCreateRequest.toDto(), chatRoomId))
+        @ChattingLoginUser token: JwtAuthentication,
+    ): ChatResponse = ChatResponse.of(chatFacadeService.createGeneralChat(generalChatCreateRequest.toDto(), token.id, chatRoomId))
 }

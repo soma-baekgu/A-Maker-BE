@@ -54,7 +54,7 @@ class ChatControllerTest {
         val subscribeToChatRoom: CompletableFuture<ChatResponse> =
             fixtures.subscribeToChatRoom(stompSession, chatRoom.id)
         val content = "Hello World"
-        val generalChatCreateRequest = GeneralChatCreateRequest(userId = DEFAULT_USER_ID, content = content)
+        val generalChatCreateRequest = GeneralChatCreateRequest(content = content)
 
         // when
         fixtures.sendMessage(stompSession, "/pub/chat-rooms/${chatRoom.id}/general", generalChatCreateRequest)

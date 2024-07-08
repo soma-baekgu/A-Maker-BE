@@ -27,8 +27,7 @@ class SecurityConfig(
         http
             .cors {
                 it.configurationSource(corsConfigurationSource())
-            }
-            .csrf {
+            }.csrf {
                 it.disable()
             }.sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -2,6 +2,7 @@ package com.backgu.amaker.chat.config
 
 import com.backgu.amaker.chat.interceptor.JwtChannelInterceptor
 import org.springframework.context.annotation.Configuration
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver
 import org.springframework.messaging.simp.config.ChannelRegistration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
@@ -30,5 +31,9 @@ class WebSocketConfig(
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {
         registration.interceptors(jwtChannelInterceptor)
+    }
+
+    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
+        argumentResolvers.add(ChattingUserIdArgumentResolver())
     }
 }

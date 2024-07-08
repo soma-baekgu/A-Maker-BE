@@ -44,13 +44,16 @@ class ChatFacadeServiceTest {
 
         val generalChatCreateDto =
             GeneralChatCreateDto(
-                userId = DEFAULT_USER_ID,
                 content = "content",
             )
 
         // when
         val chatDto: ChatDto =
-            chatFacadeService.createGeneralChat(generalChatCreateDto = generalChatCreateDto, chatRoomId = chatRoom.id)
+            chatFacadeService.createGeneralChat(
+                generalChatCreateDto = generalChatCreateDto,
+                chatRoomId = chatRoom.id,
+                userId = DEFAULT_USER_ID,
+            )
 
         // then
         assertThat(chatDto.userId).isEqualTo(DEFAULT_USER_ID)
