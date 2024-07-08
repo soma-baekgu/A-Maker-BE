@@ -1,7 +1,6 @@
 package com.backgu.amaker.chat.controller
 
 import com.backgu.amaker.chat.annotation.ChattingLoginUser
-import com.backgu.amaker.chat.dto.ChatDto
 import com.backgu.amaker.chat.dto.request.GeneralChatCreateRequest
 import com.backgu.amaker.chat.dto.response.ChatResponse
 import com.backgu.amaker.chat.service.ChatFacadeService
@@ -22,5 +21,5 @@ class ChatController(
         @Payload generalChatCreateRequest: GeneralChatCreateRequest,
         @DestinationVariable("chat-rooms-id") chatRoomId: Long,
         @ChattingLoginUser token: JwtAuthentication,
-    ): ChatResponse = ChatResponse.of(chatFacadeService.createGeneralChat(generalChatCreateRequest.toDto(), chatRoomId))
+    ): ChatResponse = ChatResponse.of(chatFacadeService.createGeneralChat(generalChatCreateRequest.toDto(), token.id, chatRoomId))
 }
