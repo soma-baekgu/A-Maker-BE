@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class ChatFixtureFacade(
     val chatRoom: ChatRoomFixture,
+    val chat: ChatFixture,
     val chatRoomUser: ChatRoomUserFixture,
     val workspace: WorkspaceFixture,
     val workspaceUser: WorkspaceUserFixture,
@@ -38,6 +39,12 @@ class ChatFixtureFacade(
             userIds = workspaceUsers.map { it.userId },
         )
 
+        chat.createPersistedChats(
+            chatRoomId = chatRoom.id,
+            userId = leader.id,
+            count = 100,
+        )
+
         return chatRoom
     }
 
@@ -47,5 +54,6 @@ class ChatFixtureFacade(
         workspace.deleteAll()
         workspaceUser.deleteAll()
         user.deleteAll()
+        chat.deleteAll()
     }
 }
