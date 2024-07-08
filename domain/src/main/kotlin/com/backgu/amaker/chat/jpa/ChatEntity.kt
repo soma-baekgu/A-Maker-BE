@@ -29,6 +29,7 @@ class ChatEntity(
 ) : BaseTimeEntity() {
     fun toDomain(): Chat =
         Chat(
+            id = id,
             chatRoomId = chatRoomId,
             userId = userId,
             content = content,
