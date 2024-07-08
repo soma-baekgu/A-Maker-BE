@@ -49,7 +49,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         env:
           APP: "backgu-dev"
-          COMPOSE: "/home/ec2-user/compose/docker-compose.yaml"
+          COMPOSE: "/home/ec2-user/compose/docker-compose-dev.yaml"
         with:
           host: ${{secrets.EC2_DEV_HOST}}
           username: ec2-user
