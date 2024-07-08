@@ -55,8 +55,7 @@ class JwtChannelInterceptor(
                             authorities,
                         )
                     SecurityContextHolder.getContext().authentication = authentication
-                    val accessor = StompHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java)
-                    accessor?.user = authentication
+                    headerAccessor.user = authentication
                 } else {
                     throw InsufficientAuthenticationException("Invalid id or authorities are empty.")
                 }
