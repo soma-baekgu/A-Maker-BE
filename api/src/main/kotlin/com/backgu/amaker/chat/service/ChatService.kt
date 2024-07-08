@@ -13,4 +13,14 @@ class ChatService(
 ) {
     @Transactional
     fun save(chat: Chat): Chat = chatRepository.save(ChatEntity.of(chat)).toDomain()
+
+    fun getChatList(
+        chatRoomId: Long,
+        cursor: Long,
+        size: Int,
+    ): List<Chat> =
+        chatRepository
+            .findTopByChatRoomIdLittleThanCursorLimitCount(chatRoomId, cursor, size)
+            .asReversed()
+            .map { it.toDomain() }
 }

@@ -1,7 +1,10 @@
 package com.backgu.amaker.chat.service
 
+import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.dto.ChatDto
+import com.backgu.amaker.chat.dto.ChatListDto
+import com.backgu.amaker.chat.dto.ChatQuery
 import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
@@ -36,5 +39,17 @@ class ChatFacadeService(
                 ),
             ),
         )
+    }
+
+    fun getPreviousChat(
+        userId: String,
+        chatQuery: ChatQuery,
+    ): ChatListDto {
+        val user: User = userService.getById(userId)
+        val chatRoom: ChatRoom = chatRoomService.getById(chatQuery.chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        val chatList: List<Chat> = chatService.getChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+        return ChatListDto.of(chatQuery, chatList)
     }
 }
