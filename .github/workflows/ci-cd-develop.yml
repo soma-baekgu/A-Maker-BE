@@ -42,8 +42,8 @@ jobs:
       - name: Docker build & Push
         run: |
           docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_ID }}/backgu-dev .
-          docker push ${{ secrets.DOCKER_ID }}/backgu-dev
+          docker build -t ${{ secrets.DOCKER_ID }}/backgu:dev .
+          docker push ${{ secrets.DOCKER_ID }}/backgu:dev
 
       - name: Deploy Images with Docker compose
         uses: appleboy/ssh-action@v1.0.0
@@ -59,6 +59,6 @@ jobs:
           script_stop: true
           script: |
             sudo docker-compose -f $COMPOSE down
-            sudo docker pull ${{ secrets.DOCKER_ID }}/backgu-dev
+            sudo docker pull ${{ secrets.DOCKER_ID }}/backgu:dev
             sudo docker-compose -f $COMPOSE up -d
 
