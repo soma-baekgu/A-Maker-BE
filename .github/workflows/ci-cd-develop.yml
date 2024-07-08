@@ -61,7 +61,7 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            sudo docker-compose -f $COMPOSE down
-            sudo docker pull ${{ secrets.DOCKER_ID }}/backgu:dev
-            sudo docker-compose -f $COMPOSE up -d
+            docker-compose -f $COMPOSE down
+            docker pull ${{ secrets.DOCKER_ID }}/backgu:dev
+            docker-compose -f $COMPOSE up -d
 
