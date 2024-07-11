@@ -14,7 +14,7 @@ class ChatService(
     @Transactional
     fun save(chat: Chat): Chat = chatRepository.save(ChatEntity.of(chat)).toDomain()
 
-    fun getChatList(
+    fun findChatList(
         chatRoomId: Long,
         cursor: Long,
         size: Int,

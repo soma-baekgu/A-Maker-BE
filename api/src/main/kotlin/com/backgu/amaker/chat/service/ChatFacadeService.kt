@@ -49,7 +49,7 @@ class ChatFacadeService(
         val chatRoom: ChatRoom = chatRoomService.getById(chatQuery.chatRoomId)
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
 
-        val chatList: List<Chat> = chatService.getChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+        val chatList: List<Chat> = chatService.findChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         return ChatListDto.of(chatQuery, chatList)
     }
 }
