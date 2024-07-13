@@ -36,9 +36,8 @@ class StompFixtureFacade(
     fun setup(
         userId: String = "test-user-id",
         name: String = "김리더",
-        email: String = "leader@amaker.com",
         workspaceName: String = "테스트 워크스페이스",
-    ): ChatRoom = chatFixtureFacade.setUp(userId, name, email, workspaceName)
+    ): ChatRoom = chatFixtureFacade.setUp(userId, name, workspaceName)
 
     fun createStompHeaders(userId: String): StompHeaders =
         StompHeaders().apply {

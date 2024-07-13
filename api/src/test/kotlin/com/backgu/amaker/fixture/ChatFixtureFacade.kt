@@ -18,10 +18,9 @@ class ChatFixtureFacade(
     fun setUp(
         userId: String = "test-user-id",
         name: String = "김리더",
-        email: String = "leader@amaker.com",
         workspaceName: String = "테스트 워크스페이스",
     ): ChatRoom {
-        val leader: User = user.createPersistedUser(id = userId, name = name, email = email)
+        val leader: User = user.createPersistedUser(id = userId, name = name)
         val workspace: Workspace = workspace.createPersistedWorkspace(name = workspaceName)
         val members: List<User> = user.createPersistedUsers(10)
 
