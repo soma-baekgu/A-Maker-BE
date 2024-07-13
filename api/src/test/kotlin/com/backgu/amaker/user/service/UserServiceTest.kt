@@ -104,4 +104,34 @@ class UserServiceTest {
         assertThat(result.picture).isEqualTo(user.picture)
         assertThat(result.userRole).isEqualTo(UserRole.USER)
     }
+
+    @Test
+    @DisplayName("이메일로 사용자 조회 테스트 - 존재하는 이메일")
+    fun existsByEmail() {
+        // given
+        val email = "test@gmail.com"
+        userFixture.createPersistedUser(email = email)
+
+        // when
+        val user: User? = userService.findByEmail(email)
+
+        // then
+        assertThat(user).isNotNull
+        assertThat(user?.email).isEqualTo(email)
+    }
+
+    @Test
+    @DisplayName("이메일로 사용자 조회 테스트 - 존재하지 않는 이메일")
+    fun existsByEmailNotExists() {
+        // given
+        val email = "test@gmail.com"
+        val diffEmail = "diff-test@gmail.com"
+        userFixture.createPersistedUser(email = email)
+
+        // when
+        val user: User? = userService.findByEmail(diffEmail)
+
+        // then
+        assertThat(user).isNull()
+    }
 }
