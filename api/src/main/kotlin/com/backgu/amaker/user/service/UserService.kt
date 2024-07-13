@@ -37,4 +37,6 @@ class UserService(
 
     @Transactional
     fun saveOrGetUser(user: User): User = userRepository.findByEmail(user.email)?.toDomain() ?: save(user)
+
+    fun findByEmail(email: String): User? = userRepository.findByEmail(email)?.toDomain()
 }
