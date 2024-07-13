@@ -1,7 +1,10 @@
 package com.backgu.amaker.chat.service
 
+import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.dto.ChatDto
+import com.backgu.amaker.chat.dto.ChatListDto
+import com.backgu.amaker.chat.dto.ChatQuery
 import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.fixture.ChatFixtureFacade
 import org.assertj.core.api.Assertions.assertThat
@@ -59,5 +62,65 @@ class ChatFacadeServiceTest {
         assertThat(chatDto.userId).isEqualTo(DEFAULT_USER_ID)
         assertThat(chatDto.chatRoomId).isEqualTo(chatRoom.id)
         assertThat(chatDto.content).isEqualTo(generalChatCreateDto.content)
+    }
+
+    @Test
+    @DisplayName("이전 채팅 조회 테스트")
+    fun getPreviousChatTest() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom: ChatRoom = fixture.setUp(userId = userId)
+        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
+        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+
+        // when
+        val previousChat: ChatListDto =
+            chatFacadeService.getPreviousChat(userId, ChatQuery(currentChat.id, chatRoom.id, 10))
+
+        // then
+        assertThat(previousChat.chatList).hasSize(10)
+        assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
+        assertThat(previousChat.cursor).isNotEqualTo(prevChats.last().id)
+    }
+
+    @Test
+    @DisplayName("이전 채팅 조회 테스트 - 이전 채팅이 요청한 개수보다 적은 경우")
+    fun getPreviousChatTestWhenPrevChatSizeLessThanRequestedSize() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom: ChatRoom = fixture.setUp(userId = userId)
+        fixture.chat.deleteAll()
+
+        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 5)
+        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+
+        // when
+        val previousChat: ChatListDto =
+            chatFacadeService.getPreviousChat(userId, ChatQuery(currentChat.id, chatRoom.id, 10))
+
+        // then
+        assertThat(previousChat.chatList).hasSize(5)
+        assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
+        assertThat(previousChat.cursor).isNotEqualTo(prevChats.last().id)
+    }
+
+    @Test
+    @DisplayName("이전 채팅 조회 테스트 - 이전 채팅이 없는 경우")
+    fun getPreviousChatTestWhenNoPrevChat() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom: ChatRoom = fixture.setUp(userId = userId)
+        fixture.chat.deleteAll()
+
+        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+
+        // when
+        val previousChat: ChatListDto =
+            chatFacadeService.getPreviousChat(userId, ChatQuery(currentChat.id, chatRoom.id, 10))
+
+        // then
+        assertThat(previousChat.chatList).isEmpty()
+        assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
+        assertThat(previousChat.cursor).isEqualTo(currentChat.id)
     }
 }
