@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.Email
 import org.springframework.http.ResponseEntity
 
 @Tag(name = "users", description = "유저 API")
@@ -19,5 +20,7 @@ interface UserSwagger {
             ),
         ],
     )
-    fun checkEmail(email: String): ResponseEntity<ApiResult<EmailExistsResponse>>
+    fun checkEmail(
+        @Email email: String,
+    ): ResponseEntity<ApiResult<EmailExistsResponse>>
 }
