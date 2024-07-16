@@ -132,7 +132,7 @@ class ChatFacadeServiceTest {
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
         val prevChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
         val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
-        val afterChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
+        fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
 
         // when
         val findAfterChats: ChatListDto =
@@ -152,7 +152,7 @@ class ChatFacadeServiceTest {
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
         val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
         val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
-        val afterChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
+        fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
 
         // when
         val findPrevChats: ChatListDto =
