@@ -8,7 +8,6 @@ import java.time.LocalDateTime
 data class ChatResponse(
     @Schema(description = "채팅 ID", example = "1")
     val id: Long,
-    @Schema(description = "유저 ID(현재 UUID)", example = "0000-0000-0000-0000000")
     val user: ChatUserResponse,
     @Schema(description = "채팅방 ID", example = "1")
     val chatRoomId: Long,
