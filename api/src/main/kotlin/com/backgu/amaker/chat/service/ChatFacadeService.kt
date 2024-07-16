@@ -1,9 +1,9 @@
 package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
-import com.backgu.amaker.chat.dto.ChatDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
+import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
@@ -23,7 +23,7 @@ class ChatFacadeService(
         generalChatCreateDto: GeneralChatCreateDto,
         userId: String,
         chatRoomId: Long,
-    ): ChatDto {
+    ): ChatWithUserDto {
         val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
 
@@ -31,7 +31,7 @@ class ChatFacadeService(
         val chat = chatService.save(chatRoom.createGeneralChat(user, chatRoom, generalChatCreateDto.content))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
-        return ChatDto.of(chat, user)
+        return ChatWithUserDto.of(chat, user)
     }
 
     @Transactional
@@ -43,7 +43,7 @@ class ChatFacadeService(
         val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatQuery.chatRoomId)
         chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
 
-        val chatList: List<ChatDto> =
+        val chatList: List<ChatWithUserDto> =
             chatService.findPreviousChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         return ChatListDto.of(chatQuery, chatList)
     }
@@ -57,7 +57,7 @@ class ChatFacadeService(
         val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatQuery.chatRoomId)
         chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
 
-        val chatList: List<ChatDto> =
+        val chatList: List<ChatWithUserDto> =
             chatService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         return ChatListDto.of(chatQuery, chatList)
     }

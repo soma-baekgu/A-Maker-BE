@@ -7,12 +7,12 @@ import com.backgu.amaker.user.dto.UserDto
 import com.querydsl.core.annotations.QueryProjection
 import java.time.LocalDateTime
 
-class ChatDto
+class ChatWithUserDto
     @QueryProjection
     constructor(
         val id: Long = 0L,
         val chatRoomId: Long,
-        var content: String,
+        val content: String,
         val chatType: ChatType,
         val createdAt: LocalDateTime,
         val updatedAt: LocalDateTime,
@@ -25,8 +25,8 @@ class ChatDto
             fun of(
                 chat: Chat,
                 user: User,
-            ): ChatDto =
-                ChatDto(
+            ): ChatWithUserDto =
+                ChatWithUserDto(
                     id = chat.id,
                     chatRoomId = chat.chatRoomId,
                     content = chat.content,

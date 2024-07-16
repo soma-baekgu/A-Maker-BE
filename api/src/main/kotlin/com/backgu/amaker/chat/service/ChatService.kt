@@ -1,7 +1,7 @@
 package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
-import com.backgu.amaker.chat.dto.ChatDto
+import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.chat.jpa.ChatEntity
 import com.backgu.amaker.chat.repository.ChatRepository
 import org.springframework.stereotype.Service
@@ -19,7 +19,7 @@ class ChatService(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatDto> =
+    ): List<ChatWithUserDto> =
         chatRepository
             .findTopByChatRoomIdLittleThanCursorLimitCountWithUser(chatRoomId, cursor, size)
             .asReversed()
@@ -28,7 +28,7 @@ class ChatService(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatDto> =
+    ): List<ChatWithUserDto> =
         chatRepository
             .findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(chatRoomId, cursor, size)
 }

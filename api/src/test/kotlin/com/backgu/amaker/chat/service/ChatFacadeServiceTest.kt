@@ -2,9 +2,9 @@ package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
-import com.backgu.amaker.chat.dto.ChatDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
+import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.fixture.ChatFixtureFacade
 import org.assertj.core.api.Assertions.assertThat
@@ -51,7 +51,7 @@ class ChatFacadeServiceTest {
             )
 
         // when
-        val chatDto: ChatDto =
+        val chatDto: ChatWithUserDto =
             chatFacadeService.createGeneralChat(
                 generalChatCreateDto = generalChatCreateDto,
                 chatRoomId = chatRoom.id,

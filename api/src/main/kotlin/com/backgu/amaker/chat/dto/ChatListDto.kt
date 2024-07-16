@@ -4,12 +4,12 @@ data class ChatListDto(
     val chatRoomId: Long,
     val cursor: Long,
     val size: Int,
-    val chatList: List<ChatDto>,
+    val chatList: List<ChatWithUserDto>,
 ) {
     companion object {
         fun of(
             chatQuery: ChatQuery,
-            chatList: List<ChatDto>,
+            chatList: List<ChatWithUserDto>,
         ): ChatListDto =
             ChatListDto(
                 chatRoomId = chatQuery.chatRoomId,

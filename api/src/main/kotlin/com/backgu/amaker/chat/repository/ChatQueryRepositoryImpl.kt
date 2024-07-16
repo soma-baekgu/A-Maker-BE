@@ -1,7 +1,7 @@
 package com.backgu.amaker.chat.repository
 
-import com.backgu.amaker.chat.dto.ChatDto
-import com.backgu.amaker.chat.dto.QChatDto
+import com.backgu.amaker.chat.dto.ChatWithUserDto
+import com.backgu.amaker.chat.dto.QChatWithUserDto
 import com.backgu.amaker.chat.jpa.QChatEntity.chatEntity
 import com.backgu.amaker.user.jpa.QUserEntity.userEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -13,10 +13,10 @@ class ChatQueryRepositoryImpl(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatDto> =
+    ): List<ChatWithUserDto> =
         queryFactory
             .select(
-                QChatDto(
+                QChatWithUserDto(
                     chatEntity.id,
                     chatEntity.chatRoomId,
                     chatEntity.content,
@@ -40,10 +40,10 @@ class ChatQueryRepositoryImpl(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatDto> =
+    ): List<ChatWithUserDto> =
         queryFactory
             .select(
-                QChatDto(
+                QChatWithUserDto(
                     chatEntity.id,
                     chatEntity.chatRoomId,
                     chatEntity.content,
