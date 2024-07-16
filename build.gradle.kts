@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("org.springframework.boot") version "3.3.0" apply false
     id("io.spring.dependency-management") version "1.1.5" apply false
@@ -15,13 +13,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
-        }
     }
 
     tasks.withType<Test> {
