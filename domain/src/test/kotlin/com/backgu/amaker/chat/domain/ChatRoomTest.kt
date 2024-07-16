@@ -40,4 +40,24 @@ class ChatRoomTest {
         assertThat(chat.chatType).isEqualTo(ChatType.GENERAL)
         assertThat(chat.content).isEqualTo(content)
     }
+
+    @Test
+    @DisplayName("채팅방의 마지막 채팅을 업데이트할 수 있다")
+    fun updateLastChatId() {
+        // given
+        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
+        val chat =
+            Chat(
+                userId = "user1",
+                chatRoomId = chatRoom.id,
+                content = "안녕하세요",
+                chatType = ChatType.GENERAL,
+            )
+
+        // when
+        val updatedChatRoom: ChatRoom = chatRoom.updateLastChatId(chat = chat)
+
+        // then
+        assertThat(updatedChatRoom.lastChatId).isEqualTo(chat.id)
+    }
 }

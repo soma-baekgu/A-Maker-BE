@@ -59,7 +59,7 @@ class ChatFacadeServiceTest {
             )
 
         // then
-        assertThat(chatDto.userId).isEqualTo(DEFAULT_USER_ID)
+        assertThat(chatDto.user.id).isEqualTo(DEFAULT_USER_ID)
         assertThat(chatDto.chatRoomId).isEqualTo(chatRoom.id)
         assertThat(chatDto.content).isEqualTo(generalChatCreateDto.content)
     }
@@ -122,5 +122,44 @@ class ChatFacadeServiceTest {
         assertThat(previousChat.chatList).isEmpty()
         assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
         assertThat(previousChat.cursor).isEqualTo(currentChat.id)
+    }
+
+    @Test
+    @DisplayName("이후 채팅 조회 테스트")
+    fun getAfterChatTest() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom: ChatRoom = fixture.setUp(userId = userId)
+        val prevChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
+        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        val afterChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
+
+        // when
+        val findAfterChats: ChatListDto =
+            chatFacadeService.getAfterChat(userId, ChatQuery(currentChat.id, chatRoom.id, 10))
+
+        // then
+        assertThat(findAfterChats.chatList).hasSize(10)
+        assertThat(findAfterChats.size).isEqualTo(findAfterChats.chatList.size)
+        assertThat(findAfterChats.cursor).isNotEqualTo(prevChats.last().id)
+    }
+
+    @Test
+    @DisplayName("이전 채팅 조회 테스트")
+    fun getAfterChatTestWhenNoAfterChat() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom: ChatRoom = fixture.setUp(userId = userId)
+        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
+        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        val afterChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
+
+        // when
+        val findPrevChats: ChatListDto =
+            chatFacadeService.getAfterChat(userId, ChatQuery(currentChat.id, chatRoom.id, 10))
+
+        // then
+        assertThat(findPrevChats.chatList).hasSize(10)
+        assertThat(findPrevChats.cursor).isNotEqualTo(prevChats.last().id)
     }
 }
