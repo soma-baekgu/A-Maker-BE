@@ -23,12 +23,15 @@ class ChatRoomEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val chatRoomType: ChatRoomType,
+    @Column(nullable = true)
+    val lastChatId: Long? = null,
 ) : BaseTimeEntity() {
     fun toDomain(): ChatRoom =
         ChatRoom(
             id = id,
             workspaceId = workspaceId,
             chatRoomType = chatRoomType,
+            lastChatId = lastChatId,
         )
 
     companion object {
@@ -37,6 +40,7 @@ class ChatRoomEntity(
                 id = chatRoom.id,
                 workspaceId = chatRoom.workspaceId,
                 chatRoomType = chatRoom.chatRoomType,
+                lastChatId = chatRoom.lastChatId,
             )
     }
 }

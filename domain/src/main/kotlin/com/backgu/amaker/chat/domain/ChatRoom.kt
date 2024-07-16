@@ -7,6 +7,7 @@ class ChatRoom(
     val id: Long = 0L,
     val workspaceId: Long,
     val chatRoomType: ChatRoomType,
+    var lastChatId: Long? = null,
 ) : BaseTime() {
     fun addUser(user: User): ChatRoomUser = ChatRoomUser(userId = user.id, chatRoomId = id)
 
@@ -20,4 +21,9 @@ class ChatRoom(
         content = content,
         chatType = ChatType.GENERAL,
     )
+
+    fun updateLastChatId(chat: Chat): ChatRoom {
+        lastChatId = chat.id
+        return this
+    }
 }

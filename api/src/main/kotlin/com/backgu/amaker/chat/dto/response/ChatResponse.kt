@@ -9,7 +9,7 @@ data class ChatResponse(
     @Schema(description = "채팅 ID", example = "1")
     val id: Long,
     @Schema(description = "유저 ID(현재 UUID)", example = "0000-0000-0000-0000000")
-    val userId: String,
+    val user: ChatUserResponse,
     @Schema(description = "채팅방 ID", example = "1")
     val chatRoomId: Long,
     @Schema(description = "채팅 내용", example = "안녕하세요")
@@ -25,7 +25,7 @@ data class ChatResponse(
         fun of(chatDto: ChatDto): ChatResponse =
             ChatResponse(
                 id = chatDto.id,
-                userId = chatDto.userId,
+                user = ChatUserResponse.of(chatDto.user),
                 chatRoomId = chatDto.chatRoomId,
                 content = chatDto.content,
                 chatType = chatDto.chatType,

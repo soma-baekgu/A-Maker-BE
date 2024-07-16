@@ -19,11 +19,26 @@ interface ChatSwagger {
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "채팅 조회 성공",
+                description = "커서 이후 채팅 조회 성공",
             ),
         ],
     )
     fun getPreviousChat(
+        token: JwtAuthentication,
+        @ModelAttribute chatQueryRequest: ChatQueryRequest,
+        @PathVariable("chat-rooms-id") chatRoomId: Long,
+    ): ResponseEntity<ApiResult<ChatListResponse>>
+
+    @Operation(summary = "채팅 조회", description = "커서 이후의 채팅 데이터를 조회합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "커서 이후 채팅 조회 성공",
+            ),
+        ],
+    )
+    fun getAfterChat(
         token: JwtAuthentication,
         @ModelAttribute chatQueryRequest: ChatQueryRequest,
         @PathVariable("chat-rooms-id") chatRoomId: Long,

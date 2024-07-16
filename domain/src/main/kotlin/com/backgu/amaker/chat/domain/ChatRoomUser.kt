@@ -6,4 +6,10 @@ class ChatRoomUser(
     val id: Long = 0L,
     val userId: String,
     val chatRoomId: Long,
-) : BaseTime()
+    var lastReadChatId: Long? = null,
+) : BaseTime() {
+    fun readLastChatOfChatRoom(chatRoom: ChatRoom): ChatRoomUser {
+        lastReadChatId = chatRoom.lastChatId
+        return this
+    }
+}
