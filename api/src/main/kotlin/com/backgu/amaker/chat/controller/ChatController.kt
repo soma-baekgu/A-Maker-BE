@@ -35,6 +35,22 @@ class ChatController(
         @ChattingLoginUser token: JwtAuthentication,
     ): ChatResponse = ChatResponse.of(chatFacadeService.createGeneralChat(generalChatCreateRequest.toDto(), token.id, chatRoomId))
 
+    @GetMapping("/chat-rooms/{chat-rooms-id}/chats/recent")
+    override fun getChat(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-rooms-id") chatRoomId: Long,
+    ): ResponseEntity<ApiResult<ChatResponse>> =
+        ResponseEntity.ok().body(
+            apiHandler.onSuccess(
+                ChatResponse.of(
+                    chatFacadeService.getRecentChat(
+                        token.id,
+                        chatRoomId,
+                    ),
+                ),
+            ),
+        )
+
     @GetMapping("/chat-rooms/{chat-rooms-id}/chats/previous")
     override fun getPreviousChat(
         @AuthenticationPrincipal token: JwtAuthentication,

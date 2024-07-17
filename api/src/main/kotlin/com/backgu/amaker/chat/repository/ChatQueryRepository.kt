@@ -14,4 +14,6 @@ interface ChatQueryRepository {
         cursor: Long,
         size: Int,
     ): List<ChatWithUserDto>
+
+    fun findByIdWithUser(chatId: Long): ChatWithUserDto?
 }

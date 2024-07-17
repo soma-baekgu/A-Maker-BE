@@ -22,6 +22,7 @@ enum class StatusCode(
     // chat
     CHAT_ROOM_NOT_FOUND("4000", "채팅방이 존재하지 않습니다."),
     CHAT_ROOM_USER_NOT_FOUND("4000", "접근할 수 없는 채팅방입니다."),
+    CHAT_NOT_FOUND("4000", "아직 채팅방의 채팅이 없습니다."),
 
     // workspace
     WORKSPACE_NOT_FOUND("4000", "워크스페이스를 찾을 수 없습니다."),
