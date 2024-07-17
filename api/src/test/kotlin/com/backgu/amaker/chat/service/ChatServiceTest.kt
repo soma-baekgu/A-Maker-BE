@@ -310,7 +310,7 @@ class ChatServiceTest {
         val targetChat = chatFacadeFixture.chatFixture.createPersistedChat(chatRoom.id, user.id)
 
         // when
-        val findChat = chatService.findOneWithUser(targetChat.id)
+        val findChat = chatService.getOneWithUser(targetChat.id)
 
         // then
         assertThat(findChat.id).isEqualTo(targetChat.id)
@@ -325,9 +325,9 @@ class ChatServiceTest {
 
     @Test
     @DisplayName("채팅 조회 테스트: 채팅 아이디가 없을 때")
-    fun findOneWithUserWithNoChatId() {
+    fun getOneWithUserWithNoChatId() {
         // given & when & then
-        assertThatThrownBy { chatService.findOneWithUser(null) }
+        assertThatThrownBy { chatService.getOneWithUser(null) }
             .isInstanceOf(RuntimeException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_NOT_FOUND)
@@ -335,12 +335,12 @@ class ChatServiceTest {
 
     @Test
     @DisplayName("채팅 조회 테스트: 채팅이 없을 때")
-    fun findOneWithUserWhenChatNotFound() {
+    fun getOneWithUserWhenChatNotFound() {
         // given
         chatFacadeFixture.deleteAll()
 
         // when & then
-        assertThatThrownBy { chatService.findOneWithUser(1L) }
+        assertThatThrownBy { chatService.getOneWithUser(1L) }
             .isInstanceOf(RuntimeException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_NOT_FOUND)

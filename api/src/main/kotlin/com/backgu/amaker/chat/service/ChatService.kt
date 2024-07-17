@@ -34,6 +34,6 @@ class ChatService(
         chatRepository
             .findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(chatRoomId, cursor, size)
 
-    fun findOneWithUser(chatId: Long?): ChatWithUserDto =
+    fun getOneWithUser(chatId: Long?): ChatWithUserDto =
         chatId?.let { chatRepository.findByIdWithUser(it) } ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
 }

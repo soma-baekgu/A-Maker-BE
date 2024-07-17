@@ -30,7 +30,7 @@ interface ChatSwagger {
     )
     fun getChat(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @PathVariable("chat-rooms-id") chatRoomId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
     ): ResponseEntity<ApiResult<ChatWithUserResponse>>
 
     @Operation(summary = "커서 이후 채팅 조회", description = "커서 이전의 채팅 데이터를 조회합니다.")

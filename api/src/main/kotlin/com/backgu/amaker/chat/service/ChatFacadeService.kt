@@ -63,7 +63,7 @@ class ChatFacadeService(
         chatRoomId: Long,
     ): ChatWithUserDto {
         val chatRoomUser = markMostRecentChatAsRead(chatRoomId, userId)
-        return chatService.findOneWithUser(chatRoomUser.lastReadChatId)
+        return chatService.getOneWithUser(chatRoomUser.lastReadChatId)
     }
 
     private fun markMostRecentChatAsRead(
