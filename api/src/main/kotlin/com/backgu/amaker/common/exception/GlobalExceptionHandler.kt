@@ -20,17 +20,12 @@ class GlobalExceptionHandler(
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(
         e: MethodArgumentNotValidException,
-        httpServletRequest: HttpServletRequest,
+        request: HttpServletRequest,
     ): ResponseEntity<ApiError<Map<String, String>>> {
-        val errorMap: Map<String, String>? =
-            e.bindingResult?.fieldErrors?.associate { error ->
+        val errorMap: Map<String, String> =
+            e.bindingResult.fieldErrors.associate { error ->
                 error.field to (error.defaultMessage ?: "Invalid value")
             }
-
-        logger.error { e.printStackTrace() }
-        errorMap?.forEach { (field, message) ->
-            logger.error { "Validation error on field: $field - Message: $message" }
-        }
 
         return ResponseEntity
             .badRequest()
@@ -38,7 +33,10 @@ class GlobalExceptionHandler(
     }
 
     @ExceptionHandler(HandlerMethodValidationException::class)
-    fun handleHandlerMethodValidationException(e: HandlerMethodValidationException): ResponseEntity<ApiError<Map<String, String>>> {
+    fun handleHandlerMethodValidationException(
+        e: HandlerMethodValidationException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError<Map<String, String>>> {
         val errorMap: Map<String, String> =
             e.valueResults.associate { error ->
                 error.argument.toString() to (
@@ -48,23 +46,23 @@ class GlobalExceptionHandler(
                 )
             }
 
-        logger.error { e.printStackTrace() }
-        errorMap.forEach { (field, message) ->
-            logger.error { "Validation error on field: $field - Message: $message" }
-        }
-
         return ResponseEntity
             .badRequest()
             .body(apiHandler.onFailure(StatusCode.INVALID_INPUT_VALUE, errorMap))
     }
 
     @ExceptionHandler(BusinessException::class)
-    fun handleBusinessException(e: BusinessException): ResponseEntity<ApiError<Unit>> =
-        ResponseEntity.status(e.httpStatus).body(apiHandler.onFailure(e.statusCode))
+    fun handleBusinessException(
+        e: BusinessException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError<Unit>> = ResponseEntity.status(e.httpStatus).body(apiHandler.onFailure(e.statusCode))
 
     @ExceptionHandler(RuntimeException::class)
-    fun handleRuntimeException(e: RuntimeException): ResponseEntity<ApiError<Unit>> {
-        e.printStackTrace()
+    fun handleRuntimeException(
+        e: RuntimeException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError<Unit>> {
+        logger.info(e) { "${request.method}: ${request.requestURI}" }
         return ResponseEntity
             .internalServerError()
             .body(apiHandler.onFailure(StatusCode.INTERNAL_SERVER_ERROR))
