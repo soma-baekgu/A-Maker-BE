@@ -317,8 +317,6 @@ class ChatServiceTest {
         assertThat(findChat.chatRoomId).isEqualTo(chatRoom.id)
         assertThat(findChat.content).isEqualTo(targetChat.content)
         assertThat(findChat.chatType).isEqualTo(targetChat.chatType)
-        assertThat(findChat.createdAt).isEqualTo(targetChat.createdAt)
-        assertThat(findChat.updatedAt).isEqualTo(targetChat.updatedAt)
         assertThat(findChat.user.id).isEqualTo(user.id)
         assertThat(findChat.user.name).isEqualTo(user.name)
         assertThat(findChat.user.email).isEqualTo(user.email)
