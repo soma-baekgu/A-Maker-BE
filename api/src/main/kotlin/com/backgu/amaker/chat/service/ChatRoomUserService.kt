@@ -4,13 +4,11 @@ import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomUser
 import com.backgu.amaker.chat.jpa.ChatRoomUserEntity
 import com.backgu.amaker.chat.repository.ChatRoomUserRepository
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.user.domain.User
-import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-
-private val logger = KotlinLogging.logger {}
 
 @Service
 @Transactional(readOnly = true)
@@ -20,13 +18,20 @@ class ChatRoomUserService(
     @Transactional
     fun save(chatRoomUser: ChatRoomUser): ChatRoomUser = chatRoomUserRepository.save(ChatRoomUserEntity.of(chatRoomUser)).toDomain()
 
+    fun getByUserIdAndChatRoomId(
+        userId: String,
+        chatRoomId: Long,
+    ): ChatRoomUser =
+        chatRoomUserRepository.findByUserIdAndChatRoomId(userId, chatRoomId)?.toDomain() ?: run {
+            throw BusinessException(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
+        }
+
     fun validateUserInChatRoom(
         user: User,
         chatRoom: ChatRoom,
     ) {
         if (!chatRoomUserRepository.existsByUserIdAndChatRoomId(user.id, chatRoom.id)) {
-            logger.error { "User ${user.id} is not in ChatRoom ${chatRoom.id}" }
-            throw EntityNotFoundException("User ${user.id} is not in ChatRoom ${chatRoom.id}")
+            throw BusinessException(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
         }
     }
 }

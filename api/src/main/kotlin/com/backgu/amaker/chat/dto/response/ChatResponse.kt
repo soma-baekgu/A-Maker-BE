@@ -1,15 +1,15 @@
 package com.backgu.amaker.chat.dto.response
 
 import com.backgu.amaker.chat.domain.ChatType
-import com.backgu.amaker.chat.dto.ChatDto
+import com.backgu.amaker.chat.dto.ChatWithUserDto
+import com.backgu.amaker.user.dto.response.UserResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 data class ChatResponse(
     @Schema(description = "채팅 ID", example = "1")
     val id: Long,
-    @Schema(description = "유저 ID(현재 UUID)", example = "0000-0000-0000-0000000")
-    val userId: String,
+    val user: UserResponse,
     @Schema(description = "채팅방 ID", example = "1")
     val chatRoomId: Long,
     @Schema(description = "채팅 내용", example = "안녕하세요")
@@ -22,15 +22,15 @@ data class ChatResponse(
     val updatedAt: LocalDateTime,
 ) {
     companion object {
-        fun of(chatDto: ChatDto): ChatResponse =
+        fun of(chatWithUserDto: ChatWithUserDto): ChatResponse =
             ChatResponse(
-                id = chatDto.id,
-                userId = chatDto.userId,
-                chatRoomId = chatDto.chatRoomId,
-                content = chatDto.content,
-                chatType = chatDto.chatType,
-                createdAt = chatDto.createdAt,
-                updatedAt = chatDto.updatedAt,
+                id = chatWithUserDto.id,
+                user = UserResponse.of(chatWithUserDto.user),
+                chatRoomId = chatWithUserDto.chatRoomId,
+                content = chatWithUserDto.content,
+                chatType = chatWithUserDto.chatType,
+                createdAt = chatWithUserDto.createdAt,
+                updatedAt = chatWithUserDto.updatedAt,
             )
     }
 }

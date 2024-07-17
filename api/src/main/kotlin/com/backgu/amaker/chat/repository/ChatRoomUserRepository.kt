@@ -8,4 +8,9 @@ interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
         userId: String,
         chatRoomId: Long,
     ): Boolean
+
+    fun findByUserIdAndChatRoomId(
+        userId: String,
+        chatRoomId: Long,
+    ): ChatRoomUserEntity?
 }

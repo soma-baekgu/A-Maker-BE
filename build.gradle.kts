@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.jpa") version "1.9.24" apply false
     kotlin("plugin.spring") version "1.9.24" apply false
+    kotlin("kapt") version "1.9.24"
 }
 
 allprojects {
@@ -17,15 +18,15 @@ allprojects {
         mavenCentral()
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
-        }
-    }
-
     tasks.withType<Test> {
         useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
     }
 
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
@@ -37,6 +38,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+    apply(plugin = "org.jetbrains.kotlin.kapt")
 
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -46,6 +48,13 @@ subprojects {
         implementation("io.github.oshai:kotlin-logging-jvm:5.1.1")
         implementation("com.mysql:mysql-connector-j:8.4.0")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+        implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+        implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+        implementation("jakarta.persistence:jakarta.persistence-api")
+        implementation("jakarta.annotation:jakarta.annotation-api")
+        kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+        kapt("org.springframework.boot:spring-boot-configuration-processor")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -1,6 +1,7 @@
 package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
+import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.chat.jpa.ChatEntity
 import com.backgu.amaker.chat.repository.ChatRepository
 import org.springframework.stereotype.Service
@@ -14,13 +15,20 @@ class ChatService(
     @Transactional
     fun save(chat: Chat): Chat = chatRepository.save(ChatEntity.of(chat)).toDomain()
 
-    fun findChatList(
+    fun findPreviousChatList(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<Chat> =
+    ): List<ChatWithUserDto> =
         chatRepository
-            .findTopByChatRoomIdLittleThanCursorLimitCount(chatRoomId, cursor, size)
+            .findTopByChatRoomIdLittleThanCursorLimitCountWithUser(chatRoomId, cursor, size)
             .asReversed()
-            .map { it.toDomain() }
+
+    fun findAfterChatList(
+        chatRoomId: Long,
+        cursor: Long,
+        size: Int,
+    ): List<ChatWithUserDto> =
+        chatRepository
+            .findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(chatRoomId, cursor, size)
 }

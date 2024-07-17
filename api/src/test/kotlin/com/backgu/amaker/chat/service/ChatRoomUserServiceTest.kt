@@ -2,10 +2,10 @@ package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.fixture.ChatFixtureFacade
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
-import jakarta.persistence.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
@@ -66,7 +66,6 @@ class ChatRoomUserServiceTest {
 
         // when & then
         assertThatThrownBy { chatRoomUserService.validateUserInChatRoom(user, chatRoom) }
-            .isInstanceOf(EntityNotFoundException::class.java)
-            .hasMessage("User ${user.id} is not in ChatRoom ${chatRoom.id}")
+            .isInstanceOf(BusinessException::class.java)
     }
 }

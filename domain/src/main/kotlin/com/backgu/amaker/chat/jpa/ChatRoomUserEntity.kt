@@ -19,8 +19,10 @@ class ChatRoomUserEntity(
     val userId: String,
     @Column(nullable = false)
     val chatRoomId: Long,
+    @Column(nullable = true)
+    var lastReadChatId: Long? = null,
 ) : BaseTimeEntity() {
-    fun toDomain(): ChatRoomUser = ChatRoomUser(id = id, userId = userId, chatRoomId = chatRoomId)
+    fun toDomain(): ChatRoomUser = ChatRoomUser(id = id, userId = userId, chatRoomId = chatRoomId, lastReadChatId = lastReadChatId)
 
     companion object {
         fun of(chatRoomUser: ChatRoomUser): ChatRoomUserEntity =
@@ -28,6 +30,7 @@ class ChatRoomUserEntity(
                 id = chatRoomUser.id,
                 userId = chatRoomUser.userId,
                 chatRoomId = chatRoomUser.chatRoomId,
+                lastReadChatId = chatRoomUser.lastReadChatId,
             )
     }
 }
