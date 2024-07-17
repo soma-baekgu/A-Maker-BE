@@ -42,12 +42,12 @@ class ChatRoomUserServiceTest {
     fun getChatRoomIn() {
         // given
         val userId: String = TEST_USER_ID
-        val user: User = fixtures.user.createPersistedUser(userId)
-        val workspace: Workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
-        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
+        val user: User = fixtures.userFixture.createPersistedUser(userId)
+        val workspace: Workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
         val chatRoom: ChatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
-        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
         // when & then
         assertThatCode {
@@ -60,7 +60,7 @@ class ChatRoomUserServiceTest {
     fun failGetChatRoomNoIn() {
         // given
         val userId: String = TEST_USER_ID
-        val user: User = fixtures.user.createPersistedUser(userId)
+        val user: User = fixtures.userFixture.createPersistedUser(userId)
 
         val diffUserId = "diff tester"
         val chatRoom = fixtures.setUp(userId = diffUserId)

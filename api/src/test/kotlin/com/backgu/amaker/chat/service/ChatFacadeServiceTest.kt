@@ -2,12 +2,16 @@ package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
+import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
 import com.backgu.amaker.chat.dto.ChatWithUserDto
+import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.ChatFixtureFacade
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
@@ -70,8 +74,8 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
-        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        val prevChats: List<Chat> = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
+        val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
 
         // when
         val previousChat: ChatListDto =
@@ -89,10 +93,10 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        fixture.chat.deleteAll()
+        fixture.chatFixture.deleteAll()
 
-        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 5)
-        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        val prevChats: List<Chat> = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 5)
+        val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
 
         // when
         val previousChat: ChatListDto =
@@ -110,9 +114,9 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        fixture.chat.deleteAll()
+        fixture.chatFixture.deleteAll()
 
-        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
 
         // when
         val previousChat: ChatListDto =
@@ -130,9 +134,9 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        val prevChats = fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
-        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
-        fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
+        val prevChats = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
+        val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
 
         // when
         val findAfterChats: ChatListDto =
@@ -150,9 +154,9 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        val prevChats: List<Chat> = fixture.chat.createPersistedChats(chatRoom.id, userId, 30)
-        val currentChat: Chat = fixture.chat.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
-        fixture.chat.createPersistedChats(chatRoom.id, userId, 10)
+        val prevChats: List<Chat> = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
+        val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
+        fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
 
         // when
         val findPrevChats: ChatListDto =
@@ -161,5 +165,45 @@ class ChatFacadeServiceTest {
         // then
         assertThat(findPrevChats.chatList).hasSize(10)
         assertThat(findPrevChats.cursor).isNotEqualTo(prevChats.last().id)
+    }
+
+    @Test
+    @DisplayName("최근 채팅 조회 테스트")
+    fun getRecentChatTest() {
+        // given
+        val userId = "test-user-id"
+        val chatRoom = fixture.setUp(userId = userId)
+        fixture.chatFixture.createPersistedChat(chatRoom.id, userId)
+
+        // when
+        val recentChat: ChatWithUserDto =
+            chatFacadeService.getRecentChat(userId, chatRoom.id)
+
+        // then
+        assertThat(recentChat.id).isEqualTo(recentChat.id)
+        assertThat(recentChat.user.id).isEqualTo(userId)
+    }
+
+    @Test
+    @DisplayName("채팅을 읽은 적이 없는 상태에서 최근 채팅 조회 테스트")
+    fun getChatTestWhenChatNotExist() {
+        // given
+        val userId = "test-user-id"
+        fixture.userFixture.createPersistedUser(userId)
+        val otherUser = fixture.userFixture.createPersistedUser("other-user-id")
+
+        val workspace = fixture.workspaceFixture.createPersistedWorkspace()
+        fixture.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, userId, listOf(userId, otherUser.id))
+
+        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        fixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, listOf(userId, otherUser.id))
+
+        fixture.chatFixture.createPersistedChats(chatRoom.id, otherUser.id, 10)
+
+        // when & then
+        assertThatThrownBy { chatFacadeService.getRecentChat(userId, chatRoom.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_NOT_FOUND)
     }
 }

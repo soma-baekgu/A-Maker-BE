@@ -2,6 +2,7 @@ package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
+import com.backgu.amaker.chat.domain.ChatRoomUser
 import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
@@ -39,12 +40,9 @@ class ChatFacadeService(
         userId: String,
         chatQuery: ChatQuery,
     ): ChatListDto {
-        val chatRoom = chatRoomService.getById(chatQuery.chatRoomId)
-        val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatQuery.chatRoomId)
-        chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
+        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
+        val chatList = chatService.findPreviousChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
 
-        val chatList: List<ChatWithUserDto> =
-            chatService.findPreviousChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         return ChatListDto.of(chatQuery, chatList)
     }
 
@@ -53,12 +51,28 @@ class ChatFacadeService(
         userId: String,
         chatQuery: ChatQuery,
     ): ChatListDto {
-        val chatRoom = chatRoomService.getById(chatQuery.chatRoomId)
-        val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatQuery.chatRoomId)
-        chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
+        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
+        val chatList = chatService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
 
-        val chatList: List<ChatWithUserDto> =
-            chatService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         return ChatListDto.of(chatQuery, chatList)
+    }
+
+    @Transactional
+    fun getRecentChat(
+        userId: String,
+        chatRoomId: Long,
+    ): ChatWithUserDto {
+        val chatRoomUser = markMostRecentChatAsRead(chatRoomId, userId)
+        return chatService.getOneWithUser(chatRoomUser.lastReadChatId)
+    }
+
+    private fun markMostRecentChatAsRead(
+        chatRoomId: Long,
+        userId: String,
+    ): ChatRoomUser {
+        val chatRoom = chatRoomService.getById(chatRoomId)
+        val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatRoomId)
+        chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
+        return chatRoomUser
     }
 }

@@ -62,4 +62,25 @@ class ChatQueryRepositoryImpl(
             .orderBy(chatEntity.id.asc())
             .limit(size.toLong())
             .fetch()
+
+    override fun findByIdWithUser(chatId: Long): ChatWithUserDto? =
+        queryFactory
+            .select(
+                QChatWithUserDto(
+                    chatEntity.id,
+                    chatEntity.chatRoomId,
+                    chatEntity.content,
+                    chatEntity.chatType,
+                    chatEntity.createdAt,
+                    chatEntity.updatedAt,
+                    userEntity.id,
+                    userEntity.name,
+                    userEntity.email,
+                    userEntity.picture,
+                ),
+            ).from(chatEntity)
+            .innerJoin(userEntity)
+            .on(chatEntity.userId.eq(userEntity.id))
+            .where(chatEntity.id.eq(chatId))
+            .fetchOne()
 }
