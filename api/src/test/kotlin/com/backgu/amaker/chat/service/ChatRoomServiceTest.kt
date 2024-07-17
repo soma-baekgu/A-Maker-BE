@@ -23,11 +23,11 @@ class ChatRoomServiceTest {
     @DisplayName("일반 채팅 생성을 위한 테스트")
     fun chatRoomSaveWithNewChat() {
         // given
-        val tester = fixture.user.createPersistedUser()
-        val workspace = fixture.workspace.createPersistedWorkspace()
-        val chatRoom = fixture.chatRoom.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
-        fixture.chatRoomUser.createPersistedChatRoomUser(chatRoom.id, arrayListOf(tester.id))
-        val chat = fixture.chat.createPersistedChat(chatRoom.id, tester.id)
+        val tester = fixture.userFixture.createPersistedUser()
+        val workspace = fixture.workspaceFixture.createPersistedWorkspace()
+        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        fixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(tester.id))
+        val chat = fixture.chatFixture.createPersistedChat(chatRoom.id, tester.id)
         val savedChatRoom = chatRoomService.save(chatRoom.updateLastChatId(chat))
 
         // when

@@ -23,6 +23,8 @@ class ChatRoomFixture(
     fun testGroupChatRoomSetUp(workspace: Workspace): ChatRoom =
         createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
 
+    fun save(chatRoom: ChatRoom): ChatRoom = chatRoomRepository.save(ChatRoomEntity.of(chatRoom)).toDomain()
+
     fun deleteAll() {
         chatRoomRepository.deleteAll()
     }
