@@ -1,11 +1,14 @@
 package com.backgu.amaker.chat.controller
 
 import com.backgu.amaker.chat.dto.query.ChatQueryRequest
+import com.backgu.amaker.chat.dto.request.ChatCreateRequest
 import com.backgu.amaker.chat.dto.response.ChatListResponse
-import com.backgu.amaker.chat.dto.response.ChatResponse
+import com.backgu.amaker.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.common.dto.response.ApiResult
 import com.backgu.amaker.security.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,7 +31,7 @@ interface ChatSwagger {
     fun getChat(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-rooms-id") chatRoomId: Long,
-    ): ResponseEntity<ApiResult<ChatResponse>>
+    ): ResponseEntity<ApiResult<ChatWithUserResponse>>
 
     @Operation(summary = "커서 이후 채팅 조회", description = "커서 이전의 채팅 데이터를 조회합니다.")
     @ApiResponses(
@@ -40,9 +43,9 @@ interface ChatSwagger {
         ],
     )
     fun getPreviousChat(
-        token: JwtAuthentication,
+        @Parameter(hidden = true) token: JwtAuthentication,
         @ModelAttribute chatQueryRequest: ChatQueryRequest,
-        @PathVariable("chat-rooms-id") chatRoomId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
     ): ResponseEntity<ApiResult<ChatListResponse>>
 
     @Operation(summary = "커서 이전 채팅 조회", description = "커서 이후의 채팅 데이터를 조회합니다.")
@@ -55,8 +58,23 @@ interface ChatSwagger {
         ],
     )
     fun getAfterChat(
-        token: JwtAuthentication,
+        @Parameter(hidden = true) token: JwtAuthentication,
         @ModelAttribute chatQueryRequest: ChatQueryRequest,
-        @PathVariable("chat-rooms-id") chatRoomId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
     ): ResponseEntity<ApiResult<ChatListResponse>>
+
+    @Operation(summary = "채팅 생성", description = "채팅을 생성합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "채팅 생성 성공",
+            ),
+        ],
+    )
+    fun createChat(
+        @Parameter(hidden = true) token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @RequestBody chatCreateRequest: ChatCreateRequest,
+    ): ResponseEntity<Unit>
 }

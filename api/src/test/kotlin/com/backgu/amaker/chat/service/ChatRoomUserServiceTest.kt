@@ -3,6 +3,7 @@ package com.backgu.amaker.chat.service
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.common.exception.BusinessException
+import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.ChatFixtureFacade
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
@@ -67,5 +68,7 @@ class ChatRoomUserServiceTest {
         // when & then
         assertThatThrownBy { chatRoomUserService.validateUserInChatRoom(user, chatRoom) }
             .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
     }
 }

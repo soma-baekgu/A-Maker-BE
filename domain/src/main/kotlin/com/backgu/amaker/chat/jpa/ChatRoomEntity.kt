@@ -32,6 +32,8 @@ class ChatRoomEntity(
             workspaceId = workspaceId,
             chatRoomType = chatRoomType,
             lastChatId = lastChatId,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
         )
 
     companion object {

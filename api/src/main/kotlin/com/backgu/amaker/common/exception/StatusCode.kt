@@ -19,9 +19,13 @@ enum class StatusCode(
     // auth
     OAUTH_SOCIAL_LOGIN_FAILED("4000", "로그인에 실패했습니다."),
 
-    // chat
+    // chatRoom
     CHAT_ROOM_NOT_FOUND("4000", "채팅방이 존재하지 않습니다."),
+
+    // chatRoomUser
     CHAT_ROOM_USER_NOT_FOUND("4000", "접근할 수 없는 채팅방입니다."),
+
+    // chat
     CHAT_NOT_FOUND("4000", "아직 채팅방의 채팅이 없습니다."),
 
     // workspace

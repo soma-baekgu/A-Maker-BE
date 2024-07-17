@@ -3,10 +3,10 @@ package com.backgu.amaker.chat.service
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
 import com.backgu.amaker.chat.dto.ChatWithUserDto
-import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.fixture.ChatFixtureFacade
@@ -42,22 +42,22 @@ class ChatFacadeServiceTest {
 
     @Test
     @DisplayName("일반 채팅 생성 테스트")
-    fun createGeneralChat() {
+    fun createChat() {
         // given
         val chatRoom: ChatRoom =
             fixture.setUp(
                 userId = DEFAULT_USER_ID,
             )
 
-        val generalChatCreateDto =
-            GeneralChatCreateDto(
+        val chatCreateDto =
+            ChatCreateDto(
                 content = "content",
             )
 
         // when
         val chatDto: ChatWithUserDto =
-            chatFacadeService.createGeneralChat(
-                generalChatCreateDto = generalChatCreateDto,
+            chatFacadeService.createChat(
+                chatCreateDto = chatCreateDto,
                 chatRoomId = chatRoom.id,
                 userId = DEFAULT_USER_ID,
             )
@@ -65,7 +65,7 @@ class ChatFacadeServiceTest {
         // then
         assertThat(chatDto.user.id).isEqualTo(DEFAULT_USER_ID)
         assertThat(chatDto.chatRoomId).isEqualTo(chatRoom.id)
-        assertThat(chatDto.content).isEqualTo(generalChatCreateDto.content)
+        assertThat(chatDto.content).isEqualTo(chatCreateDto.content)
     }
 
     @Test
@@ -173,7 +173,7 @@ class ChatFacadeServiceTest {
         // given
         val userId = "test-user-id"
         val chatRoom = fixture.setUp(userId = userId)
-        val lastChat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId)
+        fixture.chatFixture.createPersistedChat(chatRoom.id, userId)
 
         // when
         val recentChat: ChatWithUserDto =
@@ -189,7 +189,7 @@ class ChatFacadeServiceTest {
     fun getChatTestWhenChatNotExist() {
         // given
         val userId = "test-user-id"
-        val user = fixture.userFixture.createPersistedUser(userId)
+        fixture.userFixture.createPersistedUser(userId)
         val otherUser = fixture.userFixture.createPersistedUser("other-user-id")
 
         val workspace = fixture.workspaceFixture.createPersistedWorkspace()

@@ -6,7 +6,7 @@ import com.backgu.amaker.user.dto.response.UserResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-data class ChatResponse(
+data class ChatWithUserResponse(
     @Schema(description = "채팅 ID", example = "1")
     val id: Long,
     val user: UserResponse,
@@ -22,8 +22,8 @@ data class ChatResponse(
     val updatedAt: LocalDateTime,
 ) {
     companion object {
-        fun of(chatWithUserDto: ChatWithUserDto): ChatResponse =
-            ChatResponse(
+        fun of(chatWithUserDto: ChatWithUserDto): ChatWithUserResponse =
+            ChatWithUserResponse(
                 id = chatWithUserDto.id,
                 user = UserResponse.of(chatWithUserDto.user),
                 chatRoomId = chatWithUserDto.chatRoomId,

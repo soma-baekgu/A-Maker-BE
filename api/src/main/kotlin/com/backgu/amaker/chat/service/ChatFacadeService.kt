@@ -1,11 +1,12 @@
 package com.backgu.amaker.chat.service
 
+import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomUser
+import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
 import com.backgu.amaker.chat.dto.ChatWithUserDto
-import com.backgu.amaker.chat.dto.GeneralChatCreateDto
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
 import org.springframework.stereotype.Service
@@ -20,16 +21,15 @@ class ChatFacadeService(
     private val userService: UserService,
 ) {
     @Transactional
-    fun createGeneralChat(
-        generalChatCreateDto: GeneralChatCreateDto,
+    fun createChat(
+        chatCreateDto: ChatCreateDto,
         userId: String,
         chatRoomId: Long,
     ): ChatWithUserDto {
         val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
-
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
-        val chat = chatService.save(chatRoom.createGeneralChat(user, chatRoom, generalChatCreateDto.content))
+        val chat: Chat = chatService.save(chatRoom.createChat(user, chatRoom, chatCreateDto.content))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
         return ChatWithUserDto.of(chat, user)

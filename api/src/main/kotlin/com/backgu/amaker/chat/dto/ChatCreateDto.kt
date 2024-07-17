@@ -1,5 +1,5 @@
 package com.backgu.amaker.chat.dto
 
-data class GeneralChatCreateDto(
+data class ChatCreateDto(
     val content: String,
 )

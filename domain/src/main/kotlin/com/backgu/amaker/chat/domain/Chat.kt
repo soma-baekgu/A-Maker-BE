@@ -1,6 +1,5 @@
 package com.backgu.amaker.chat.domain
 
-import com.backgu.amaker.common.domain.BaseTime
 import java.time.LocalDateTime
 
 class Chat(
@@ -9,6 +8,6 @@ class Chat(
     val chatRoomId: Long,
     var content: String,
     val chatType: ChatType,
-    createdAt: LocalDateTime = LocalDateTime.now(),
-    updatedAt: LocalDateTime = LocalDateTime.now(),
-) : BaseTime(createdAt, updatedAt)
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+)
