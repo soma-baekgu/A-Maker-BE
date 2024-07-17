@@ -1,8 +1,8 @@
 package com.backgu.amaker.chat.controller
 
 import com.backgu.amaker.chat.domain.ChatRoom
-import com.backgu.amaker.chat.dto.request.GeneralChatCreateRequest
-import com.backgu.amaker.chat.dto.response.ChatResponse
+import com.backgu.amaker.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.fixture.StompFixtureFacade
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
@@ -51,18 +51,18 @@ class ChatControllerTest {
             fixtures.connectToWebSocket(port, stompHeaders)
 
         val stompSession: StompSession = connectFuture.get(1, TimeUnit.SECONDS)
-        val subscribeToChatRoom: CompletableFuture<ChatResponse> =
+        val subscribeToChatRoom: CompletableFuture<ChatWithUserResponse> =
             fixtures.subscribeToChatRoom(stompSession, chatRoom.id)
         val content = "Hello World"
-        val generalChatCreateRequest = GeneralChatCreateRequest(content = content)
+        val generalChatCreateRequest = ChatCreateRequest(content = content)
 
         // when
         fixtures.sendMessage(stompSession, "/pub/chat-rooms/${chatRoom.id}/general", generalChatCreateRequest)
 
         // then
-        val chatResponse: ChatResponse? = subscribeToChatRoom.get(5, TimeUnit.SECONDS)
+        val chatWithUserResponse: ChatWithUserResponse? = subscribeToChatRoom.get(5, TimeUnit.SECONDS)
 
-        assertThat(chatResponse).isNotNull
-        assertThat(chatResponse?.content).isEqualTo(content)
+        assertThat(chatWithUserResponse).isNotNull
+        assertThat(chatWithUserResponse?.content).isEqualTo(content)
     }
 }

@@ -10,7 +10,6 @@ import com.backgu.amaker.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.workspace.service.WorkspaceFacadeService
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -46,7 +45,7 @@ class WorkspaceController(
     override fun findWorkspaces(
         @AuthenticationPrincipal token: JwtAuthentication,
     ): ResponseEntity<ApiResult<WorkspacesResponse>> =
-        ResponseEntity.status(HttpStatus.CREATED).body(
+        ResponseEntity.ok().body(
             apiHandler.onSuccess(
                 WorkspacesResponse.of(workspaceFacadeService.findWorkspaces(token.id)),
             ),
