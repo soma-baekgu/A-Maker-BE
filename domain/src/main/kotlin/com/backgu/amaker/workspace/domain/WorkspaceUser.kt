@@ -15,6 +15,8 @@ class WorkspaceUser(
         return this
     }
 
+    fun isAdmin() = this.workspaceRole == WorkspaceRole.LEADER
+
     companion object {
         fun makeWorkspaceLeader(
             workspace: Workspace,

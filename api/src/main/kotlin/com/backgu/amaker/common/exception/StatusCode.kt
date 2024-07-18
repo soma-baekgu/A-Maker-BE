@@ -34,4 +34,5 @@ enum class StatusCode(
 
     // workspaceUser
     WORKSPACE_UNREACHABLE("4000", "워크스페이스에 접근할 수 없습니다."),
+    WORKSPACE_UNAUTHORIZED("4000", "워크스페이스에 대한 관리자 권한이 없습니다."),
 }
