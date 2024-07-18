@@ -195,7 +195,7 @@ class ChatFacadeServiceTest {
         val workspace = fixture.workspaceFixture.createPersistedWorkspace()
         fixture.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, userId, listOf(userId, otherUser.id))
 
-        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         fixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, listOf(userId, otherUser.id))
 
         fixture.chatFixture.createPersistedChats(chatRoom.id, otherUser.id, 10)

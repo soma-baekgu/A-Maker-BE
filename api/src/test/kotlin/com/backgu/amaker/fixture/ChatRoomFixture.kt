@@ -21,7 +21,7 @@ class ChatRoomFixture(
             ).toDomain()
 
     fun testGroupChatRoomSetUp(workspace: Workspace): ChatRoom =
-        createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+        createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.DEFAULT)
 
     fun save(chatRoom: ChatRoom): ChatRoom = chatRoomRepository.save(ChatRoomEntity.of(chatRoom)).toDomain()
 

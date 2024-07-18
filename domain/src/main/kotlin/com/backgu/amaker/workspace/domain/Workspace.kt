@@ -14,5 +14,5 @@ class Workspace(
 
     fun inviteWorkspace(user: User): WorkspaceUser = WorkspaceUser(userId = user.id, workspaceId = id)
 
-    fun createGroupChatRoom(): ChatRoom = ChatRoom(workspaceId = id, chatRoomType = ChatRoomType.GROUP)
+    fun createDefaultChatRoom(): ChatRoom = ChatRoom(workspaceId = id, chatRoomType = ChatRoomType.DEFAULT)
 }

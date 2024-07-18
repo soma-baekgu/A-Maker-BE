@@ -11,7 +11,7 @@ class ChatRoomTest {
     @DisplayName("채팅방에 사용자를 추가할 수 있다")
     fun addUser() {
         // given
-        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
+        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.DEFAULT)
         val user1 =
             User(id = "user1", name = "user1", email = "user1@gmail.com", picture = "/images/default_thumbnail.png")
 
@@ -30,7 +30,7 @@ class ChatRoomTest {
         // given
         val user =
             User(id = "user1", name = "user1", email = "user1@gmail.com", picture = "/images/default_thumbnail.png")
-        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
+        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.DEFAULT)
         val content = "안녕하세요"
 
         // when
@@ -45,7 +45,7 @@ class ChatRoomTest {
     @DisplayName("채팅방의 마지막 채팅을 업데이트할 수 있다")
     fun updateLastChatId() {
         // given
-        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.GROUP)
+        val chatRoom = ChatRoom(workspaceId = 1, chatRoomType = ChatRoomType.DEFAULT)
         val chat =
             Chat(
                 userId = "user1",

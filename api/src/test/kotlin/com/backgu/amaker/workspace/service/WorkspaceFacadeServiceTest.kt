@@ -152,7 +152,7 @@ class WorkspaceFacadeServiceTest {
         )
 
         val chatRoom: ChatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.DEFAULT)
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(leaderId))
 
         // when
@@ -167,19 +167,19 @@ class WorkspaceFacadeServiceTest {
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
     }
 
-    @DisplayName("워크스페이스의 그룹 채팅방을 조회")
-    fun getGroupChatRoom() {
+    @DisplayName("워크스페이스의 기본 채팅방을 조회")
+    fun getDefaultChatRoom() {
         // given
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
         val chatRoom =
-            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.DEFAULT)
         fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
         // when
-        val result = workspaceFacadeService.getGroupChatRoom(workspace.id, userId)
+        val result = workspaceFacadeService.getDefaultChatRoom(workspace.id, userId)
 
         // then
         assertThat(result.chatRoomId).isEqualTo(chatRoom.id)

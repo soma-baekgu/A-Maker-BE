@@ -8,7 +8,7 @@ data class ChatRoomResponse(
     val chatRoomId: Long,
     @Schema(description = "워크스페이스 id", example = "1")
     val workspaceId: Long,
-    @Schema(description = "채팅방 종류", example = "GROUP")
+    @Schema(description = "채팅방 종류", example = "DEFAULT")
     val chatRoomType: String,
 ) {
     companion object {

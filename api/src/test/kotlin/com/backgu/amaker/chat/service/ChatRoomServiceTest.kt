@@ -25,7 +25,7 @@ class ChatRoomServiceTest {
         // given
         val tester = fixture.userFixture.createPersistedUser()
         val workspace = fixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = fixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         fixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(tester.id))
         val chat = fixture.chatFixture.createPersistedChat(chatRoom.id, tester.id)
         val savedChatRoom = chatRoomService.save(chatRoom.updateLastChatId(chat))

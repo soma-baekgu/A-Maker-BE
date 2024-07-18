@@ -49,7 +49,7 @@ class WorkspaceFacadeService(
             emailEventService.publishEmailEvent(WorkspaceInvitedEvent(it, workspace))
         }
 
-        val chatRoom: ChatRoom = chatRoomService.save(workspace.createGroupChatRoom())
+        val chatRoom: ChatRoom = chatRoomService.save(workspace.createDefaultChatRoom())
         chatRoomUserService.save(chatRoom.addUser(leader))
 
         return WorkspaceDto.of(workspace)
@@ -72,7 +72,7 @@ class WorkspaceFacadeService(
         return workspaceService.getDefaultWorkspaceByUserId(user).let { WorkspaceDto.of(it) }
     }
 
-    fun getGroupChatRoom(
+    fun getDefaultChatRoom(
         workspaceId: Long,
         userId: String,
     ): ChatRoomDto {
@@ -81,7 +81,7 @@ class WorkspaceFacadeService(
 
         workspaceUserService.validUserInWorkspace(user, workspace)
 
-        return ChatRoomDto.of(chatRoomService.getGroupChatRoomByWorkspace(workspace))
+        return ChatRoomDto.of(chatRoomService.getDefaultChatRoomByWorkspace(workspace))
     }
 
     @Transactional

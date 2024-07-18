@@ -61,15 +61,15 @@ class WorkspaceController(
             ),
         )
 
-    @GetMapping("{workspace-id}/group-chat-room")
-    override fun getGroupChatRoom(
+    @GetMapping("{workspace-id}/default-chat-room")
+    override fun getDefaultChatRoom(
         @PathVariable("workspace-id") workspaceId: Long,
         @AuthenticationPrincipal token: JwtAuthentication,
     ): ResponseEntity<ApiResult<ChatRoomResponse>> =
         ResponseEntity.ok().body(
             apiHandler.onSuccess(
                 ChatRoomResponse.of(
-                    workspaceFacadeService.getGroupChatRoom(workspaceId, token.id),
+                    workspaceFacadeService.getDefaultChatRoom(workspaceId, token.id),
                 ),
             ),
         )

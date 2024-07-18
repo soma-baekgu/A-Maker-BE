@@ -19,14 +19,14 @@ class ChatRoomService(
     @Transactional
     fun save(chatRoom: ChatRoom): ChatRoom = chatRoomRepository.save(ChatRoomEntity.of(chatRoom)).toDomain()
 
-    fun getGroupChatRoomByWorkspace(workspace: Workspace): ChatRoom =
-        chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspace.id, ChatRoomType.GROUP)?.toDomain()
+    fun getDefaultChatRoomByWorkspace(workspace: Workspace): ChatRoom =
+        chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspace.id, ChatRoomType.DEFAULT)?.toDomain()
             ?: run {
                 throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
             }
 
-    fun findGroupChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
-        chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspaceId, ChatRoomType.GROUP)?.toDomain() ?: run {
+    fun findDefaultChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
+        chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspaceId, ChatRoomType.DEFAULT)?.toDomain() ?: run {
             throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
         }
 

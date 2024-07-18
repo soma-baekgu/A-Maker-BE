@@ -46,7 +46,7 @@ class ChatRoomUserServiceTest {
         val workspace: Workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "워크스페이스1")
         fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
         val chatRoom: ChatRoom =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.GROUP)
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.DEFAULT)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(userId))
 
         // when & then

@@ -60,16 +60,16 @@ interface WorkspaceSwagger {
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<ApiResult<WorkspaceResponse>>
 
-    @Operation(summary = "그룹 채팅방 조회", description = "워크스페이스의 그룹 채팅방을 조회합니다.")
+    @Operation(summary = "기본 채팅방 조회", description = "워크스페이스의 기본 채팅방을 조회합니다.")
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "그룹 채팅방 조회 성공",
+                description = "기본 채팅방 조회 성공",
             ),
         ],
     )
-    fun getGroupChatRoom(
+    fun getDefaultChatRoom(
         @PathVariable
         @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
         workspaceId: Long,
