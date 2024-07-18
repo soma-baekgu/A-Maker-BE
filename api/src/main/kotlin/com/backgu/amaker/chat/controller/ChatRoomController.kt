@@ -6,6 +6,7 @@ import com.backgu.amaker.chat.service.ChatRoomFacadeService
 import com.backgu.amaker.common.dto.response.ApiResult
 import com.backgu.amaker.common.infra.ApiHandler
 import com.backgu.amaker.security.JwtAuthentication
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,7 +26,7 @@ class ChatRoomController(
     override fun createChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("w-id") workspaceId: Long,
-        @RequestBody chatRoomCreateRequest: ChatRoomCreateRequest,
+        @RequestBody @Valid chatRoomCreateRequest: ChatRoomCreateRequest,
     ): ResponseEntity<ApiResult<ChatRoomResponse>> {
         val chatRoom = chatFacadeService.createChatRoom(token.id, workspaceId, chatRoomCreateRequest.toDto())
         return ResponseEntity
