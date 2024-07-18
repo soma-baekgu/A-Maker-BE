@@ -1,5 +1,6 @@
 package com.backgu.amaker.chat.controller
 
+import com.backgu.amaker.chat.dto.request.ChatRoomCreateRequest
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.common.dto.response.ApiResult
 import com.backgu.amaker.security.JwtAuthentication
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "chatRoom", description = "채팅방 API")
 interface ChatRoomSwagger {
@@ -25,5 +27,6 @@ interface ChatRoomSwagger {
     fun createChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("w-id") workspaceId: Long,
+        @RequestBody chatRoomCreateRequest: ChatRoomCreateRequest,
     ): ResponseEntity<ApiResult<ChatRoomResponse>>
 }

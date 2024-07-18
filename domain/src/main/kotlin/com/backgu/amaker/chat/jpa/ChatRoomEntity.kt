@@ -19,6 +19,8 @@ class ChatRoomEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(nullable = false)
+    var name: String,
+    @Column(nullable = false)
     val workspaceId: Long,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -34,6 +36,7 @@ class ChatRoomEntity(
             lastChatId = lastChatId,
             createdAt = createdAt,
             updatedAt = updatedAt,
+            name = name,
         )
 
     companion object {
@@ -43,6 +46,7 @@ class ChatRoomEntity(
                 workspaceId = chatRoom.workspaceId,
                 chatRoomType = chatRoom.chatRoomType,
                 lastChatId = chatRoom.lastChatId,
+                name = chatRoom.name,
             )
     }
 }

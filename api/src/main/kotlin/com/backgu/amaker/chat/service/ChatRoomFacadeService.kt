@@ -1,6 +1,7 @@
 package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.ChatRoom
+import com.backgu.amaker.chat.dto.ChatRoomCreateDto
 import com.backgu.amaker.chat.dto.ChatRoomDto
 import com.backgu.amaker.user.service.UserService
 import com.backgu.amaker.workspace.service.WorkspaceService
@@ -21,12 +22,13 @@ class ChatRoomFacadeService(
     fun createChatRoom(
         userId: String,
         workspaceId: Long,
+        chatRoomCreateDto: ChatRoomCreateDto,
     ): ChatRoomDto {
         val user = userService.getById(userId)
         val workspace = workspaceService.getById(workspaceId)
         workspaceUserService.verifyUserHasAdminPrivileges(workspace, user)
 
-        val chatRoom: ChatRoom = chatRoomService.save(workspace.createCustomChatRoom())
+        val chatRoom: ChatRoom = chatRoomService.save(workspace.createCustomChatRoom(chatRoomCreateDto.name))
         chatRoomUserService.save(chatRoom.addUser(user))
         return ChatRoomDto.of(chatRoom)
     }

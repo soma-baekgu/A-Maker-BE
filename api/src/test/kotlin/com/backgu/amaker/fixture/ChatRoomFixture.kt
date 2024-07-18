@@ -17,7 +17,7 @@ class ChatRoomFixture(
     ): ChatRoom =
         chatRoomRepository
             .save(
-                ChatRoomEntity(workspaceId = workspaceId, chatRoomType = chatRoomType),
+                ChatRoomEntity(workspaceId = workspaceId, name = "General", chatRoomType = chatRoomType),
             ).toDomain()
 
     fun testGroupChatRoomSetUp(workspace: Workspace): ChatRoom =
