@@ -94,12 +94,9 @@ class WorkspaceFacadeService(
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
         emailEventService.publishEmailEvent(WorkspaceJoinedEvent(user, workspace))
-        workspaceUser.activate()
-        workspaceUserService.save(workspaceUser)
+        workspaceUserService.save(workspaceUser.activate())
 
-        chatRoomService
-            .findGroupChatRoomByWorkspaceId(workspaceId)
-            .addUser(user)
+        chatRoomUserService.save(chatRoomService.findDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
 
         return WorkspaceUserDto.of(workspaceUser)
     }
