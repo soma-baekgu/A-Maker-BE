@@ -25,7 +25,7 @@ class ChatRoomService(
                 throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
             }
 
-    fun findDefaultChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
+    fun getDefaultChatRoomByWorkspaceId(workspaceId: Long): ChatRoom =
         chatRoomRepository.findByWorkspaceIdAndChatRoomType(workspaceId, ChatRoomType.DEFAULT)?.toDomain() ?: run {
             throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
         }

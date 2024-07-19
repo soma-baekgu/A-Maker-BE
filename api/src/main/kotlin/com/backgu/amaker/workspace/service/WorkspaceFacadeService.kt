@@ -96,7 +96,7 @@ class WorkspaceFacadeService(
         emailEventService.publishEmailEvent(WorkspaceJoinedEvent(user, workspace))
         workspaceUserService.save(workspaceUser.activate())
 
-        chatRoomUserService.save(chatRoomService.findDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
 
         return WorkspaceUserDto.of(workspaceUser)
     }

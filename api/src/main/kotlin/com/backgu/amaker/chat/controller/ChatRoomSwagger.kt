@@ -26,7 +26,7 @@ interface ChatRoomSwagger {
     )
     fun createChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @PathVariable("w-id") workspaceId: Long,
+        @PathVariable("workspace-id") workspaceId: Long,
         @RequestBody chatRoomCreateRequest: ChatRoomCreateRequest,
     ): ResponseEntity<ApiResult<ChatRoomResponse>>
 }

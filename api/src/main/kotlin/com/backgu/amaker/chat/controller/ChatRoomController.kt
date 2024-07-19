@@ -22,10 +22,10 @@ class ChatRoomController(
     private val chatFacadeService: ChatRoomFacadeService,
     private val apiHandler: ApiHandler,
 ) : ChatRoomSwagger {
-    @PostMapping("/workspaces/{w-id}/chat-rooms")
+    @PostMapping("/workspaces/{workspace-id}/chat-rooms")
     override fun createChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @PathVariable("w-id") workspaceId: Long,
+        @PathVariable("workspace-id") workspaceId: Long,
         @RequestBody @Valid chatRoomCreateRequest: ChatRoomCreateRequest,
     ): ResponseEntity<ApiResult<ChatRoomResponse>> {
         val chatRoom = chatFacadeService.createChatRoom(token.id, workspaceId, chatRoomCreateRequest.toDto())
