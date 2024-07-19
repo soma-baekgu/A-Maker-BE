@@ -60,6 +60,7 @@ interface WorkspaceSwagger {
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<ApiResult<WorkspaceResponse>>
 
+    @Deprecated("사용하지 않음")
     @Operation(summary = "기본 채팅방 조회", description = "워크스페이스의 기본 채팅방을 조회합니다.")
     @ApiResponses(
         value = [
