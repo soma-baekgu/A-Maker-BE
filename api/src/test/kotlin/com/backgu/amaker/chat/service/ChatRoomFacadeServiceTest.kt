@@ -70,12 +70,11 @@ class ChatRoomFacadeServiceTest {
     @DisplayName("유저가 속한 채팅방 조회 성공")
     fun findChatRoomsJoined() {
         // given
-        val workspaceId = 1L
-        val lastChat: Chat = fixtures.chatFixture.createPersistedChat(1L, TEST_USER_ID, "content")
+        val lastChat: Chat = fixtures.chatFixture.createPersistedChat(chatRoom.id, TEST_USER_ID, "content")
         fixtures.chatRoomFixture.save(chatRoom.updateLastChatId(lastChat))
 
         // when
-        val result: ChatRoomsViewDto = chatRoomFacadeService.findChatRoomsJoined(TEST_USER_ID, workspaceId)
+        val result: ChatRoomsViewDto = chatRoomFacadeService.findChatRoomsJoined(TEST_USER_ID, workspace.id)
 
         // then
         assertThat(result.chatRooms).isNotNull
