@@ -345,4 +345,32 @@ class ChatServiceTest {
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_NOT_FOUND)
     }
+
+    @Test
+    @DisplayName("읽지 않은 채팅 개수 조회 테스트 - 마지막 읽은 채팅이 없을 때")
+    fun getUnReadChatCountNonLastReadChat() {
+        // given
+        val chatRoomId = 1L
+        val lasReadChatId: Long? = null
+
+        // when
+        val chatCount = chatService.getUnreadChatCount(chatRoomId, lasReadChatId)
+
+        // then
+        assertThat(chatCount).isEqualTo(100)
+    }
+
+    @Test
+    @DisplayName("읽지 않은 채팅 개수 조회 테스트 - 마지막 읽은 채팅이 있을 때")
+    fun getUnReadChatCount() {
+        // given
+        val chatRoomId = 1L
+        val lasReadChatId: Long = 20
+
+        // when
+        val chatCount = chatService.getUnreadChatCount(chatRoomId, lasReadChatId)
+
+        // then
+        assertThat(chatCount).isEqualTo(80)
+    }
 }

@@ -34,4 +34,7 @@ class ChatRoomService(
         chatRoomRepository.findByIdOrNull(chatRoomId)?.toDomain() ?: run {
             throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
         }
+
+    fun findChatRoomsByChatRoomIds(chatRoomIds: List<Long>): List<ChatRoom> =
+        chatRoomRepository.findByIdIn(chatRoomIds).map { it.toDomain() }
 }

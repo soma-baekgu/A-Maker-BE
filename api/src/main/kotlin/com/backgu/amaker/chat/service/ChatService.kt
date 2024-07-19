@@ -36,4 +36,16 @@ class ChatService(
 
     fun getOneWithUser(chatId: Long?): ChatWithUserDto =
         chatId?.let { chatRepository.findByIdWithUser(it) } ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
+
+    fun getUnreadChatCount(
+        chatRoomId: Long,
+        lastReadChatId: Long?,
+    ): Long =
+        if (lastReadChatId == null) {
+            chatRepository.countByChatRoomId(chatRoomId)
+        } else {
+            chatRepository.countByChatRoomIdAndLastReadChatIdGreaterThan(chatRoomId, lastReadChatId)
+        }
+
+    fun findAllByIds(chatIds: List<Long>): List<Chat> = chatRepository.findAllById(chatIds).map { it.toDomain() }
 }

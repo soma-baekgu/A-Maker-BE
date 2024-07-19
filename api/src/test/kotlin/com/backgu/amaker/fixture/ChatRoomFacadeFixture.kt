@@ -18,8 +18,8 @@ class ChatRoomFacadeFixture(
         userId: String = "test-user-id",
         name: String = "김리더",
         workspaceName: String = "테스트 워크스페이스",
-    ): Workspace {
-        val leader: User = userFixture.createPersistedUser(id = userId, name = name, email = "leader@amaker.com")
+    ): ChatRoomFixtureDto {
+        val leader: User = userFixture.createPersistedUser(id = userId, name = name)
         val workspace: Workspace = workspaceFixture.createPersistedWorkspace(name = workspaceName)
         val members: List<User> = userFixture.createPersistedUsers(10)
 
@@ -37,7 +37,7 @@ class ChatRoomFacadeFixture(
             userIds = workspaceUsers.map { it.userId },
         )
 
-        return workspace
+        return ChatRoomFixtureDto(workspace, chatRoom)
     }
 
     fun deleteAll() {

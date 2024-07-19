@@ -39,4 +39,6 @@ class UserService(
     fun saveOrGetUser(user: User): User = userRepository.findByEmail(user.email)?.toDomain() ?: save(user)
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)?.toDomain()
+
+    fun findAllByUserIds(userIds: List<String>): List<User> = userRepository.findAllByIdIn(userIds).map { it.toDomain() }
 }

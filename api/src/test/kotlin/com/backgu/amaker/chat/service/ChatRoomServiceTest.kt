@@ -44,7 +44,7 @@ class ChatRoomServiceTest {
     fun saveChatRoom() {
         // given
         val leaderId = "tester"
-        val workspace = fixture.setUp(userId = leaderId)
+        val workspace = fixture.setUp(userId = leaderId).workspace
         val activeWorkspaceMember = fixture.userFixture.createPersistedUsers(10)
         fixture.workspaceUserFixture.createPersistedWorkspaceMember(
             workspaceId = workspace.id,

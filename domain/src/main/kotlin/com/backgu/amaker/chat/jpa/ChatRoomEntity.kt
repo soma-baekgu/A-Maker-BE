@@ -32,21 +32,21 @@ class ChatRoomEntity(
         ChatRoom(
             id = id,
             workspaceId = workspaceId,
+            name = name,
             chatRoomType = chatRoomType,
             lastChatId = lastChatId,
             createdAt = createdAt,
             updatedAt = updatedAt,
-            name = name,
         )
 
     companion object {
         fun of(chatRoom: ChatRoom): ChatRoomEntity =
             ChatRoomEntity(
                 id = chatRoom.id,
+                name = chatRoom.name,
                 workspaceId = chatRoom.workspaceId,
                 chatRoomType = chatRoom.chatRoomType,
                 lastChatId = chatRoom.lastChatId,
-                name = chatRoom.name,
             )
     }
 }
