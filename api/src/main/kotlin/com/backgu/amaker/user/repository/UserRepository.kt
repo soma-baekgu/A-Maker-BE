@@ -7,4 +7,6 @@ interface UserRepository : JpaRepository<UserEntity, String> {
     fun findByEmail(email: String): UserEntity?
 
     fun existsByEmail(email: String): Boolean
+
+    fun findAllByIdIn(userIds: List<String>): List<UserEntity>
 }

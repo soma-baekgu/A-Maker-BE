@@ -9,8 +9,12 @@ interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
         chatRoomId: Long,
     ): Boolean
 
+    fun findByUserId(userId: String): List<ChatRoomUserEntity>
+
     fun findByUserIdAndChatRoomId(
         userId: String,
         chatRoomId: Long,
     ): ChatRoomUserEntity?
+
+    fun findByChatRoomIdIn(userIds: List<Long>): List<ChatRoomUserEntity>
 }
