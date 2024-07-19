@@ -58,18 +58,18 @@ class ChatRoomFacadeService(
             chatRoomMys.associate { chatRoomMy ->
                 chatRoomMy.chatRoomId to
                     chatService.getUnreadChatCount(
-                        chatRoomMy.chatRoomId,
-                        chatRoomMy.lastReadChatId,
+                        chatRoomId = chatRoomMy.chatRoomId,
+                        lastReadChatId = chatRoomMy.lastReadChatId,
                     )
             }
 
         // 채팅방 목록을 반환
         return ChatRoomsViewDto.of(
-            chatRooms,
-            chatRoomUserMap,
-            lastChats,
-            userMap,
-            unreadChatCountMap,
+            chatRooms = chatRooms,
+            chatRoomUsers = chatRoomUserMap,
+            chatRoomWithLastChat = lastChats,
+            users = userMap,
+            unreadChatCountMap = unreadChatCountMap,
         )
     }
 
