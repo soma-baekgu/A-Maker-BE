@@ -29,8 +29,8 @@ class WorkspaceTest {
     }
 
     @Test
-    @DisplayName("워크스페이스에서 그룹 채팅방을 생성할 수 있다")
-    fun createGroupChatRoom() {
+    @DisplayName("워크스페이스에서 기본 채팅방을 생성할 수 있다")
+    fun createDefaultChatRoom() {
         // given
         val workspace = Workspace(name = "test")
         val leader =
@@ -38,11 +38,11 @@ class WorkspaceTest {
         workspace.assignLeader(leader)
 
         // when
-        val chatRoom: ChatRoom = workspace.createGroupChatRoom()
+        val chatRoom: ChatRoom = workspace.createDefaultChatRoom()
 
         // then
         assertThat(chatRoom).isNotNull
         assertThat(chatRoom.workspaceId).isEqualTo(workspace.id)
-        assertThat(chatRoom.chatRoomType).isEqualTo(ChatRoomType.GROUP)
+        assertThat(chatRoom.chatRoomType).isEqualTo(ChatRoomType.DEFAULT)
     }
 }

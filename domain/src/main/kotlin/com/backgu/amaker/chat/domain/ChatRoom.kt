@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 class ChatRoom(
     val id: Long = 0L,
+    var name: String,
     val workspaceId: Long,
     val chatRoomType: ChatRoomType,
     var lastChatId: Long? = null,

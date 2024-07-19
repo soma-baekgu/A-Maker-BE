@@ -28,12 +28,10 @@ class WorkspaceUserService(
         workspace: Workspace,
     ) {
         if (!workspaceUserRepository.existsByUserIdAndWorkspaceId(user.id, workspace.id)) {
-            logger.error { "User ${user.id} is not in Workspace ${workspace.id}" }
             throw BusinessException(StatusCode.WORKSPACE_UNREACHABLE)
         }
     }
 
-    @Transactional
     fun getWorkspaceUser(
         workspace: Workspace,
         user: User,
@@ -42,4 +40,12 @@ class WorkspaceUserService(
             .findByUserIdAndWorkspaceId(workspaceId = workspace.id, userId = user.id)
             ?.toDomain()
             ?: throw BusinessException(StatusCode.WORKSPACE_UNREACHABLE)
+
+    fun verifyUserHasAdminPrivileges(
+        workspace: Workspace,
+        user: User,
+    ) {
+        val workspaceUser = getWorkspaceUser(workspace, user)
+        if (!workspaceUser.isAdmin()) throw BusinessException(StatusCode.WORKSPACE_UNAUTHORIZED)
+    }
 }

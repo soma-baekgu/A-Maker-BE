@@ -12,7 +12,10 @@ class Workspace(
 ) : BaseTime() {
     fun assignLeader(user: User): WorkspaceUser = WorkspaceUser.makeWorkspaceLeader(workspace = this, user = user)
 
+    fun createCustomChatRoom(chatRoomName: String): ChatRoom =
+        ChatRoom(workspaceId = id, name = chatRoomName, chatRoomType = ChatRoomType.CUSTOM)
+
     fun inviteWorkspace(user: User): WorkspaceUser = WorkspaceUser(userId = user.id, workspaceId = id)
 
-    fun createGroupChatRoom(): ChatRoom = ChatRoom(workspaceId = id, chatRoomType = ChatRoomType.GROUP)
+    fun createDefaultChatRoom(): ChatRoom = ChatRoom(workspaceId = id, name = "일반 채팅", chatRoomType = ChatRoomType.DEFAULT)
 }

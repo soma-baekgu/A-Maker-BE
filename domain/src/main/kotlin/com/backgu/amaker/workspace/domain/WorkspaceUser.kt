@@ -10,9 +10,12 @@ class WorkspaceUser(
     var workspaceRole: WorkspaceRole = WorkspaceRole.MEMBER,
     var status: WorkspaceUserStatus = WorkspaceUserStatus.PENDING,
 ) : BaseTime() {
-    fun activate() {
+    fun activate(): WorkspaceUser {
         this.status = WorkspaceUserStatus.ACTIVE
+        return this
     }
+
+    fun isAdmin() = this.workspaceRole == WorkspaceRole.LEADER
 
     companion object {
         fun makeWorkspaceLeader(

@@ -38,7 +38,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser("findPreviousChatList")
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -75,7 +75,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -112,7 +112,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -149,7 +149,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -175,7 +175,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -212,7 +212,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -247,7 +247,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -282,7 +282,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
@@ -302,7 +302,7 @@ class ChatServiceTest {
         // given
         val user = chatFacadeFixture.userFixture.createPersistedUser()
         val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.GROUP)
+        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
         val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
         chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
