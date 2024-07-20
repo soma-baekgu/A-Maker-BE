@@ -36,7 +36,8 @@ class ChatRoomFacadeService(
         // 유저의 채팅방 목록 조회
         val chatRoomMys: List<ChatRoomUser> = chatRoomUserService.findAllByUser(user)
         // 채팅방 도메인 목록 조회
-        val chatRooms: List<ChatRoom> = chatRoomService.findChatRoomsByChatRoomIds(chatRoomMys.map { it.chatRoomId })
+        val chatRooms: List<ChatRoom> =
+            chatRoomService.findChatRoomsByChatRoomIdsAndWorkspaceId(chatRoomMys.map { it.chatRoomId }, workspaceId)
 
         // 채팅방의 마지막 채팅 조회
         val lastChats: Map<Long, Chat> =

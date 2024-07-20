@@ -10,5 +10,8 @@ interface ChatRoomRepository : JpaRepository<ChatRoomEntity, Long> {
         chatRoomType: ChatRoomType,
     ): ChatRoomEntity?
 
-    fun findByIdIn(chatRoomIds: List<Long>): List<ChatRoomEntity>
+    fun findByIdInAndWorkspaceId(
+        chatRoomIds: List<Long>,
+        workspaceId: Long,
+    ): List<ChatRoomEntity>
 }
