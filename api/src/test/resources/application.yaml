@@ -48,7 +48,7 @@ swagger:
 cors:
   allowed-origins:
     - "*"
-  allowed-headers:
+  allowed-methods:
     - GET
     - HEAD
     - POST
