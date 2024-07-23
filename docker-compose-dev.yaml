@@ -36,4 +36,5 @@ services:
       - backgu_dev_net
 
 networks:
-  backgu_dev_net: {}
+  backgu_dev_net:
+    external: true
