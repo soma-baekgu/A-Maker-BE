@@ -3,8 +3,10 @@ package com.backgu.amaker.security.config
 import com.backgu.amaker.security.filter.JwtAuthenticationTokenFilter
 import com.backgu.amaker.security.handler.AuthAccessDeniedHandler
 import com.backgu.amaker.security.handler.AuthEntryPoint
+import com.backgu.amaker.user.domain.UserRole
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -33,6 +35,10 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }.authorizeHttpRequests {
                 it
+                    .requestMatchers("/actuator/**")
+                    .hasRole(UserRole.ADMIN.value)
+                    .requestMatchers(HttpMethod.OPTIONS, "/**")
+                    .permitAll()
                     .requestMatchers(
                         "/auth/**",
                         "/api/v1/auth/**",

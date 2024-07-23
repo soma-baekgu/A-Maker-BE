@@ -11,7 +11,7 @@ class JwtAuthenticationToken : AbstractAuthenticationToken {
         this.principal = principal
     }
 
-    internal constructor(principal: JwtAuthentication, authorities: Collection<GrantedAuthority?>?) : super(
+    internal constructor(principal: JwtAuthentication, authorities: Collection<GrantedAuthority>) : super(
         authorities,
     ) {
         super.setAuthenticated(true)
