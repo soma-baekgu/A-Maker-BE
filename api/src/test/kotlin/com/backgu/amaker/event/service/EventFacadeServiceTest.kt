@@ -47,7 +47,7 @@ class EventFacadeServiceTest {
                 notificationStartMinute = 30,
                 interval = 10,
                 eventDetails = "eventDetails",
-                assignees = listOf(DEFAULT_USER_ID),
+                assignees = listOf("$DEFAULT_USER_ID@email.com"),
             )
 
         // when
