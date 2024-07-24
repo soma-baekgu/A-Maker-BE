@@ -3,7 +3,7 @@ package com.backgu.amaker.event.service
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.fixture.EventFixtureFacade
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired

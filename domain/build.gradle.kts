@@ -9,7 +9,6 @@ repositories {
     mavenCentral()
 }
 
-
 allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
