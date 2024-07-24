@@ -17,4 +17,9 @@ interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
     ): ChatRoomUserEntity?
 
     fun findByChatRoomIdIn(userIds: List<Long>): List<ChatRoomUserEntity>
+
+    fun findByUserIdInAndChatRoomId(
+        userIds: List<String>,
+        chatRoomId: Long,
+    ): List<ChatRoomUserEntity>
 }
