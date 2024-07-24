@@ -141,6 +141,67 @@ class ChatRoomFacadeServiceTest {
     }
 
     @Test
+    @DisplayName("워크스페이스에 속하지 않은 채팅방 조회 성공")
+    fun findChatRoomsNotRegistered() {
+        // given
+        fixtures.setUp(userId = "other1")
+        fixtures.setUp(userId = "other2")
+        fixtures.setUp(userId = "other3")
+
+        val leaderId = "leader"
+        val leader = fixtures.userFixture.createPersistedUser(leaderId)
+        val member = fixtures.userFixture.createPersistedUsers(10)
+        val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
+        fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
+
+        val defaultChatRoom =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            defaultChatRoom.id,
+            member.map { it.id }.plus(leader.id),
+        )
+
+        val leaderNotRegistered1 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered1.id, member.map { it.id })
+        val leaderNotRegistered2 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered2.id, member.map { it.id })
+        val leaderNotRegistered3 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered3.id, member.map { it.id })
+
+        val leadRegistered1 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            leadRegistered1.id,
+            member.map { it.id }.plus(leader.id),
+        )
+        val leadRegistered2 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            leadRegistered2.id,
+            member.map { it.id }.plus(leader.id),
+        )
+
+        // when
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findNotRegisteredChatRooms(leaderId, workspace.id)
+
+        // then
+        assertThat(result.chatRooms).isNotNull
+        assertThat(result.chatRooms.size).isEqualTo(3)
+        assertThat(leaderNotRegistered1.id).isIn(
+            result.chatRooms.map { it.chatRoomId },
+        )
+        assertThat(leaderNotRegistered2.id).isIn(
+            result.chatRooms.map { it.chatRoomId },
+        )
+        assertThat(leaderNotRegistered3.id).isIn(
+            result.chatRooms.map { it.chatRoomId },
+        )
+    }
+
+    @Test
     @DisplayName("워크스페이스에 채팅방이 없을 때 채팅방 조회 성공")
     fun findChatRoomsNoChatRoom() {
         // given
