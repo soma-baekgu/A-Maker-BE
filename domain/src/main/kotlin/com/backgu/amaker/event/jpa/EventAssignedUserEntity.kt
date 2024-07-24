@@ -33,11 +33,11 @@ class EventAssignedUserEntity(
         )
 
     companion object {
-        fun of(replyEventAssigned: EventAssignedUser): EventAssignedUserEntity =
+        fun of(eventAssigned: EventAssignedUser): EventAssignedUserEntity =
             EventAssignedUserEntity(
-                id = replyEventAssigned.id,
-                eventId = replyEventAssigned.eventId,
-                userId = replyEventAssigned.userId,
+                id = eventAssigned.id,
+                eventId = eventAssigned.eventId,
+                userId = eventAssigned.userId,
             )
     }
 }

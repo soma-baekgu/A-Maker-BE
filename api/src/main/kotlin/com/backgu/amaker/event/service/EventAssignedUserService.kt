@@ -2,22 +2,22 @@ package com.backgu.amaker.event.service
 
 import com.backgu.amaker.event.domain.EventAssignedUser
 import com.backgu.amaker.event.jpa.EventAssignedUserEntity
-import com.backgu.amaker.event.repository.ReplyEventAssignedRepository
+import com.backgu.amaker.event.repository.EventAssignedRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ReplyEventAssignedUserService(
-    private val replyEventAssignedRepository: ReplyEventAssignedRepository,
+class EventAssignedUserService(
+    private val eventAssignedRepository: EventAssignedRepository,
 ) {
     @Transactional
-    fun save(replyEventAssigned: EventAssignedUser): EventAssignedUser =
-        replyEventAssignedRepository.save(EventAssignedUserEntity.of(replyEventAssigned)).toDomain()
+    fun save(eventAssigned: EventAssignedUser): EventAssignedUser =
+        eventAssignedRepository.save(EventAssignedUserEntity.of(eventAssigned)).toDomain()
 
     @Transactional
     fun saveAll(createAssignedUsers: List<EventAssignedUser>): List<EventAssignedUser> =
-        replyEventAssignedRepository
+        eventAssignedRepository
             .saveAll(
                 createAssignedUsers
                     .map { EventAssignedUserEntity.of(it) },
