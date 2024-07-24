@@ -45,10 +45,10 @@ class EventFacadeService(
                 ),
             )
 
-        val userIds = userService.getAllByUserIds(replyEventCreateDto.assignees)
-        chatRoomUserService.validateUsersInChatRoom(userIds, chatRoom)
+        val users = userService.getAllByUserEmails(replyEventCreateDto.assignees)
+        chatRoomUserService.validateUsersInChatRoom(users, chatRoom)
 
-        replyEventAssignedUserService.saveAll(replyEvent.createAssignedUsers(userIds))
+        replyEventAssignedUserService.saveAll(replyEvent.createAssignedUsers(users))
 
         return ReplyEventDto.of(replyEvent)
     }
