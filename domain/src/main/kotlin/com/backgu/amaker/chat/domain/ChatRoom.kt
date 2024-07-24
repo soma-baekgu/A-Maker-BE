@@ -20,14 +20,14 @@ class ChatRoom(
 
     fun createChat(
         user: User,
-        chatRoom: ChatRoom,
         content: String,
+        chatType: ChatType = ChatType.GENERAL,
     ): Chat =
         Chat(
             userId = user.id,
-            chatRoomId = chatRoom.id,
+            chatRoomId = this.id,
             content = content,
-            chatType = ChatType.GENERAL,
+            chatType = chatType,
         )
 
     fun updateLastChatId(chat: Chat): ChatRoom {

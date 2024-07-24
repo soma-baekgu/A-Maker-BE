@@ -32,20 +32,36 @@ class ChatFixture(
         userId: String,
         count: Int = 10,
         messagePrefix: String = "테스트 메시지",
-    ): List<Chat> =
-        (0 until count).map {
-            createPersistedChat(chatRoomId, userId, "$messagePrefix $it")
-        }
+    ): List<Chat> {
+        val chatEntities =
+            (0 until count).map {
+                ChatEntity(
+                    chatRoomId = chatRoomId,
+                    userId = userId,
+                    content = "$messagePrefix $it",
+                    chatType = ChatType.GENERAL,
+                )
+            }
+        return chatJpaRepository.saveAll(chatEntities).map { it.toDomain() }
+    }
 
     fun createPersistedRandomUserChats(
         chatRoomId: Long,
         userIds: List<String>,
         count: Int = 10,
         messagePrefix: String = "테스트 메시지",
-    ): List<Chat> =
-        (0 until count).map {
-            createPersistedChat(chatRoomId, userIds[Random.nextInt(userIds.size)], "$messagePrefix $it")
-        }
+    ): List<Chat> {
+        val chatEntities =
+            (0 until count).map {
+                ChatEntity(
+                    chatRoomId = chatRoomId,
+                    userId = userIds[Random.nextInt(userIds.size)],
+                    content = "$messagePrefix $it",
+                    chatType = ChatType.GENERAL,
+                )
+            }
+        return chatJpaRepository.saveAll(chatEntities).map { it.toDomain() }
+    }
 
     fun deleteAll() {
         chatJpaRepository.deleteAll()
