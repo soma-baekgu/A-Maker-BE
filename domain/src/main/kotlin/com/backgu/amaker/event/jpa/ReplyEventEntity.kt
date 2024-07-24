@@ -4,9 +4,11 @@ import com.backgu.amaker.event.domain.ReplyEvent
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Entity
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 
-@Entity
+@Entity(name = "ReplyEvent")
+@Table(name = "reply_event")
 @DiscriminatorValue(value = "REPLY")
 class ReplyEventEntity(
     @Column(nullable = false)
