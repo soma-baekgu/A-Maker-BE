@@ -37,4 +37,7 @@ class ChatRoomService(
 
     fun findChatRoomsByChatRoomIds(chatRoomIds: List<Long>): List<ChatRoom> =
         chatRoomRepository.findByIdIn(chatRoomIds).map { it.toDomain() }
+
+    fun findChatRoomsByWorkspaceId(workspaceId: Long): List<ChatRoom> =
+        chatRoomRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
 }

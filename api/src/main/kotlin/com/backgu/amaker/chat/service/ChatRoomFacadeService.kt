@@ -3,8 +3,10 @@ package com.backgu.amaker.chat.service
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomUser
+import com.backgu.amaker.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.chat.dto.ChatRoomCreateDto
 import com.backgu.amaker.chat.dto.ChatRoomDto
+import com.backgu.amaker.chat.dto.ChatRoomWithUserDto
 import com.backgu.amaker.chat.dto.ChatRoomsViewDto
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.user.service.UserService
@@ -70,6 +72,31 @@ class ChatRoomFacadeService(
             chatRoomWithLastChat = lastChats,
             users = userMap,
             unreadChatCountMap = unreadChatCountMap,
+        )
+    }
+
+    fun findChatRooms(
+        userId: String,
+        workspaceId: Long,
+    ): BriefChatRoomViewDto {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getById(workspaceId)
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        val chatRooms: List<ChatRoom> = chatRoomService.findChatRoomsByWorkspaceId(workspaceId)
+        val chatRoomUserMap: Map<Long, List<ChatRoomUser>> =
+            chatRoomUserService.getByWorkspaceIdToMap(chatRooms.map { it.id })
+        val userMap: Map<String, User> =
+            userService.findAllByUserIdsToMap(chatRoomUserMap.map { it.value }.flatten().map { it.userId })
+
+        return BriefChatRoomViewDto(
+            chatRooms.map {
+                ChatRoomWithUserDto.of(
+                    chatRoom = it,
+                    chatRoomUser = chatRoomUserMap[it.id] ?: emptyList(),
+                    participants = userMap,
+                )
+            },
         )
     }
 

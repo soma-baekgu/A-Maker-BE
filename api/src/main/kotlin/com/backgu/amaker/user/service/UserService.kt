@@ -41,4 +41,7 @@ class UserService(
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)?.toDomain()
 
     fun findAllByUserIds(userIds: List<String>): List<User> = userRepository.findAllByIdIn(userIds).map { it.toDomain() }
+
+    fun findAllByUserIdsToMap(userIds: List<String>): Map<String, User> =
+        userRepository.findAllByIdIn(userIds).map { it.toDomain() }.associateBy { it.id }
 }
