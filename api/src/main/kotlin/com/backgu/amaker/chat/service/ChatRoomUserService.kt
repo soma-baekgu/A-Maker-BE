@@ -45,4 +45,14 @@ class ChatRoomUserService(
 
     fun findAllByChatRoomIds(chatRoomIds: List<Long>): List<ChatRoomUser> =
         chatRoomUserRepository.findByChatRoomIdIn(chatRoomIds).map { it.toDomain() }
+
+    fun validateUsersInChatRoom(
+        userIds: List<User>,
+        chatRoom: ChatRoom,
+    ) {
+        val chatRoomUsers = chatRoomUserRepository.findByUserIdInAndChatRoomId(userIds.map { it.id }, chatRoom.id)
+        if (chatRoomUsers.size != userIds.size) {
+            throw BusinessException(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
+        }
+    }
 }

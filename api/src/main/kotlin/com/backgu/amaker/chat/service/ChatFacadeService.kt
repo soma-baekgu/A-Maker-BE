@@ -29,7 +29,7 @@ class ChatFacadeService(
         val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
-        val chat: Chat = chatService.save(chatRoom.createChat(user, chatRoom, chatCreateDto.content))
+        val chat: Chat = chatService.save(chatRoom.createChat(user, chatCreateDto.content))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
         return ChatWithUserDto.of(chat, user)
