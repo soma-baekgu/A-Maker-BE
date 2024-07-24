@@ -36,7 +36,7 @@ class EventFacadeService(
 
         val replyEvent =
             replyEventService.save(
-                chat.crateReplyEvent(
+                chat.createReplyEvent(
                     replyEventCreateDto.deadLine,
                     replyEventCreateDto.notificationStartHour,
                     replyEventCreateDto.notificationStartMinute,

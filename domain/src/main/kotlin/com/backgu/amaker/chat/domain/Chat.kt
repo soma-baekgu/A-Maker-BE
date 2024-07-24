@@ -12,7 +12,7 @@ class Chat(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
-    fun crateReplyEvent(
+    fun createReplyEvent(
         deadLine: LocalDateTime,
         notificationStartHour: Int,
         notificationStartMinute: Int,

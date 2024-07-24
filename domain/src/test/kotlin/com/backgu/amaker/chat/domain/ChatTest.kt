@@ -26,7 +26,7 @@ class ChatTest {
         // when
 
         val replyEvent =
-            chat.crateReplyEvent(
+            chat.createReplyEvent(
                 deadLine = deadLine,
                 notificationStartHour = notificationStartHour,
                 notificationStartMinute = notificationStartMinute,
