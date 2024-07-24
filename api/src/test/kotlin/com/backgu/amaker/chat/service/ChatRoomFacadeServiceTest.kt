@@ -2,6 +2,8 @@ package com.backgu.amaker.chat.service
 
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
+import com.backgu.amaker.chat.domain.ChatRoomType
+import com.backgu.amaker.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.chat.dto.ChatRoomCreateDto
 import com.backgu.amaker.chat.dto.ChatRoomsViewDto
 import com.backgu.amaker.fixture.ChatRoomFacadeFixture
@@ -82,5 +84,81 @@ class ChatRoomFacadeServiceTest {
         assertThat(result.chatRooms[0].unreadChatCount).isEqualTo(1)
         assertThat(result.chatRooms[0].lastChat?.content).isEqualTo("content")
         assertThat(result.chatRooms[0].participants.size).isEqualTo(11)
+    }
+
+    @Test
+    @DisplayName("워크스페이스에 속한 채팅방 조회 성공")
+    fun findChatRooms() {
+        // given
+        fixtures.setUp(userId = "other1")
+        fixtures.setUp(userId = "other2")
+        fixtures.setUp(userId = "other3")
+
+        val leaderId = "leader"
+        val leader = fixtures.userFixture.createPersistedUser(leaderId)
+        val member = fixtures.userFixture.createPersistedUsers(10)
+        val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
+        fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
+
+        val defaultChatRoom =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            defaultChatRoom.id,
+            member.map { it.id }.plus(leader.id),
+        )
+
+        val leaderNotRegistered1 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered1.id, member.map { it.id })
+        val leaderNotRegistered2 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered2.id, member.map { it.id })
+        val leaderNotRegistered3 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered3.id, member.map { it.id })
+
+        val leadRegistered1 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            leadRegistered1.id,
+            member.map { it.id }.plus(leader.id),
+        )
+        val leadRegistered2 =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
+            leadRegistered2.id,
+            member.map { it.id }.plus(leader.id),
+        )
+
+        // when
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
+
+        // then
+        assertThat(result.chatRooms).isNotNull
+        assertThat(result.chatRooms.size).isEqualTo(6)
+
+        assertThat(result.chatRooms[0].participants.size).isEqualTo(11)
+    }
+
+    @Test
+    @DisplayName("워크스페이스에 채팅방이 없을 때 채팅방 조회 성공")
+    fun findChatRoomsNoChatRoom() {
+        // given
+        fixtures.setUp(userId = "other1")
+        fixtures.setUp(userId = "other2")
+        fixtures.setUp(userId = "other3")
+
+        val leaderId = "leader"
+        val leader = fixtures.userFixture.createPersistedUser(leaderId)
+        val member = fixtures.userFixture.createPersistedUsers(10)
+        val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
+        fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
+
+        // when
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
+
+        // then
+        assertThat(result.chatRooms).isNotNull
+        assertThat(result.chatRooms.size).isEqualTo(0)
     }
 }
