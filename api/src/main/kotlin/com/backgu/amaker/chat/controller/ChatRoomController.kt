@@ -60,6 +60,25 @@ class ChatRoomController(
                 ),
             )
 
+    @GetMapping("/chat-rooms/{chat-room-id}/not-joined")
+    override fun findChatRoomsNotJoined(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+    ): ResponseEntity<ApiResult<BriefChatRoomResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    BriefChatRoomResponse.of(
+                        chatRoomFacadeService.findNotRegisteredChatRooms(
+                            token.id,
+                            workspaceId,
+                        ),
+                    ),
+                ),
+            )
+
     @GetMapping("/chat-rooms/joined")
     override fun findChatRoomsJoined(
         @AuthenticationPrincipal token: JwtAuthentication,

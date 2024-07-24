@@ -40,4 +40,12 @@ class ChatRoomService(
 
     fun findChatRoomsByWorkspaceId(workspaceId: Long): List<ChatRoom> =
         chatRoomRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
+
+    fun findNotRegisteredChatRoomsByWorkspaceId(
+        workspaceId: Long,
+        userId: String,
+    ): List<ChatRoom> =
+        chatRoomRepository.findByWorkspaceIdWithNoRegisteredUser(workspaceId, userId).map {
+            it.toDomain()
+        }
 }

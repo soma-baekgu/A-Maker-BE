@@ -100,6 +100,31 @@ class ChatRoomFacadeService(
         )
     }
 
+    fun findNotRegisteredChatRooms(
+        userId: String,
+        workspaceId: Long,
+    ): BriefChatRoomViewDto {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getById(workspaceId)
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        val chatRooms: List<ChatRoom> = chatRoomService.findNotRegisteredChatRoomsByWorkspaceId(workspaceId, userId)
+        val chatRoomUserMap: Map<Long, List<ChatRoomUser>> =
+            chatRoomUserService.getByWorkspaceIdToMap(chatRooms.map { it.id })
+        val userMap: Map<String, User> =
+            userService.findAllByUserIdsToMap(chatRoomUserMap.map { it.value }.flatten().map { it.userId })
+
+        return BriefChatRoomViewDto(
+            chatRooms.map {
+                ChatRoomWithUserDto.of(
+                    chatRoom = it,
+                    chatRoomUser = chatRoomUserMap[it.id] ?: emptyList(),
+                    participants = userMap,
+                )
+            },
+        )
+    }
+
     @Transactional
     fun createChatRoom(
         userId: String,
