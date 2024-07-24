@@ -41,4 +41,14 @@ class UserService(
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)?.toDomain()
 
     fun findAllByUserIds(userIds: List<String>): List<User> = userRepository.findAllByIdIn(userIds).map { it.toDomain() }
+
+    fun getAllByUserEmails(userIds: List<String>): List<User> {
+        val users = userRepository.findAllByEmailIn(userIds).map { it.toDomain() }
+
+        if (userIds.size != users.size) {
+            throw BusinessException(StatusCode.USER_NOT_FOUND)
+        }
+
+        return users
+    }
 }
