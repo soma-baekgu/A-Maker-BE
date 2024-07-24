@@ -13,6 +13,5 @@ class ReplyEvent(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
-    fun createAssignedUsers(userIds: List<User>): List<ReplyEventAssignedUser> =
-        userIds.map { ReplyEventAssignedUser(eventId = id, userId = it.id) }
+    fun createAssignedUsers(userIds: List<User>): List<EventAssignedUser> = userIds.map { EventAssignedUser(eventId = id, userId = it.id) }
 }

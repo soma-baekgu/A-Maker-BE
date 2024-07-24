@@ -2,7 +2,7 @@ package com.backgu.amaker.event.domain
 
 import java.time.LocalDateTime
 
-class ReplyEventAssignedUser(
+class EventAssignedUser(
     val id: Long = 0L,
     val eventId: Long,
     val userId: String,

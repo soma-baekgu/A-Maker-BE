@@ -1,15 +1,17 @@
 package com.backgu.amaker.event.jpa
 
 import com.backgu.amaker.common.jpa.BaseTimeEntity
-import com.backgu.amaker.event.domain.ReplyEventAssignedUser
+import com.backgu.amaker.event.domain.EventAssignedUser
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
-@Entity
-class ReplyEventAssignedUserEntity(
+@Entity(name = "EventAssignedUser")
+@Table(name = "event_assigned_user")
+class EventAssignedUserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
@@ -20,8 +22,8 @@ class ReplyEventAssignedUserEntity(
     @Column(nullable = false)
     val isFinished: Boolean = false,
 ) : BaseTimeEntity() {
-    fun toDomain(): ReplyEventAssignedUser =
-        ReplyEventAssignedUser(
+    fun toDomain(): EventAssignedUser =
+        EventAssignedUser(
             id = id,
             eventId = eventId,
             userId = userId,
@@ -31,8 +33,8 @@ class ReplyEventAssignedUserEntity(
         )
 
     companion object {
-        fun of(replyEventAssigned: ReplyEventAssignedUser): ReplyEventAssignedUserEntity =
-            ReplyEventAssignedUserEntity(
+        fun of(replyEventAssigned: EventAssignedUser): EventAssignedUserEntity =
+            EventAssignedUserEntity(
                 id = replyEventAssigned.id,
                 eventId = replyEventAssigned.eventId,
                 userId = replyEventAssigned.userId,
