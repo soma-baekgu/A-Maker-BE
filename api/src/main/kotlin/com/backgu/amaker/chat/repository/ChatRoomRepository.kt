@@ -22,7 +22,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoomEntity, Long> {
             "select cru.chatRoomId from ChatRoomUser cru where cru.userId = :userId" +
             ")",
     )
-    fun findByWorkspaceIdWithNoRegisteredUser(
+    fun findByWorkspaceIdWithNotRegisteredUser(
         workspaceId: Long,
         userId: String,
     ): List<ChatRoomEntity>

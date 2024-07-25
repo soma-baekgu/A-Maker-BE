@@ -58,7 +58,6 @@ interface ChatRoomSwagger {
     fun findChatRoomsNotJoined(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
-        @PathVariable("chat-room-id") chatRoomId: Long,
     ): ResponseEntity<ApiResult<BriefChatRoomResponse>>
 
     @Operation(summary = "참여한 채팅방 조회", description = "사용자가 참여한 채팅방을 조회합니다.")
