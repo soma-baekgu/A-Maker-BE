@@ -42,6 +42,9 @@ class UserService(
 
     fun findAllByUserIds(userIds: List<String>): List<User> = userRepository.findAllByIdIn(userIds).map { it.toDomain() }
 
+    fun findAllByUserIdsToMap(userIds: List<String>): Map<String, User> =
+        userRepository.findAllByIdIn(userIds).map { it.toDomain() }.associateBy { it.id }
+
     fun getAllByUserEmails(userIds: List<String>): List<User> {
         val users = userRepository.findAllByEmailIn(userIds).map { it.toDomain() }
 

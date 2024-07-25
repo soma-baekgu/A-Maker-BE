@@ -1,6 +1,7 @@
 package com.backgu.amaker.chat.controller
 
 import com.backgu.amaker.chat.dto.request.ChatRoomCreateRequest
+import com.backgu.amaker.chat.dto.response.BriefChatRoomResponse
 import com.backgu.amaker.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.chat.dto.response.ChatRoomsViewResponse
 import com.backgu.amaker.chat.service.ChatRoomFacadeService
@@ -40,6 +41,42 @@ class ChatRoomController(
                     .toUri(),
             ).body(apiHandler.onSuccess(ChatRoomResponse.of(chatRoom)))
     }
+
+    @GetMapping("/chat-rooms")
+    override fun findChatRooms(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+    ): ResponseEntity<ApiResult<BriefChatRoomResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    BriefChatRoomResponse.of(
+                        chatRoomFacadeService.findChatRooms(
+                            token.id,
+                            workspaceId,
+                        ),
+                    ),
+                ),
+            )
+
+    @GetMapping("/chat-rooms/not-joined")
+    override fun findChatRoomsNotJoined(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+    ): ResponseEntity<ApiResult<BriefChatRoomResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    BriefChatRoomResponse.of(
+                        chatRoomFacadeService.findNotRegisteredChatRooms(
+                            token.id,
+                            workspaceId,
+                        ),
+                    ),
+                ),
+            )
 
     @GetMapping("/chat-rooms/joined")
     override fun findChatRoomsJoined(

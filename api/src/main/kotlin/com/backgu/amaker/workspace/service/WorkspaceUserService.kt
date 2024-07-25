@@ -5,6 +5,7 @@ import com.backgu.amaker.common.exception.StatusCode
 import com.backgu.amaker.user.domain.User
 import com.backgu.amaker.workspace.domain.Workspace
 import com.backgu.amaker.workspace.domain.WorkspaceUser
+import com.backgu.amaker.workspace.domain.WorkspaceUserStatus
 import com.backgu.amaker.workspace.jpa.WorkspaceUserEntity
 import com.backgu.amaker.workspace.repository.WorkspaceUserRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -27,7 +28,7 @@ class WorkspaceUserService(
         user: User,
         workspace: Workspace,
     ) {
-        if (!workspaceUserRepository.existsByUserIdAndWorkspaceId(user.id, workspace.id)) {
+        if (!workspaceUserRepository.existsByUserIdAndWorkspaceIdAndStatus(user.id, workspace.id, WorkspaceUserStatus.ACTIVE)) {
             throw BusinessException(StatusCode.WORKSPACE_UNREACHABLE)
         }
     }
