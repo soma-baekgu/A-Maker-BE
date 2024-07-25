@@ -21,4 +21,3 @@ class FileFacadeService(
 
     private fun getRandomFileName(): String = idPublisher.publishId()
 }
-

@@ -13,7 +13,5 @@ class AWSConfig(
         lateinit var secretKey: String
         lateinit var region: String
         lateinit var bucket: String
-        lateinit var url: String
-        lateinit var locate: String
     }
 }

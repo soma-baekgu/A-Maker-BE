@@ -82,5 +82,3 @@ amazon:
     secret-key: ${AWS_S3_SECRET}
     region: ${AWS_REGION}
     bucket: ${AWS_BUCKET}
-    url: ${AWS_BASE_URL}
-    locate: ${AWS_LOCATE}
