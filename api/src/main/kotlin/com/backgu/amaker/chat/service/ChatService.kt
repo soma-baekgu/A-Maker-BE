@@ -25,6 +25,7 @@ class ChatService(
         chatRepository
             .findTopByChatRoomIdLittleThanCursorLimitCountWithUser(chatRoomId, cursor, size)
             .asReversed()
+            .map { ChatWithUserDto.of(it) }
 
     fun findAfterChatList(
         chatRoomId: Long,
@@ -33,9 +34,13 @@ class ChatService(
     ): List<ChatWithUserDto> =
         chatRepository
             .findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(chatRoomId, cursor, size)
+            .map { ChatWithUserDto.of(it) }
 
     fun getOneWithUser(chatId: Long?): ChatWithUserDto =
-        chatId?.let { chatRepository.findByIdWithUser(it) } ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
+        ChatWithUserDto.of(
+            chatId?.let { chatRepository.findByIdWithUser(it) }
+                ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND),
+        )
 
     fun getUnreadChatCount(
         chatRoomId: Long,

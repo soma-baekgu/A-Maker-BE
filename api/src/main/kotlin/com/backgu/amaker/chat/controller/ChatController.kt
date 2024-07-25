@@ -97,14 +97,14 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody chatCreateRequest: ChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserDto: ChatWithUserDto =
+        val chatWithUserQuery: ChatWithUserDto =
             chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId)
         return ResponseEntity
             .created(
                 ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
-                    .buildAndExpand(chatWithUserDto.id)
+                    .buildAndExpand(chatWithUserQuery.id)
                     .toUri(),
             ).build()
     }
