@@ -1,9 +1,11 @@
 package com.backgu.amaker.chat.controller
 
 import com.backgu.amaker.chat.annotation.ChattingLoginUser
+import com.backgu.amaker.chat.domain.ChatType
 import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.chat.dto.response.ChatListResponse
 import com.backgu.amaker.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.chat.service.ChatFacadeService
@@ -99,6 +101,24 @@ class ChatController(
     ): ResponseEntity<Unit> {
         val chatWithUserDto: ChatWithUserDto =
             chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId)
+        return ResponseEntity
+            .created(
+                ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(chatWithUserDto.id)
+                    .toUri(),
+            ).build()
+    }
+
+    @PostMapping("/chat-rooms/{chat-room-id}/chats/file")
+    override fun createChatWithFile(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
+    ): ResponseEntity<Unit> {
+        val chatWithUserDto: ChatWithUserDto =
+            chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
         return ResponseEntity
             .created(
                 ServletUriComponentsBuilder

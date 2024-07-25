@@ -5,4 +5,5 @@ enum class ChatType {
     TASK,
     REPLY,
     REACTION,
+    FILE,
 }

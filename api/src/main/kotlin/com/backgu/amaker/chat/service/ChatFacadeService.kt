@@ -3,6 +3,7 @@ package com.backgu.amaker.chat.service
 import com.backgu.amaker.chat.domain.Chat
 import com.backgu.amaker.chat.domain.ChatRoom
 import com.backgu.amaker.chat.domain.ChatRoomUser
+import com.backgu.amaker.chat.domain.ChatType
 import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
@@ -25,11 +26,12 @@ class ChatFacadeService(
         chatCreateDto: ChatCreateDto,
         userId: String,
         chatRoomId: Long,
+        chatType: ChatType = ChatType.GENERAL,
     ): ChatWithUserDto {
         val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
-        val chat: Chat = chatService.save(chatRoom.createChat(user, chatCreateDto.content))
+        val chat: Chat = chatService.save(chatRoom.createChat(user, chatCreateDto.content, chatType))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
         return ChatWithUserDto.of(chat, user)

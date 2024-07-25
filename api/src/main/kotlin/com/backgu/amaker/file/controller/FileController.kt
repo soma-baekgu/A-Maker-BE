@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class FileController(
     val fileFacadeService: FileFacadeService,
     val apiHandler: ApiHandler,
-) : FileSwagger{
+) : FileSwagger {
     @GetMapping("/url")
     override fun generateFileSaveUrl(
         @AuthenticationPrincipal token: JwtAuthentication,
