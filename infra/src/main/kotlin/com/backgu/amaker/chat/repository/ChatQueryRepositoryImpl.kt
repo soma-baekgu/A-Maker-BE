@@ -1,8 +1,8 @@
 package com.backgu.amaker.chat.repository
 
-import com.backgu.amaker.chat.dto.ChatWithUserDto
-import com.backgu.amaker.chat.dto.QChatWithUserDto
 import com.backgu.amaker.chat.jpa.QChatEntity.chatEntity
+import com.backgu.amaker.chat.query.ChatWithUserQuery
+import com.backgu.amaker.chat.query.QChatWithUserQuery
 import com.backgu.amaker.user.jpa.QUserEntity.userEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 
@@ -13,10 +13,10 @@ class ChatQueryRepositoryImpl(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto> =
+    ): List<ChatWithUserQuery> =
         queryFactory
             .select(
-                QChatWithUserDto(
+                QChatWithUserQuery(
                     chatEntity.id,
                     chatEntity.chatRoomId,
                     chatEntity.content,
@@ -40,10 +40,10 @@ class ChatQueryRepositoryImpl(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto> =
+    ): List<ChatWithUserQuery> =
         queryFactory
             .select(
-                QChatWithUserDto(
+                QChatWithUserQuery(
                     chatEntity.id,
                     chatEntity.chatRoomId,
                     chatEntity.content,
@@ -63,10 +63,10 @@ class ChatQueryRepositoryImpl(
             .limit(size.toLong())
             .fetch()
 
-    override fun findByIdWithUser(chatId: Long): ChatWithUserDto? =
+    override fun findByIdWithUser(chatId: Long): ChatWithUserQuery? =
         queryFactory
             .select(
-                QChatWithUserDto(
+                QChatWithUserQuery(
                     chatEntity.id,
                     chatEntity.chatRoomId,
                     chatEntity.content,

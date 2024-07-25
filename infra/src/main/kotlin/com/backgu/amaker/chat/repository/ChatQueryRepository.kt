@@ -1,19 +1,19 @@
 package com.backgu.amaker.chat.repository
 
-import com.backgu.amaker.chat.dto.ChatWithUserDto
+import com.backgu.amaker.chat.query.ChatWithUserQuery
 
 interface ChatQueryRepository {
     fun findTopByChatRoomIdLittleThanCursorLimitCountWithUser(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto>
+    ): List<ChatWithUserQuery>
 
     fun findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto>
+    ): List<ChatWithUserQuery>
 
-    fun findByIdWithUser(chatId: Long): ChatWithUserDto?
+    fun findByIdWithUser(chatId: Long): ChatWithUserQuery?
 }
