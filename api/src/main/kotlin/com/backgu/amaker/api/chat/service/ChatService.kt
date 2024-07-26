@@ -6,6 +6,7 @@ import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.infra.jpa.chat.entity.ChatEntity
 import com.backgu.amaker.infra.jpa.chat.repository.ChatRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -53,4 +54,6 @@ class ChatService(
         }
 
     fun findAllByIds(chatIds: List<Long>): List<Chat> = chatRepository.findAllById(chatIds).map { it.toDomain() }
+
+    fun getById(chatId: Long) = chatRepository.findByIdOrNull(chatId)?.toDomain() ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
 }
