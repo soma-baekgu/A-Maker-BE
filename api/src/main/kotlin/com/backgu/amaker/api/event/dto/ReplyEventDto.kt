@@ -3,7 +3,7 @@ package com.backgu.amaker.api.event.dto
 import com.backgu.amaker.domain.event.ReplyEvent
 import java.time.LocalDateTime
 
-class ReplyEventDto(
+data class ReplyEventDto(
     val id: Long,
     val eventTitle: String,
     val eventDetails: String,
