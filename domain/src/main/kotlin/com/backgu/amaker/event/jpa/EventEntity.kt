@@ -1,6 +1,7 @@
 package com.backgu.amaker.event.jpa
 
 import com.backgu.amaker.common.jpa.BaseTimeEntity
+import com.backgu.amaker.event.domain.Event
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorColumn
 import jakarta.persistence.DiscriminatorType
@@ -26,4 +27,6 @@ abstract class EventEntity(
     val notificationStartTime: LocalDateTime,
     @Column(nullable = false)
     val notificationInterval: Int,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    abstract fun toDomain(): Event
+}

@@ -6,6 +6,7 @@ import com.backgu.amaker.chat.domain.ChatRoomType
 import com.backgu.amaker.chat.dto.ChatCreateDto
 import com.backgu.amaker.chat.dto.ChatListDto
 import com.backgu.amaker.chat.dto.ChatQuery
+import com.backgu.amaker.chat.dto.ChatWithUser
 import com.backgu.amaker.chat.dto.ChatWithUserDto
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.exception.StatusCode
@@ -176,7 +177,7 @@ class ChatFacadeServiceTest {
         fixture.chatFixture.createPersistedChat(chatRoom.id, userId)
 
         // when
-        val recentChat: ChatWithUserDto =
+        val recentChat: ChatWithUser<*> =
             chatFacadeService.getRecentChat(userId, chatRoom.id)
 
         // then

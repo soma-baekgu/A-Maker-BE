@@ -4,14 +4,14 @@ import com.backgu.amaker.user.domain.User
 import java.time.LocalDateTime
 
 class ReplyEvent(
-    val id: Long,
-    val eventTitle: String,
-    val eventDetails: String,
-    val deadLine: LocalDateTime,
-    val notificationStartTime: LocalDateTime,
-    val notificationInterval: Int,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
-) {
+    id: Long,
+    eventTitle: String,
+    eventDetails: String,
+    deadLine: LocalDateTime,
+    notificationStartTime: LocalDateTime,
+    notificationInterval: Int,
+    createdAt: LocalDateTime = LocalDateTime.now(),
+    updatedAt: LocalDateTime = LocalDateTime.now(),
+) : Event(id, eventTitle, eventDetails, deadLine, notificationStartTime, notificationInterval, createdAt, updatedAt) {
     fun createAssignedUsers(userIds: List<User>): List<EventAssignedUser> = userIds.map { EventAssignedUser(eventId = id, userId = it.id) }
 }
