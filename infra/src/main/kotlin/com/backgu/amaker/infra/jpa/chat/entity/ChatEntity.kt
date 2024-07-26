@@ -22,7 +22,7 @@ class ChatEntity(
     val chatRoomId: Long,
     @Column(nullable = false)
     val userId: String,
-    @Column(nullable = false)
+    @Column(nullable = false, length = 65535)
     var content: String,
     @Enumerated(EnumType.STRING)
     val chatType: ChatType,

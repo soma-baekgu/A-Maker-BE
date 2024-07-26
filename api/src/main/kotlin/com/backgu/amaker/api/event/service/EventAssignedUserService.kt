@@ -15,6 +15,11 @@ class EventAssignedUserService(
     fun save(eventAssigned: EventAssignedUser): EventAssignedUser =
         eventAssignedRepository.save(EventAssignedUserEntity.of(eventAssigned)).toDomain()
 
+    fun findByEventId(eventId: Long): List<EventAssignedUser> = eventAssignedRepository.findByEventId(eventId).map { it.toDomain() }
+
+    fun findByEventIdsToEventIdMapped(eventIds: List<Long>): Map<Long, List<EventAssignedUser>> =
+        eventAssignedRepository.findByEventIdIn(eventIds).map { it.toDomain() }.groupBy { it.eventId }
+
     @Transactional
     fun saveAll(createAssignedUsers: List<EventAssignedUser>): List<EventAssignedUser> =
         eventAssignedRepository

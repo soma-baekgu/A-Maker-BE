@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.fixture
 
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
-import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
+import com.backgu.amaker.api.chat.dto.response.DefaultChatWithUserResponse
 import com.backgu.amaker.api.security.jwt.component.JwtComponent
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -63,18 +63,18 @@ class StompFixtureFacade(
     fun subscribeToChatRoom(
         session: StompSession,
         chatRoomId: Long,
-    ): CompletableFuture<ChatWithUserResponse> {
-        val future: CompletableFuture<ChatWithUserResponse> = CompletableFuture()
+    ): CompletableFuture<DefaultChatWithUserResponse> {
+        val future: CompletableFuture<DefaultChatWithUserResponse> = CompletableFuture()
         session.subscribe(
             "/sub/chat-rooms/$chatRoomId",
             object : StompFrameHandler {
-                override fun getPayloadType(headers: StompHeaders) = ChatWithUserResponse::class.java
+                override fun getPayloadType(headers: StompHeaders) = DefaultChatWithUserResponse::class.java
 
                 override fun handleFrame(
                     headers: StompHeaders,
                     payload: Any?,
                 ) {
-                    future.complete(payload as ChatWithUserResponse)
+                    future.complete(payload as DefaultChatWithUserResponse)
                 }
             },
         )

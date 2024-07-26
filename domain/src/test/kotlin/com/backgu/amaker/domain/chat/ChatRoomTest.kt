@@ -34,7 +34,7 @@ class ChatRoomTest {
         val content = "안녕하세요"
 
         // when
-        val chat: Chat = chatRoom.createChat(user = user, content = content)
+        val chat: Chat = chatRoom.createChat(user = user, content = content, chatType = ChatType.GENERAL)
 
         // then
         assertThat(chat.chatType).isEqualTo(ChatType.GENERAL)

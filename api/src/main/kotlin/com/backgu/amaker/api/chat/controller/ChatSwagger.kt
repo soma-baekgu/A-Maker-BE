@@ -2,6 +2,7 @@ package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -31,7 +33,7 @@ interface ChatSwagger {
     fun getChat(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
-    ): ResponseEntity<ApiResult<ChatWithUserResponse>>
+    ): ResponseEntity<ApiResult<ChatWithUserResponse<*>>>
 
     @Operation(summary = "커서 이후 채팅 조회", description = "커서 이전의 채팅 데이터를 조회합니다.")
     @ApiResponses(
@@ -76,5 +78,20 @@ interface ChatSwagger {
         @Parameter(hidden = true) token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
         @RequestBody chatCreateRequest: ChatCreateRequest,
+    ): ResponseEntity<Unit>
+
+    @Operation(summary = "파일 채팅 생성", description = "파일 채팅을 생성합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "파일 채팅 생성 성공",
+            ),
+        ],
+    )
+    fun createChatWithFile(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit>
 }

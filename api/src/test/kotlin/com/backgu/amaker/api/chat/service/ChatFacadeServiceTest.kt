@@ -4,6 +4,7 @@ import com.backgu.amaker.api.chat.dto.ChatCreateDto
 import com.backgu.amaker.api.chat.dto.ChatListDto
 import com.backgu.amaker.api.chat.dto.ChatQuery
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
@@ -55,7 +56,7 @@ class ChatFacadeServiceTest {
             )
 
         // when
-        val chatDto: ChatWithUserDto =
+        val chatDto: DefaultChatWithUserDto =
             chatFacadeService.createChat(
                 chatCreateDto = chatCreateDto,
                 chatRoomId = chatRoom.id,
@@ -191,7 +192,7 @@ class ChatFacadeServiceTest {
         fixture.chatFixture.createPersistedChat(chatRoom.id, userId)
 
         // when
-        val recentChat: ChatWithUserDto =
+        val recentChat: ChatWithUserDto<*> =
             chatFacadeService.getRecentChat(userId, chatRoom.id)
 
         // then

@@ -1,15 +1,17 @@
 package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.annotation.ChattingLoginUser
-import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.chat.service.ChatFacadeService
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.domain.chat.ChatType
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.messaging.handler.annotation.DestinationVariable
@@ -39,23 +41,26 @@ class ChatController(
         @Payload chatCreateRequest: ChatCreateRequest,
         @DestinationVariable("chat-rooms-id") chatRoomId: Long,
         @ChattingLoginUser token: JwtAuthentication,
-    ): ChatWithUserResponse = ChatWithUserResponse.of(chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId))
+    ): ChatWithUserResponse<*> = ChatWithUserResponse.of(chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId))
 
     @GetMapping("/chat-rooms/{chat-room-id}/chats/recent")
     override fun getChat(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
-    ): ResponseEntity<ApiResult<ChatWithUserResponse>> =
-        ResponseEntity.ok().body(
-            apiHandler.onSuccess(
-                ChatWithUserResponse.of(
-                    chatFacadeService.getRecentChat(
-                        token.id,
-                        chatRoomId,
+    ): ResponseEntity<ApiResult<ChatWithUserResponse<*>>> {
+        val body =
+            ResponseEntity.ok().body(
+                apiHandler.onSuccess(
+                    ChatWithUserResponse.of(
+                        chatFacadeService.getRecentChat(
+                            token.id,
+                            chatRoomId,
+                        ),
                     ),
                 ),
-            ),
-        )
+            )
+        return body
+    }
 
     @GetMapping("/chat-rooms/{chat-room-id}/chats/previous")
     override fun getPreviousChat(
@@ -97,7 +102,7 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody chatCreateRequest: ChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserQuery: ChatWithUserDto =
+        val chatWithUserQuery: DefaultChatWithUserDto =
             chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId)
         return ResponseEntity
             .created(
@@ -105,6 +110,24 @@ class ChatController(
                     .fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(chatWithUserQuery.id)
+                    .toUri(),
+            ).build()
+    }
+
+    @PostMapping("/chat-rooms/{chat-room-id}/chats/file")
+    override fun createChatWithFile(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
+    ): ResponseEntity<Unit> {
+        val chatWithUserDto: DefaultChatWithUserDto =
+            chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
+        return ResponseEntity
+            .created(
+                ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(chatWithUserDto.id)
                     .toUri(),
             ).build()
     }

@@ -25,7 +25,7 @@ class ReplyEventEntity(
         notificationStartTime = notificationStartTime,
         notificationInterval = notificationInterval,
     ) {
-    fun toDomain() =
+    override fun toDomain(): ReplyEvent =
         ReplyEvent(
             id = id,
             eventTitle = eventTitle,

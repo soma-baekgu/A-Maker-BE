@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
-import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
+import com.backgu.amaker.api.chat.dto.response.DefaultChatWithUserResponse
 import com.backgu.amaker.api.fixture.StompFixtureFacade
 import com.backgu.amaker.domain.chat.ChatRoom
 import org.assertj.core.api.Assertions.assertThat
@@ -51,7 +51,7 @@ class ChatControllerTest {
             fixtures.connectToWebSocket(port, stompHeaders)
 
         val stompSession: StompSession = connectFuture.get(1, TimeUnit.SECONDS)
-        val subscribeToChatRoom: CompletableFuture<ChatWithUserResponse> =
+        val subscribeToChatRoom: CompletableFuture<DefaultChatWithUserResponse> =
             fixtures.subscribeToChatRoom(stompSession, chatRoom.id)
         val content = "Hello World"
         val generalChatCreateRequest = ChatCreateRequest(content = content)
@@ -60,7 +60,7 @@ class ChatControllerTest {
         fixtures.sendMessage(stompSession, "/pub/chat-rooms/${chatRoom.id}/general", generalChatCreateRequest)
 
         // then
-        val chatWithUserResponse: ChatWithUserResponse? = subscribeToChatRoom.get(5, TimeUnit.SECONDS)
+        val chatWithUserResponse: DefaultChatWithUserResponse? = subscribeToChatRoom.get(5, TimeUnit.SECONDS)
 
         assertThat(chatWithUserResponse).isNotNull
         assertThat(chatWithUserResponse?.content).isEqualTo(content)

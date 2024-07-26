@@ -21,7 +21,7 @@ class ChatRoom(
     fun createChat(
         user: User,
         content: String,
-        chatType: ChatType = ChatType.GENERAL,
+        chatType: ChatType,
     ): Chat =
         Chat(
             userId = user.id,

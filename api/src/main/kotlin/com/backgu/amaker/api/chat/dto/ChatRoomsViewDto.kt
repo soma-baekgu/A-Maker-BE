@@ -30,7 +30,7 @@ class ChatRoomsViewDto(
                             chatRoomWithLastChat[chatRoom.id]
                                 ?.let { chat ->
                                     users[chat.userId]?.let { user ->
-                                        ChatWithUserDto.of(chat, user)
+                                        DefaultChatWithUserDto.of(chat, user)
                                     }
                                 },
                         unreadChatCount = unreadChatCountMap[chatRoom.id] ?: 0,

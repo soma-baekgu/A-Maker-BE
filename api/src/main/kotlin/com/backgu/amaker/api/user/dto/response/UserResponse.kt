@@ -1,7 +1,6 @@
 package com.backgu.amaker.api.user.dto.response
 
 import com.backgu.amaker.api.user.dto.UserDto
-import com.backgu.amaker.domain.user.User
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class UserResponse(
@@ -13,13 +12,6 @@ data class UserResponse(
     val picture: String,
 ) {
     companion object {
-        fun of(user: User): UserResponse =
-            UserResponse(
-                name = user.name,
-                email = user.email,
-                picture = user.picture,
-            )
-
         fun of(user: UserDto): UserResponse =
             UserResponse(
                 name = user.name,
