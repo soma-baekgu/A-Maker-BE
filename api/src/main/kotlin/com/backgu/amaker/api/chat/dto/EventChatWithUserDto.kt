@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.chat.dto
 
-import com.backgu.amaker.api.event.dto.EventWithUSerDto
+import com.backgu.amaker.api.event.dto.EventWithUserDto
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.domain.chat.ChatType
 import java.time.LocalDateTime
@@ -8,16 +8,16 @@ import java.time.LocalDateTime
 class EventChatWithUserDto(
     override val id: Long,
     override val chatRoomId: Long,
-    override val content: EventWithUSerDto,
+    override val content: EventWithUserDto,
     override val chatType: ChatType,
     override val createdAt: LocalDateTime,
     override val updatedAt: LocalDateTime,
     override val user: UserDto,
-) : ChatWithUserDto<EventWithUSerDto> {
+) : ChatWithUserDto<EventWithUserDto> {
     companion object {
         fun of(
             chat: ChatWithUserDto<*>,
-            eventDto: EventWithUSerDto,
+            eventDto: EventWithUserDto,
         ): EventChatWithUserDto =
             EventChatWithUserDto(
                 id = chat.id,
