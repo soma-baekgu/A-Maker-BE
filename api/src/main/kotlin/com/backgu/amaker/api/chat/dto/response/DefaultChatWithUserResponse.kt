@@ -14,7 +14,7 @@ data class DefaultChatWithUserResponse(
     override val chatRoomId: Long,
     @Schema(description = "채팅 내용", example = "안녕하세요")
     override var content: String,
-    @Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK)", example = "GENERAL")
+    @Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK, FILE)", example = "GENERAL")
     override val chatType: ChatType,
     @Schema(description = "생성일시", example = "2021-05-29T00:00:00")
     override val createdAt: LocalDateTime,

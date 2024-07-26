@@ -16,6 +16,6 @@ class EventService(
     fun getEventById(eventId: Long): Event =
         eventRepository.findByIdOrNull(eventId)?.toDomain() ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
 
-    fun getEventByIdsToMap(eventIds: List<Long>): Map<Long, Event> =
+    fun findEventByIdsToMap(eventIds: List<Long>): Map<Long, Event> =
         eventRepository.findAllById(eventIds).map { it.toDomain() }.associateBy { it.id }
 }

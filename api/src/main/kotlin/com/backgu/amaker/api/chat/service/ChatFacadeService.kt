@@ -57,7 +57,7 @@ class ChatFacadeService(
         val chatList = chatService.findPreviousChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
 
         val eventMap =
-            eventService.getEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
+            eventService.findEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
         val eventUserMap = eventAssignedUserService.findByEventIdsToEventIdMapped(eventMap.keys.toList())
         val userMap = userService.findAllByUserIdsToMap(eventUserMap.values.flatten().map { it.userId })
 
@@ -76,7 +76,7 @@ class ChatFacadeService(
         val chatList = chatService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
 
         val eventMap =
-            eventService.getEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
+            eventService.findEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
         val eventUserMap = eventAssignedUserService.findByEventIdsToEventIdMapped(eventMap.keys.toList())
         val userMap = userService.findAllByUserIdsToMap(eventUserMap.values.flatten().map { it.userId })
 

@@ -92,6 +92,6 @@ interface ChatSwagger {
     fun createChatWithFile(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
-        @Valid @org.springframework.web.bind.annotation.RequestBody fileChatCreateRequest: FileChatCreateRequest,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit>
 }
