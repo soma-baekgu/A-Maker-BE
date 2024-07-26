@@ -1,9 +1,9 @@
 package com.backgu.amaker.api.file.service
 
 import com.backgu.amaker.api.file.infra.S3Component
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
+@Component
 class FileService(
     val s3Component: S3Component,
 ) {

@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.chat.dto.response
 
-import com.backgu.amaker.api.chat.dto.ChatWithUser
+import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.user.dto.response.UserResponse
 import com.backgu.amaker.domain.chat.ChatType
 import io.swagger.v3.oas.annotations.media.Schema
@@ -22,7 +22,7 @@ data class DefaultChatWithUserResponse(
     override val updatedAt: LocalDateTime,
 ) : ChatWithUserResponse<String> {
     companion object {
-        fun of(chatWithUserDto: ChatWithUser<*>): ChatWithUserResponse<*> =
+        fun of(chatWithUserDto: ChatWithUserDto<*>): ChatWithUserResponse<*> =
             when (chatWithUserDto.chatType) {
                 ChatType.FILE -> FileChatWithUserResponse.of(chatWithUserDto)
                 else ->

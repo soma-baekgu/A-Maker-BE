@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.chat.dto.response
 
-import com.backgu.amaker.api.chat.dto.ChatWithUser
+import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.file.dto.response.FileResponse
 import com.backgu.amaker.api.user.dto.response.UserResponse
 import com.backgu.amaker.domain.chat.ChatType
@@ -23,7 +23,7 @@ data class FileChatWithUserResponse(
     override val updatedAt: LocalDateTime,
 ) : ChatWithUserResponse<FileResponse> {
     companion object {
-        fun of(fileChatWithUserDto: ChatWithUser<*>): FileChatWithUserResponse =
+        fun of(fileChatWithUserDto: ChatWithUserDto<*>): FileChatWithUserResponse =
             FileChatWithUserResponse(
                 id = fileChatWithUserDto.id,
                 user = UserResponse.of(fileChatWithUserDto.user),

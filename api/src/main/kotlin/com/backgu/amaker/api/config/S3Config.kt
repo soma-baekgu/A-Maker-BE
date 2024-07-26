@@ -17,7 +17,7 @@ class S3Config(
     fun s3Client(): S3Client =
         S3Client
             .builder()
-            .region(Region.AP_NORTHEAST_2)
+            .region(Region.of(awsConfig.s3.region))
             .credentialsProvider(ProfileCredentialsProvider.create())
             .build()
 

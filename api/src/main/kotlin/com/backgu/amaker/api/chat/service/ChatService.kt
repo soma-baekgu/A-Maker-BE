@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.chat.service
 
-import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.domain.chat.Chat
@@ -21,23 +21,23 @@ class ChatService(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto> =
+    ): List<DefaultChatWithUserDto> =
         chatRepository
             .findTopByChatRoomIdLittleThanCursorLimitCountWithUser(chatRoomId, cursor, size)
             .asReversed()
-            .map { ChatWithUserDto.of(it) }
+            .map { DefaultChatWithUserDto.of(it) }
 
     fun findAfterChatList(
         chatRoomId: Long,
         cursor: Long,
         size: Int,
-    ): List<ChatWithUserDto> =
+    ): List<DefaultChatWithUserDto> =
         chatRepository
             .findTopByChatRoomIdGreaterThanCursorLimitCountWithUser(chatRoomId, cursor, size)
-            .map { ChatWithUserDto.of(it) }
+            .map { DefaultChatWithUserDto.of(it) }
 
-    fun getOneWithUser(chatId: Long?): ChatWithUserDto =
-        ChatWithUserDto.of(
+    fun getOneWithUser(chatId: Long?): DefaultChatWithUserDto =
+        DefaultChatWithUserDto.of(
             chatId?.let { chatRepository.findByIdWithUser(it) }
                 ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND),
         )

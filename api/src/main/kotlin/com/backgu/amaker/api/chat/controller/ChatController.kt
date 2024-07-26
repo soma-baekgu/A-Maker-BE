@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.annotation.ChattingLoginUser
-import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
 import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
@@ -102,7 +102,7 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody chatCreateRequest: ChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserQuery: ChatWithUserDto =
+        val chatWithUserQuery: DefaultChatWithUserDto =
             chatFacadeService.createChat(chatCreateRequest.toDto(), token.id, chatRoomId)
         return ResponseEntity
             .created(
@@ -120,7 +120,7 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserDto: ChatWithUserDto =
+        val chatWithUserDto: DefaultChatWithUserDto =
             chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
         return ResponseEntity
             .created(

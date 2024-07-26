@@ -3,12 +3,12 @@ package com.backgu.amaker.api.chat.service
 import com.backgu.amaker.api.chat.dto.ChatCreateDto
 import com.backgu.amaker.api.chat.dto.ChatListDto
 import com.backgu.amaker.api.chat.dto.ChatQuery
-import com.backgu.amaker.api.chat.dto.ChatWithUser
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
-import com.backgu.amaker.api.event.dto.EventDtoWithUser
+import com.backgu.amaker.api.event.dto.EventWithUSerDto
 import com.backgu.amaker.api.event.service.EventAssignedUserService
 import com.backgu.amaker.api.event.service.EventService
 import com.backgu.amaker.api.user.service.UserService
@@ -38,14 +38,14 @@ class ChatFacadeService(
         userId: String,
         chatRoomId: Long,
         chatType: ChatType = ChatType.GENERAL,
-    ): ChatWithUserDto {
+    ): DefaultChatWithUserDto {
         val user: User = userService.getById(userId)
         val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
         val chat: Chat = chatService.save(chatRoom.createChat(user, chatCreateDto.content, chatType))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
-        return ChatWithUserDto.of(chat, user)
+        return DefaultChatWithUserDto.of(chat, user)
     }
 
     @Transactional
@@ -86,25 +86,11 @@ class ChatFacadeService(
         )
     }
 
-    private fun mapToChatWithUser(
-        chat: ChatWithUserDto,
-        eventMap: Map<Long, Event>,
-        eventUserMap: Map<Long, List<EventAssignedUser>>,
-        userMap: Map<String, User>,
-    ): ChatWithUser<*> =
-        if (ChatType.isEventChat(chat.chatType)) {
-            val event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
-            val eventUsers = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
-            EventChatWithUserDto.of(chat, EventDtoWithUser.of(event, eventUsers))
-        } else {
-            chat
-        }
-
     @Transactional
     fun getRecentChat(
         userId: String,
         chatRoomId: Long,
-    ): ChatWithUser<*> {
+    ): ChatWithUserDto<*> {
         val chatRoomUser = markMostRecentChatAsRead(chatRoomId, userId)
         val chat = chatService.getOneWithUser(chatRoomUser.lastReadChatId)
 
@@ -115,7 +101,7 @@ class ChatFacadeService(
         val userMap = userService.findAllByUserIdsToMap(eventAssignedUsers.map { it.userId })
         val eventUsers = eventAssignedUsers.mapNotNull { userMap[it.userId] }
 
-        return EventChatWithUserDto.of(chat, EventDtoWithUser.of(event, eventUsers))
+        return EventChatWithUserDto.of(chat, EventWithUSerDto.of(event, eventUsers))
     }
 
     private fun markMostRecentChatAsRead(
@@ -127,4 +113,18 @@ class ChatFacadeService(
         chatRoomUserService.save(chatRoomUser.readLastChatOfChatRoom(chatRoom))
         return chatRoomUser
     }
+
+    private fun mapToChatWithUser(
+        chat: DefaultChatWithUserDto,
+        eventMap: Map<Long, Event>,
+        eventUserMap: Map<Long, List<EventAssignedUser>>,
+        userMap: Map<String, User>,
+    ): ChatWithUserDto<*> =
+        if (ChatType.isEventChat(chat.chatType)) {
+            val event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
+            val eventUsers = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
+            EventChatWithUserDto.of(chat, EventWithUSerDto.of(event, eventUsers))
+        } else {
+            chat
+        }
 }

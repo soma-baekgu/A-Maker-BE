@@ -7,7 +7,7 @@ import com.backgu.amaker.domain.chat.ChatType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-class EventChatWithUserResponse(
+data class EventChatWithUserResponse(
     @Schema(description = "채팅 ID", example = "1")
     override val id: Long,
     override val user: UserResponse,
