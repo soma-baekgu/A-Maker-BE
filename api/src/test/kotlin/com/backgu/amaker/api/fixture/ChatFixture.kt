@@ -16,6 +16,7 @@ class ChatFixture(
         chatRoomId: Long,
         userId: String,
         message: String = "테스트 메시지 ${UUID.randomUUID()}",
+        chatType: ChatType = ChatType.GENERAL,
     ): Chat =
         chatJpaRepository
             .save(
@@ -23,7 +24,7 @@ class ChatFixture(
                     chatRoomId = chatRoomId,
                     userId = userId,
                     content = message,
-                    chatType = ChatType.GENERAL,
+                    chatType = chatType,
                 ),
             ).toDomain()
 
