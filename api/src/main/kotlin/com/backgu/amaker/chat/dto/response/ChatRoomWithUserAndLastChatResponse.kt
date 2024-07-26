@@ -12,7 +12,7 @@ data class ChatRoomWithUserAndLastChatResponse(
     @Schema(description = "채팅방 참여자")
     val participants: List<UserResponse>,
     @Schema(description = "마지막 채팅")
-    val lastChat: ChatWithUserResponse?,
+    val lastChat: ChatWithUserResponse<*>?,
     @Schema(description = "안읽은 채팅 수", example = "10")
     val unreadChatCount: Long?,
 ) {

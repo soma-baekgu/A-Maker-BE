@@ -3,7 +3,7 @@ package com.backgu.amaker.chat.domain
 import com.backgu.amaker.event.domain.ReplyEvent
 import java.time.LocalDateTime
 
-class Chat(
+open class Chat(
     val id: Long = 0L,
     val userId: String,
     val chatRoomId: Long,

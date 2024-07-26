@@ -10,7 +10,7 @@ class ChatListResponse(
     val cursor: Long,
     @Schema(description = "읽어올 채팅의 개수", example = "100", defaultValue = "20")
     val size: Int,
-    val chatList: List<ChatWithUserResponse>,
+    val chatList: List<ChatWithUserResponse<*>>,
     @Schema(description = "다음 요청에 대한 커서", example = "100", defaultValue = "121")
     val nextCursor: Long,
 ) {

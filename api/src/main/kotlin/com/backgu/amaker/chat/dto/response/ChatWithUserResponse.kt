@@ -1,36 +1,39 @@
 package com.backgu.amaker.chat.dto.response
 
 import com.backgu.amaker.chat.domain.ChatType
-import com.backgu.amaker.chat.dto.ChatWithUserDto
+import com.backgu.amaker.chat.dto.ChatWithUser
+import com.backgu.amaker.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.user.dto.response.UserResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-data class ChatWithUserResponse(
-    @Schema(description = "채팅 ID", example = "1")
-    val id: Long,
-    val user: UserResponse,
-    @Schema(description = "채팅방 ID", example = "1")
-    val chatRoomId: Long,
-    @Schema(description = "채팅 내용", example = "안녕하세요")
-    var content: String,
-    @Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK)", example = "GENERAL")
-    val chatType: ChatType,
-    @Schema(description = "생성일시", example = "2021-05-29T00:00:00")
-    val createdAt: LocalDateTime,
-    @Schema(description = "수정일시", example = "2021-05-29T00:00:00")
-    val updatedAt: LocalDateTime,
-) {
+interface ChatWithUserResponse<T> {
+    @get:Schema(description = "채팅 ID", example = "1")
+    val id: Long
+
+    val user: UserResponse
+
+    @get:Schema(description = "채팅방 ID", example = "1")
+    val chatRoomId: Long
+
+    @get:Schema(description = "채팅 내용", example = "안녕하세요")
+    var content: T
+
+    @get:Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK)", example = "GENERAL")
+    val chatType: ChatType
+
+    @get:Schema(description = "생성일시", example = "2021-05-29T00:00:00")
+    val createdAt: LocalDateTime
+
+    @get:Schema(description = "수정일시", example = "2021-05-29T00:00:00")
+    val updatedAt: LocalDateTime
+
     companion object {
-        fun of(chatWithUserDto: ChatWithUserDto): ChatWithUserResponse =
-            ChatWithUserResponse(
-                id = chatWithUserDto.id,
-                user = UserResponse.of(chatWithUserDto.user),
-                chatRoomId = chatWithUserDto.chatRoomId,
-                content = chatWithUserDto.content,
-                chatType = chatWithUserDto.chatType,
-                createdAt = chatWithUserDto.createdAt,
-                updatedAt = chatWithUserDto.updatedAt,
-            )
+        fun of(chatWithUserDto: ChatWithUser<*>): ChatWithUserResponse<*> {
+            return when (chatWithUserDto) {
+                is EventChatWithUserDto -> EventChatWithUserResponse.of(chatWithUserDto)
+                else -> DefaultChatWithUserResponse.of(chatWithUserDto)
+            }
+        }
     }
 }

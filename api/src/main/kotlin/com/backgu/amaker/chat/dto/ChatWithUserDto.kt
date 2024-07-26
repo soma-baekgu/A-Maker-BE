@@ -10,17 +10,19 @@ import java.time.LocalDateTime
 class ChatWithUserDto
     @QueryProjection
     constructor(
-        val id: Long = 0L,
-        val chatRoomId: Long,
-        val content: String,
-        val chatType: ChatType,
-        val createdAt: LocalDateTime,
-        val updatedAt: LocalDateTime,
+        override val id: Long = 0L,
+        override val chatRoomId: Long,
+        override val content: String,
+        override val chatType: ChatType,
+        override val createdAt: LocalDateTime,
+        override val updatedAt: LocalDateTime,
         userId: String,
         userName: String,
         userEmail: String,
         userPicture: String,
-    ) {
+    ) : ChatWithUser<String> {
+        override val user: UserDto = UserDto(id = userId, name = userName, email = userEmail, picture = userPicture)
+
         companion object {
             fun of(
                 chat: Chat,
@@ -39,6 +41,4 @@ class ChatWithUserDto
                     userPicture = user.picture,
                 )
         }
-
-        val user: UserDto = UserDto(id = userId, name = userName, email = userEmail, picture = userPicture)
     }
