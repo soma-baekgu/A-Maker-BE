@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.chat.dto.response
 
-import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.ChatWithUser
+import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.api.user.dto.response.UserResponse
 import com.backgu.amaker.domain.chat.ChatType
 import io.swagger.v3.oas.annotations.media.Schema
@@ -28,11 +29,10 @@ interface ChatWithUserResponse<T> {
     val updatedAt: LocalDateTime
 
     companion object {
-        fun of(chatWithUserDto: ChatWithUser<*>): ChatWithUserResponse<*> {
-            return when (chatWithUserDto) {
+        fun of(chatWithUserDto: ChatWithUser<*>): ChatWithUserResponse<*> =
+            when (chatWithUserDto) {
                 is EventChatWithUserDto -> EventChatWithUserResponse.of(chatWithUserDto)
                 else -> DefaultChatWithUserResponse.of(chatWithUserDto)
             }
-        }
     }
 }

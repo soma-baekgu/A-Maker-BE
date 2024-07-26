@@ -1,7 +1,7 @@
-package com.backgu.amaker.file.controller
+package com.backgu.amaker.api.file.controller
 
-import com.backgu.amaker.common.dto.response.ApiResult
-import com.backgu.amaker.security.JwtAuthentication
+import com.backgu.amaker.api.common.dto.response.ApiResult
+import com.backgu.amaker.api.security.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

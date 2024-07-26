@@ -1,6 +1,6 @@
-package com.backgu.amaker.event.dto.response
+package com.backgu.amaker.api.event.dto.response
 
-import com.backgu.amaker.event.dto.EventDtoWithUser
+import com.backgu.amaker.api.event.dto.EventDtoWithUser
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 

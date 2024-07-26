@@ -1,4 +1,4 @@
-package com.backgu.amaker.config
+package com.backgu.amaker.api.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

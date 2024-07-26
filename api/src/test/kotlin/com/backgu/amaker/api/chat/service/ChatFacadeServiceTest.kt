@@ -3,6 +3,7 @@ package com.backgu.amaker.api.chat.service
 import com.backgu.amaker.api.chat.dto.ChatCreateDto
 import com.backgu.amaker.api.chat.dto.ChatListDto
 import com.backgu.amaker.api.chat.dto.ChatQuery
+import com.backgu.amaker.api.chat.dto.ChatWithUser
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode

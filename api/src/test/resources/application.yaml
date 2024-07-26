@@ -63,5 +63,3 @@ amazon:
     secret-key: 123
     region: 123
     bucket: 1234
-    url: 123
-    locate: 123

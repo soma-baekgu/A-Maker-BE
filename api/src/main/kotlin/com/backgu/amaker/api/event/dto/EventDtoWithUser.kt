@@ -1,8 +1,8 @@
-package com.backgu.amaker.event.dto
+package com.backgu.amaker.api.event.dto
 
-import com.backgu.amaker.event.domain.Event
-import com.backgu.amaker.user.domain.User
-import com.backgu.amaker.user.dto.UserDto
+import com.backgu.amaker.api.user.dto.UserDto
+import com.backgu.amaker.domain.event.Event
+import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
 class EventDtoWithUser(
@@ -11,7 +11,6 @@ class EventDtoWithUser(
     val deadLine: LocalDateTime,
     val notificationStartTime: LocalDateTime,
     val notificationInterval: Int,
-    val eventDetails: String,
     val users: List<UserDto>,
 ) {
     companion object {
@@ -25,7 +24,6 @@ class EventDtoWithUser(
                 deadLine = event.deadLine,
                 notificationStartTime = event.notificationStartTime,
                 notificationInterval = event.notificationInterval,
-                eventDetails = event.eventDetails,
                 users = users.map { UserDto.of(it) },
             )
     }

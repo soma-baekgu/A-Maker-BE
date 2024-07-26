@@ -1,6 +1,6 @@
-package com.backgu.amaker.chat.dto.request
+package com.backgu.amaker.api.chat.dto.request
 
-import com.backgu.amaker.chat.dto.ChatCreateDto
+import com.backgu.amaker.api.chat.dto.ChatCreateDto
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import java.net.URI

@@ -1,9 +1,9 @@
-package com.backgu.amaker.event.service
+package com.backgu.amaker.api.event.service
 
-import com.backgu.amaker.common.exception.BusinessException
-import com.backgu.amaker.common.exception.StatusCode
-import com.backgu.amaker.event.domain.Event
-import com.backgu.amaker.event.repository.EventRepository
+import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.api.common.exception.StatusCode
+import com.backgu.amaker.domain.event.Event
+import com.backgu.amaker.infra.jpa.event.repository.EventRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

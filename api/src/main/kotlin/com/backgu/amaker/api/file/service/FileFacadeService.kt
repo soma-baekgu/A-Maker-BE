@@ -1,6 +1,6 @@
-package com.backgu.amaker.file.service
+package com.backgu.amaker.api.file.service
 
-import com.backgu.amaker.common.service.IdPublisher
+import com.backgu.amaker.api.common.service.IdPublisher
 import org.springframework.stereotype.Service
 
 @Service

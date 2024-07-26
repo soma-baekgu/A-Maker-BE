@@ -1,7 +1,8 @@
-package com.backgu.amaker.chat.controller
+package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult

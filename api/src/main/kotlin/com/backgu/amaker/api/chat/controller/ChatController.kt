@@ -1,15 +1,17 @@
-package com.backgu.amaker.chat.controller
+package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.annotation.ChattingLoginUser
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.chat.dto.query.ChatQueryRequest
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
+import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.chat.service.ChatFacadeService
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.domain.chat.ChatType
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.messaging.handler.annotation.DestinationVariable

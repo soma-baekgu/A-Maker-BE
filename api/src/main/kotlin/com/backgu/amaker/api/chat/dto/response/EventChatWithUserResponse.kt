@@ -1,9 +1,9 @@
-package com.backgu.amaker.chat.dto.response
+package com.backgu.amaker.api.chat.dto.response
 
-import com.backgu.amaker.chat.domain.ChatType
-import com.backgu.amaker.chat.dto.EventChatWithUserDto
-import com.backgu.amaker.event.dto.response.EventWithUserResponse
-import com.backgu.amaker.user.dto.response.UserResponse
+import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
+import com.backgu.amaker.api.event.dto.response.EventWithUserResponse
+import com.backgu.amaker.api.user.dto.response.UserResponse
+import com.backgu.amaker.domain.chat.ChatType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 

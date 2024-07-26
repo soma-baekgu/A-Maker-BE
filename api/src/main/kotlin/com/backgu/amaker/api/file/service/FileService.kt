@@ -1,6 +1,6 @@
-package com.backgu.amaker.file.service
+package com.backgu.amaker.api.file.service
 
-import com.backgu.amaker.file.infra.S3Component
+import com.backgu.amaker.api.file.infra.S3Component
 import org.springframework.stereotype.Service
 
 @Service

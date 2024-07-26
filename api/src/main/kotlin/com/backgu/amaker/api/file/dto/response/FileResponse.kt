@@ -1,4 +1,4 @@
-package com.backgu.amaker.file.dto.response
+package com.backgu.amaker.api.file.dto.response
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URLDecoder

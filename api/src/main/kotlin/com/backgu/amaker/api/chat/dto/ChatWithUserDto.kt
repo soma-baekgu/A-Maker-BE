@@ -8,17 +8,14 @@ import com.backgu.amaker.infra.jpa.chat.query.ChatWithUserQuery
 import java.time.LocalDateTime
 
 class ChatWithUserDto(
-    val id: Long = 0L,
-    val chatRoomId: Long,
-    val content: String,
-    val chatType: ChatType,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
-    userId: String,
-    userName: String,
-    userEmail: String,
-    userPicture: String,
-) {
+    override val id: Long = 0L,
+    override val chatRoomId: Long,
+    override val content: String,
+    override val chatType: ChatType,
+    override val createdAt: LocalDateTime,
+    override val updatedAt: LocalDateTime,
+    override val user: UserDto,
+) : ChatWithUser<String> {
     companion object {
         fun of(
             chat: Chat,
@@ -31,10 +28,7 @@ class ChatWithUserDto(
                 chatType = chat.chatType,
                 createdAt = chat.createdAt,
                 updatedAt = chat.updatedAt,
-                userId = user.id,
-                userName = user.name,
-                userEmail = user.email,
-                userPicture = user.picture,
+                user = UserDto(id = user.id, name = user.name, email = user.email, picture = user.picture),
             )
 
         fun of(chatWithUserQuery: ChatWithUserQuery) =
@@ -45,12 +39,13 @@ class ChatWithUserDto(
                 chatType = chatWithUserQuery.chatType,
                 createdAt = chatWithUserQuery.createdAt,
                 updatedAt = chatWithUserQuery.updatedAt,
-                userId = chatWithUserQuery.user.id,
-                userName = chatWithUserQuery.user.name,
-                userEmail = chatWithUserQuery.user.email,
-                userPicture = chatWithUserQuery.user.picture,
+                user =
+                    UserDto(
+                        id = chatWithUserQuery.user.id,
+                        name = chatWithUserQuery.user.name,
+                        email = chatWithUserQuery.user.email,
+                        picture = chatWithUserQuery.user.picture,
+                    ),
             )
     }
-
-    val user: UserDto = UserDto(id = userId, name = userName, email = userEmail, picture = userPicture)
 }
