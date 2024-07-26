@@ -13,13 +13,11 @@ repositories {
 
 dependencies {
     implementation(project(":domain"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(project(":infra"))
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.auth0:java-jwt:3.18.3")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     // aws
     implementation("software.amazon.awssdk:s3:2.17.89")

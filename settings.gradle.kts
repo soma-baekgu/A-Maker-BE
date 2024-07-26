@@ -4,3 +4,4 @@ plugins {
 rootProject.name = "A-Maker-BE"
 include("domain")
 include("api")
+include("infra")
