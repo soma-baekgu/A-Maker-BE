@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component
 @Component
 class EventFixtureFacade(
     val chatFixtureFacade: ChatFixtureFacade,
+    val replyEventFixture: ReplyEventFixture,
+    val eventAssignedUserFixture: EventAssignedUserFixture,
 ) {
     fun setUp(
         userId: String = "test-user-id",

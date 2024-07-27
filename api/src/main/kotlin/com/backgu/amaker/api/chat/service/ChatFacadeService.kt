@@ -8,7 +8,7 @@ import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
-import com.backgu.amaker.api.event.dto.EventWithUSerDto
+import com.backgu.amaker.api.event.dto.EventWithUserDto
 import com.backgu.amaker.api.event.service.EventAssignedUserService
 import com.backgu.amaker.api.event.service.EventService
 import com.backgu.amaker.api.user.service.UserService
@@ -97,11 +97,11 @@ class ChatFacadeService(
         if (!ChatType.isEventChat(chat.chatType)) return chat
 
         val event = eventService.getEventById(chat.id)
-        val eventAssignedUsers = eventAssignedUserService.findByEventId(event.id)
+        val eventAssignedUsers = eventAssignedUserService.findAllByEventId(event.id)
         val userMap = userService.findAllByUserIdsToMap(eventAssignedUsers.map { it.userId })
         val eventUsers = eventAssignedUsers.mapNotNull { userMap[it.userId] }
 
-        return EventChatWithUserDto.of(chat, EventWithUSerDto.of(event, eventUsers))
+        return EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers))
     }
 
     private fun markMostRecentChatAsRead(
@@ -123,7 +123,7 @@ class ChatFacadeService(
         if (ChatType.isEventChat(chat.chatType)) {
             val event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
             val eventUsers = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
-            EventChatWithUserDto.of(chat, EventWithUSerDto.of(event, eventUsers))
+            EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers))
         } else {
             chat
         }

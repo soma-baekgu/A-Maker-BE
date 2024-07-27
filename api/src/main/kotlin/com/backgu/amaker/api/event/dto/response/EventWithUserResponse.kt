@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.event.dto.response
 
-import com.backgu.amaker.api.event.dto.EventWithUSerDto
+import com.backgu.amaker.api.event.dto.EventWithUserDto
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
@@ -32,7 +32,7 @@ class EventWithUserResponse(
     val users: List<String>,
 ) {
     companion object {
-        fun of(event: EventWithUSerDto) =
+        fun of(event: EventWithUserDto) =
             EventWithUserResponse(
                 eventTitle = event.eventTitle,
                 deadLine = event.deadLine,
