@@ -14,4 +14,11 @@ class ReplyEvent(
     updatedAt: LocalDateTime = LocalDateTime.now(),
 ) : Event(id, eventTitle, deadLine, notificationStartTime, notificationInterval, createdAt, updatedAt) {
     fun addReplyComment(
+        user: User,
+        content: String,
+    ) = ReplyComment(
+        userId = user.id,
+        eventId = id,
+        content = content,
+    )
 }

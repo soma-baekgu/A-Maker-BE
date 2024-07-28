@@ -2,16 +2,11 @@ package com.backgu.amaker.domain.event
 
 import java.time.LocalDateTime
 
-class EventAssignedUser(
+class ReplyComment(
     val id: Long = 0L,
-    val eventId: Long,
     val userId: String,
-    var isFinished: Boolean = false,
+    val eventId: Long,
+    var content: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
-) {
-    fun updateIsFinished(isFinished: Boolean): EventAssignedUser {
-        this.isFinished = isFinished
-        return this
-    }
-}
+)
