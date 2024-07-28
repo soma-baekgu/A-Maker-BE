@@ -120,8 +120,26 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserDto: DefaultChatWithUserDto =
+        val chatWithUserDto =
             chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
+        return ResponseEntity
+            .created(
+                ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(chatWithUserDto.id)
+                    .toUri(),
+            ).build()
+    }
+
+    @PostMapping("/chat-rooms/{chat-room-id}/chats/img")
+    override fun createChatWithImage(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
+    ): ResponseEntity<Unit> {
+        val chatWithUserDto =
+            chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.IMAGE)
         return ResponseEntity
             .created(
                 ServletUriComponentsBuilder

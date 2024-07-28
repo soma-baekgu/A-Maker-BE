@@ -94,4 +94,19 @@ interface ChatSwagger {
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit>
+
+    @Operation(summary = "사진 채팅 생성", description = "사진 채팅을 생성합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "사진 채팅 생성 성공",
+            ),
+        ],
+    )
+    fun createChatWithImage(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
+    ): ResponseEntity<Unit>
 }

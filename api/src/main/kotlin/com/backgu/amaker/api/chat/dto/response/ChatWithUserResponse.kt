@@ -19,7 +19,7 @@ interface ChatWithUserResponse<T> {
     @get:Schema(description = "채팅 내용", example = "안녕하세요")
     var content: T
 
-    @get:Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK)", example = "GENERAL")
+    @get:Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK, IMAGE)", example = "GENERAL")
     val chatType: ChatType
 
     @get:Schema(description = "생성일시", example = "2021-05-29T00:00:00")

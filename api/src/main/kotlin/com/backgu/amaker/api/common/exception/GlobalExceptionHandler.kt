@@ -6,6 +6,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.support.DefaultMessageSourceResolvable
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -31,6 +32,15 @@ class GlobalExceptionHandler(
             .badRequest()
             .body(apiHandler.onFailure(StatusCode.INVALID_INPUT_VALUE, errorMap))
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadableException(
+        e: HttpMessageNotReadableException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError<Unit>> =
+        ResponseEntity
+            .badRequest()
+            .body(apiHandler.onFailure(StatusCode.INVALID_INPUT_VALUE))
 
     @ExceptionHandler(HandlerMethodValidationException::class)
     fun handleHandlerMethodValidationException(
