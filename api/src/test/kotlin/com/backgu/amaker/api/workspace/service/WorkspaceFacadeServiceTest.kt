@@ -4,24 +4,30 @@ import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.api.fixture.WorkspaceFixtureFacade
+import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomType
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.WorkspaceRole
 import com.backgu.amaker.domain.workspace.WorkspaceUser
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
 @SpringBootTest
+@AutoConfigureMockMvc
 class WorkspaceFacadeServiceTest {
     @Autowired
     private lateinit var workspaceFixtureFacade: WorkspaceFixtureFacade
@@ -35,6 +41,9 @@ class WorkspaceFacadeServiceTest {
     @Autowired
     lateinit var workspaceUserService: WorkspaceUserService
 
+    @MockkBean
+    lateinit var notificationEventService: NotificationEventService
+
     @BeforeEach
     fun setUp() {
         workspaceFixtureFacade.setUp()
@@ -44,6 +53,8 @@ class WorkspaceFacadeServiceTest {
     @DisplayName("워크 스페이스 생성 테스트")
     fun createWorkspace() {
         // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
 
@@ -54,12 +65,36 @@ class WorkspaceFacadeServiceTest {
 
         // then
         assertThat(result.name).isEqualTo("워크스페이스 생성")
+        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
+    }
+
+    @Test
+    @DisplayName("초대자들이 있는 워크 스페이스 생성 테스트")
+    fun createWorkspaceWithInvitee() {
+        // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+        fixtures.user.createPersistedUser(email = "a@example.com")
+        fixtures.user.createPersistedUser(email = "b@example.com")
+
+        val request = createWorkspaceRequest("워크스페이스 생성", setOf("a@example.com", "b@example.com"))
+
+        // when
+        val result = workspaceFacadeService.createWorkspace(userId, request)
+
+        // then
+        assertThat(result.name).isEqualTo("워크스페이스 생성")
+        verify(exactly = 3) { notificationEventService.publishNotificationEvent(any()) }
     }
 
     @Test
     @DisplayName("워크스페이스 리더가 초대자로 들어가 있는 테스트")
     fun createWorkspaceWithDuplicatedInvitees() {
         // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
         val userId = "tester"
         val userEmail = "tester@gmail.com"
         fixtures.user.createPersistedUser(
@@ -143,6 +178,8 @@ class WorkspaceFacadeServiceTest {
     @DisplayName("워크스페이스 유저 활성화")
     fun activateWorkspaceUser() {
         // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스")
@@ -170,6 +207,8 @@ class WorkspaceFacadeServiceTest {
         assertThat(workspaceUser.userId).isEqualTo(memberId)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+
+        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
     }
 
     @DisplayName("워크스페이스의 기본 채팅방을 조회")
