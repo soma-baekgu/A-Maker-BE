@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: a-maker
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  kafka:
+    bootstrap-servers: ["localhost:9092"]
+
+
+oauth:
+  google:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+    redirect-uri: "http://localhost:3000/login"
+    base-url: "https://accounts.google.com/o/oauth2/auth"
+    oauth-url: "https://oauth2.googleapis.com"
+    api-url: "https://www.googleapis.com"
+    client-name: Google
+    scope: email,profile
+
+
+jwt:
+  client-secret: ${JWT_SECRET}
+  expiration: 86400000
+  issuer: a-maker
+
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
