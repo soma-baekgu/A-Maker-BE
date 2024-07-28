@@ -1,5 +1,5 @@
 package com.backgu.amaker.api.event.dto
 
-class ReplyCommentCreateDto(
+data class ReplyCommentCreateDto(
     val content: String,
 )
