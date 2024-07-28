@@ -22,7 +22,7 @@ class EventCommentController(
     override fun createReplyComment(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("event-id") eventId: Long,
-        @RequestBody @Valid request: ReplyCommentCreateRequest,
+        @RequestBody @Valid replyCommentCreateRequest: ReplyCommentCreateRequest,
     ): ResponseEntity<Unit> =
         ResponseEntity
             .created(
@@ -34,7 +34,7 @@ class EventCommentController(
                             .createReplyComment(
                                 token.id,
                                 eventId,
-                                request.toDto(),
+                                replyCommentCreateRequest.toDto(),
                             ).id,
                     ).toUri(),
             ).build()

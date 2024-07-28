@@ -22,6 +22,6 @@ interface EventCommentSwagger {
     fun createReplyComment(
         token: JwtAuthentication,
         eventId: Long,
-        request: ReplyCommentCreateRequest,
+        replyCommentCreateRequest: ReplyCommentCreateRequest,
     ): ResponseEntity<Unit>
 }
