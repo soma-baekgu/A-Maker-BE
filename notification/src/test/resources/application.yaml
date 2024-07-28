@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: a-maker
+
+  datasource:
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 123
+    password: 123
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  kafka:
+    bootstrap-servers: [ "localhost:9092" ]
+
+
+oauth:
+  google:
+    client-id: a
+    client-secret: b
+    redirect-uri: c
+    base-url: d
+    oauth-url: e
+    api-url: f
+    client-name: Google
+    scope: email,profile
+
+jwt:
+  client-secret: 1234
+  expiration: 86400000
+  issuer: a-maker
+
+swagger:
+  url: http://localhost:8080
+  locate: Local
+
+cors:
+  allowed-origins:
+    - "*"
+  allowed-methods:
+    - GET
+    - HEAD
+    - POST
+    - PUT
+    - DELETE
+    - PATCH
+    - OPTIONS
