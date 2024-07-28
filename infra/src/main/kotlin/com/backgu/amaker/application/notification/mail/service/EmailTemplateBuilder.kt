@@ -1,4 +1,4 @@
-package com.backgu.amaker.infra.mail.service
+package com.backgu.amaker.application.notification.mail.service
 
 interface EmailTemplateBuilder {
     fun buildEmailContent(

@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.mail.infra
 
-import com.backgu.amaker.infra.mail.service.EmailSender
+import com.backgu.amaker.application.notification.mail.service.EmailSender
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender

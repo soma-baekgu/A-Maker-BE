@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.mail.infra
 
-import com.backgu.amaker.infra.mail.service.EmailTemplateBuilder
+import com.backgu.amaker.application.notification.mail.service.EmailTemplateBuilder
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import org.thymeleaf.TemplateEngine

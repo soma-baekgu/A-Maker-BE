@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.mail.infra
 
 import com.backgu.amaker.api.common.annotation.IntegrationTestComponent
-import com.backgu.amaker.infra.mail.service.EmailSender
+import com.backgu.amaker.application.notification.mail.service.EmailSender
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
