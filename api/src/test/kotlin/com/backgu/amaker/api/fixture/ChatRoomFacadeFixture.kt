@@ -37,7 +37,7 @@ class ChatRoomFacadeFixture(
             userIds = workspaceUsers.map { it.userId },
         )
 
-        return ChatRoomFixtureDto(workspace, chatRoom)
+        return ChatRoomFixtureDto(workspace, chatRoom, members)
     }
 
     fun deleteAll() {
