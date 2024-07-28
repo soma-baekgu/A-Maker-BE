@@ -20,7 +20,7 @@ class EventAssignedUserEntity(
     @Column(nullable = false)
     val userId: String,
     @Column(nullable = false)
-    val isFinished: Boolean = false,
+    var isFinished: Boolean = false,
 ) : BaseTimeEntity() {
     fun toDomain(): EventAssignedUser =
         EventAssignedUser(
@@ -38,6 +38,7 @@ class EventAssignedUserEntity(
                 id = eventAssigned.id,
                 eventId = eventAssigned.eventId,
                 userId = eventAssigned.userId,
+                isFinished = eventAssigned.isFinished,
             )
     }
 }
