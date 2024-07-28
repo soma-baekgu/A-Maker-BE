@@ -141,4 +141,20 @@ class ChatRoomFacadeService(
         return ChatRoomDto
             .of(chatRoom)
     }
+
+    @Transactional
+    fun joinChatRoom(
+        userId: String,
+        workspaceId: Long,
+        chatRoomId: Long,
+    ): ChatRoomUser {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getById(workspaceId)
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        val chatRoom = chatRoomService.getChatRoomByWorkspaceIdAndChatRoomId(workspaceId, chatRoomId)
+        chatRoomUserService.validateUserNotInChatRoom(user, chatRoom)
+
+        return chatRoomUserService.save(chatRoom.addUser(user))
+    }
 }

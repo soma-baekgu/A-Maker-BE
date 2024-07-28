@@ -21,6 +21,7 @@ enum class StatusCode(
 
     // chatRoom
     CHAT_ROOM_NOT_FOUND("4000", "채팅방이 존재하지 않습니다."),
+    CHAT_ROOM_USER_ALREADY_EXIST("4000", "이미 채팅방에 등록된 사용자입니다."),
 
     // chatRoomUser
     CHAT_ROOM_USER_NOT_FOUND("4000", "접근할 수 없는 채팅방입니다."),

@@ -41,6 +41,14 @@ class ChatRoomService(
     fun findChatRoomsByWorkspaceId(workspaceId: Long): List<ChatRoom> =
         chatRoomRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
 
+    fun getChatRoomByWorkspaceIdAndChatRoomId(
+        workspaceId: Long,
+        chatRoomId: Long,
+    ): ChatRoom =
+        chatRoomRepository.findByIdAndWorkspaceId(chatRoomId, workspaceId)?.toDomain() ?: run {
+            throw BusinessException(StatusCode.CHAT_ROOM_NOT_FOUND)
+        }
+
     fun findNotRegisteredChatRoomsByWorkspaceId(
         workspaceId: Long,
         userId: String,

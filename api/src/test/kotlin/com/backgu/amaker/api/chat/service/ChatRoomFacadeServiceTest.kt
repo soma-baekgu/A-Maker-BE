@@ -2,13 +2,17 @@ package com.backgu.amaker.api.chat.service
 
 import com.backgu.amaker.api.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
+import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
+import com.backgu.amaker.api.fixture.ChatRoomFixture
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomType
 import com.backgu.amaker.domain.workspace.Workspace
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -20,6 +24,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @SpringBootTest
 class ChatRoomFacadeServiceTest {
+    @Autowired
+    private lateinit var chatRoomFixture: ChatRoomFixture
+
     @Autowired
     lateinit var chatRoomFacadeService: ChatRoomFacadeService
 
@@ -229,5 +236,59 @@ class ChatRoomFacadeServiceTest {
         // then
         assertThat(result.chatRooms).isNotNull
         assertThat(result.chatRooms.size).isEqualTo(0)
+    }
+
+    @Test
+    @DisplayName("채팅방 가입 성공")
+    fun joinChatRoom() {
+        // given
+        val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
+        val newChatRoom =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+
+        // when
+        val chatRoomUser = chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, newChatRoom.id)
+
+        // then
+        assertThat(chatRoomUser).isNotNull
+        assertThat(chatRoomUser.chatRoomId).isEqualTo(newChatRoom.id)
+        assertThat(chatRoomUser.userId).isEqualTo(members[0].id)
+        assertThat(chatRoomUser.lastReadChatId).isNull()
+    }
+
+    @Test
+    @DisplayName("없는 채팅방 가입 요청")
+    fun joinNoChatRoom() {
+        // given
+        val leaderId = "leader"
+        val leader = fixtures.userFixture.createPersistedUser(leaderId)
+        val members = fixtures.userFixture.createPersistedUsers(10)
+        val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
+        fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, members.map { it.id })
+
+        val noChatRoomId = 1L
+        fixtures.chatRoomFixture.deleteChatRoom(noChatRoomId)
+
+        // when & then
+        assertThatThrownBy { chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, noChatRoomId) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_NOT_FOUND)
+    }
+
+    @Test
+    @DisplayName("이미 가입된 채팅방에 대한 요청")
+    fun joinAlreadyJoinedChatRoom() {
+        // given
+        val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
+        val newChatRoom =
+            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        fixtures.chatRoomUserFixture.createPersistedChatRoomUser(newChatRoom.id, members.map { it.id })
+
+        // when & then
+        assertThatThrownBy { chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, newChatRoom.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_USER_ALREADY_EXIST)
     }
 }

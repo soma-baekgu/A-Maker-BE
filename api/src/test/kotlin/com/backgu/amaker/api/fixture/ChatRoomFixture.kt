@@ -28,4 +28,8 @@ class ChatRoomFixture(
     fun deleteAll() {
         chatRoomRepository.deleteAll()
     }
+
+    fun deleteChatRoom(chatRoomId: Long) {
+        chatRoomRepository.deleteById(chatRoomId)
+    }
 }
