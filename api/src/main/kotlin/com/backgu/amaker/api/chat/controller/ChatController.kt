@@ -70,7 +70,7 @@ class ChatController(
     ): ResponseEntity<ApiResult<ChatListResponse>> =
         ResponseEntity.ok().body(
             apiHandler.onSuccess(
-                ChatListResponse.of(
+                ChatListResponse.previousOf(
                     chatFacadeService.getPreviousChat(
                         token.id,
                         chatQueryRequest.toDto(chatRoomId),
@@ -87,7 +87,7 @@ class ChatController(
     ): ResponseEntity<ApiResult<ChatListResponse>> =
         ResponseEntity.ok().body(
             apiHandler.onSuccess(
-                ChatListResponse.of(
+                ChatListResponse.afterOf(
                     chatFacadeService.getAfterChat(
                         token.id,
                         chatQueryRequest.toDto(chatRoomId),
