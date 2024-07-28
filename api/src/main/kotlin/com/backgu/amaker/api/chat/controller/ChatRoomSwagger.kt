@@ -73,4 +73,19 @@ interface ChatRoomSwagger {
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
     ): ResponseEntity<ApiResult<ChatRoomsViewResponse>>
+
+    @Operation(summary = "채팅방 참여", description = "사용자가 특정 채팅방에 참여합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "채팅방 참여 성공",
+            ),
+        ],
+    )
+    fun joinChatRoom(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+    ): ResponseEntity<Unit>
 }

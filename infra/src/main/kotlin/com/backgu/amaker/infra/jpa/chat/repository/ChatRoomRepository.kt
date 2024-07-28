@@ -31,4 +31,9 @@ interface ChatRoomRepository : JpaRepository<ChatRoomEntity, Long> {
         chatRoomIds: List<Long>,
         workspaceId: Long,
     ): List<ChatRoomEntity>
+
+    fun findByIdAndWorkspaceId(
+        id: Long,
+        workspaceId: Long,
+    ): ChatRoomEntity?
 }

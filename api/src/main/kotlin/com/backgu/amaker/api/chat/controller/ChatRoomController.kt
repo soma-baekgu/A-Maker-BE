@@ -9,6 +9,7 @@ import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.JwtAuthentication
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -95,4 +96,14 @@ class ChatRoomController(
                     ),
                 ),
             )
+
+    @PostMapping("/chat-rooms/{chat-room-id}/join")
+    override fun joinChatRoom(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+    ): ResponseEntity<Unit> {
+        chatRoomFacadeService.joinChatRoom(token.id, workspaceId, chatRoomId)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
 }

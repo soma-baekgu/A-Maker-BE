@@ -41,6 +41,15 @@ class ChatRoomUserService(
         }
     }
 
+    fun validateUserNotInChatRoom(
+        user: User,
+        chatRoom: ChatRoom,
+    ) {
+        if (chatRoomUserRepository.existsByUserIdAndChatRoomId(user.id, chatRoom.id)) {
+            throw BusinessException(StatusCode.CHAT_ROOM_USER_ALREADY_EXIST)
+        }
+    }
+
     fun findAllByUser(user: User): List<ChatRoomUser> = chatRoomUserRepository.findByUserId(user.id).map { it.toDomain() }
 
     fun findAllByChatRoomIds(chatRoomIds: List<Long>): List<ChatRoomUser> =
