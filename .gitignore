@@ -40,6 +40,6 @@ out/
 .kotlin
 
 .Ds_Store
+kafka_data
 
-kafka_data/
-docker-compose-kafka.yml
+.run
