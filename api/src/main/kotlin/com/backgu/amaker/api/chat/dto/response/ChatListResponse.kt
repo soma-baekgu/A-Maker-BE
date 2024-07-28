@@ -15,13 +15,22 @@ class ChatListResponse(
     val nextCursor: Long,
 ) {
     companion object {
-        fun of(chatListDto: ChatListDto) =
+        fun previousOf(chatListDto: ChatListDto) =
             ChatListResponse(
                 chatRoomId = chatListDto.chatRoomId,
                 cursor = chatListDto.cursor,
                 size = chatListDto.size,
                 chatList = chatListDto.chatList.map { ChatWithUserResponse.of(it) },
                 nextCursor = chatListDto.chatList.first().id,
+            )
+
+        fun afterOf(chatListDto: ChatListDto) =
+            ChatListResponse(
+                chatRoomId = chatListDto.chatRoomId,
+                cursor = chatListDto.cursor,
+                size = chatListDto.size,
+                chatList = chatListDto.chatList.map { ChatWithUserResponse.of(it) },
+                nextCursor = chatListDto.chatList.last().id,
             )
     }
 }
