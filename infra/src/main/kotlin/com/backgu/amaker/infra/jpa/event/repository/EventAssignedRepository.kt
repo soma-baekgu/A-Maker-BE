@@ -7,4 +7,9 @@ interface EventAssignedRepository : JpaRepository<EventAssignedUserEntity, Long>
     fun findAllByEventId(eventId: Long): List<EventAssignedUserEntity>
 
     fun findByEventIdIn(eventIds: List<Long>): List<EventAssignedUserEntity>
+
+    fun findByUserIdAndEventId(
+        userId: String,
+        eventId: Long,
+    ): EventAssignedUserEntity?
 }
