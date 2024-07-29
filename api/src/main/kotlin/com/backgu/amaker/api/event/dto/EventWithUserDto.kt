@@ -12,11 +12,14 @@ data class EventWithUserDto(
     val notificationStartTime: LocalDateTime,
     val notificationInterval: Int,
     val users: List<UserDto>,
+    val finishedCount: Int,
+    val totalAssignedCount: Int,
 ) {
     companion object {
         fun of(
             event: Event,
             users: List<User>,
+            finishedCount: Int,
         ): EventWithUserDto =
             EventWithUserDto(
                 id = event.id,
@@ -25,6 +28,8 @@ data class EventWithUserDto(
                 notificationStartTime = event.notificationStartTime,
                 notificationInterval = event.notificationInterval,
                 users = users.map { UserDto.of(it) },
+                finishedCount = finishedCount,
+                totalAssignedCount = users.size,
             )
     }
 }
