@@ -50,7 +50,7 @@ class EventCommentFacadeServiceTest {
         val replyCommentCreateDto = ReplyCommentCreateDto("test-content")
         replyCommentFixtures.userFixture.createPersistedUser(userId)
 
-        // when * then
+        // when & then
         assertThatThrownBy {
             eventCommentFacadeService.createReplyComment(
                 userId,
@@ -86,5 +86,34 @@ class EventCommentFacadeServiceTest {
         assertThat(result.content.size).isEqualTo(20)
         assertThat(result.totalElements).isEqualTo(100)
         assertThat(result.content[0].id).isLessThan(result.content[1].id)
+    }
+
+    @Test
+    @DisplayName("reply comments 조회 실패 테스트 - 워크스페이스에 속하지 않은 유저")
+    fun failFindReplyCommentsNotInWorkspace() {
+        // given
+        val userId = "diff-user-id"
+        val replyEvent = replyCommentFixtures.setUp(userId = "test-user-id")
+        replyCommentFixtures.userFixture.createPersistedUser(userId)
+        ReplyCommentCreateDto("test-content")
+        replyCommentFixtures.replyCommentFixture.createPersistedReplyComments(userId, replyEvent.id, 100)
+
+        val pageable =
+            PageRequest.of(
+                0,
+                20,
+                Sort.by("id").ascending(),
+            )
+
+        // when & then
+        assertThatThrownBy {
+            eventCommentFacadeService.findReplyComments(
+                userId,
+                replyEvent.id,
+                pageable,
+            )
+        }.isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
     }
 }
