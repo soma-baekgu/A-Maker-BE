@@ -13,6 +13,7 @@ import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.JwtAuthentication
 import com.backgu.amaker.domain.chat.ChatType
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -120,15 +121,17 @@ class ChatController(
         @PathVariable("chat-room-id") chatRoomId: Long,
         @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
     ): ResponseEntity<Unit> {
-        val chatWithUserDto: DefaultChatWithUserDto =
-            chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
-        return ResponseEntity
-            .created(
-                ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(chatWithUserDto.id)
-                    .toUri(),
-            ).build()
+        chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.FILE)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @PostMapping("/chat-rooms/{chat-room-id}/chats/img")
+    override fun createChatWithImage(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @Valid @RequestBody fileChatCreateRequest: FileChatCreateRequest,
+    ): ResponseEntity<Unit> {
+        chatFacadeService.createChat(fileChatCreateRequest.toDto(), token.id, chatRoomId, ChatType.IMAGE)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 }

@@ -14,7 +14,7 @@ data class DefaultChatWithUserResponse(
     override val chatRoomId: Long,
     @Schema(description = "채팅 내용", example = "안녕하세요")
     override var content: String,
-    @Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK, FILE)", example = "GENERAL")
+    @Schema(description = "채팅 타입(GENERAL, REPLY, REACTION, TASK, FILE, IMAGE)", example = "GENERAL")
     override val chatType: ChatType,
     @Schema(description = "생성일시", example = "2021-05-29T00:00:00")
     override val createdAt: LocalDateTime,
@@ -24,7 +24,7 @@ data class DefaultChatWithUserResponse(
     companion object {
         fun of(chatWithUserDto: ChatWithUserDto<*>): ChatWithUserResponse<*> =
             when (chatWithUserDto.chatType) {
-                ChatType.FILE -> FileChatWithUserResponse.of(chatWithUserDto)
+                ChatType.FILE, ChatType.IMAGE -> FileChatWithUserResponse.of(chatWithUserDto)
                 else ->
                     DefaultChatWithUserResponse(
                         id = chatWithUserDto.id,

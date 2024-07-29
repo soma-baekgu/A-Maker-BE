@@ -6,6 +6,7 @@ enum class ChatType {
     REPLY,
     REACTION,
     FILE,
+    IMAGE,
     ;
 
     companion object {
