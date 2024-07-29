@@ -54,4 +54,13 @@ class WorkspaceUserService(
         val workspaceUser = getWorkspaceUser(workspace, user)
         if (!workspaceUser.isAdmin()) throw BusinessException(StatusCode.WORKSPACE_UNAUTHORIZED)
     }
+
+    fun validByUserIdAndChatIdInWorkspace(
+        userId: String,
+        chatId: Long,
+    ) {
+        if (!workspaceUserRepository.existsByUserIdAndChatIdInWorkspace(userId, chatId)) {
+            throw BusinessException(StatusCode.WORKSPACE_UNREACHABLE)
+        }
+    }
 }

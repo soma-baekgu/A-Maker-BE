@@ -22,4 +22,20 @@ class ReplyCommentFixture(
                     content = content,
                 ),
             ).toDomain()
+
+    fun createPersistedReplyComments(
+        userId: String,
+        eventId: Long,
+        count: Int = 100,
+    ): List<ReplyComment> {
+        val replyCommentEntities =
+            (0 until count).map {
+                ReplyCommentEntity(
+                    eventId = eventId,
+                    userId = userId,
+                    content = "content $it",
+                )
+            }
+        return replyCommentRepository.saveAll(replyCommentEntities).map { it.toDomain() }
+    }
 }
