@@ -4,7 +4,7 @@ import com.backgu.amaker.api.event.dto.EventWithUserDto
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-class EventWithUserResponse(
+data class EventWithUserResponse(
     @Schema(
         description = "이벤트 제목",
         example = "우리 어디서 만날지",
