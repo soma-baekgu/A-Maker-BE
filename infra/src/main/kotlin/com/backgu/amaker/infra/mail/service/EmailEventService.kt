@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.mail.service
 
-import com.backgu.amaker.infra.mail.event.EmailEvent
+import com.backgu.amaker.application.notification.mail.event.EmailEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 

@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync
 @EnableAsync
 @EntityScan(basePackages = ["com.backgu.amaker.infra"])
 @EnableJpaRepositories(basePackages = ["com.backgu.amaker.infra"])
-@SpringBootApplication(scanBasePackages = ["com.backgu.amaker.api", "com.backgu.amaker.infra"])
+@SpringBootApplication(scanBasePackages = ["com.backgu.amaker.api", "com.backgu.amaker.infra.jpa"])
 class AMakerApiApplication
 
 fun main(args: Array<String>) {

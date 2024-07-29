@@ -40,5 +40,6 @@ out/
 .kotlin
 
 .Ds_Store
+kafka_data
 
 .run
