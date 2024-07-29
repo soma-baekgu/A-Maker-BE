@@ -39,4 +39,7 @@ enum class StatusCode(
 
     // event
     EVENT_NOT_FOUND("4000", "이벤트를 찾을 수 없습니다."),
+
+    // eventAssignedUser
+    EVENT_ASSIGNED_USER_NOT_FOUND("4000", "접근할 수 없는 이벤트입니다."),
 }

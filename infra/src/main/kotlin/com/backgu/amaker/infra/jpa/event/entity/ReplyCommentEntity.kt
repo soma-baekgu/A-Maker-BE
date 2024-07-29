@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.jpa.event.entity
 
-import com.backgu.amaker.domain.event.EventAssignedUser
+import com.backgu.amaker.domain.event.ReplyComment
 import com.backgu.amaker.infra.jpa.common.entity.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,36 +9,36 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
-@Entity(name = "EventAssignedUser")
-@Table(name = "event_assigned_user")
-class EventAssignedUserEntity(
+@Entity(name = "ReplyComment")
+@Table(name = "reply_comment")
+class ReplyCommentEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(nullable = false)
-    val eventId: Long,
-    @Column(nullable = false)
     val userId: String,
     @Column(nullable = false)
-    var isFinished: Boolean = false,
+    val eventId: Long,
+    @Column(nullable = false)
+    var content: String,
 ) : BaseTimeEntity() {
-    fun toDomain(): EventAssignedUser =
-        EventAssignedUser(
+    fun toDomain(): ReplyComment =
+        ReplyComment(
             id = id,
-            eventId = eventId,
             userId = userId,
-            isFinished = isFinished,
+            eventId = eventId,
+            content = content,
             createdAt = createdAt,
             updatedAt = updatedAt,
         )
 
     companion object {
-        fun of(eventAssigned: EventAssignedUser): EventAssignedUserEntity =
-            EventAssignedUserEntity(
-                id = eventAssigned.id,
-                eventId = eventAssigned.eventId,
-                userId = eventAssigned.userId,
-                isFinished = eventAssigned.isFinished,
+        fun of(replyComment: ReplyComment): ReplyCommentEntity =
+            ReplyCommentEntity(
+                id = replyComment.id,
+                userId = replyComment.userId,
+                eventId = replyComment.eventId,
+                content = replyComment.content,
             )
     }
 }

@@ -1,6 +1,10 @@
 package com.backgu.amaker.api.event.service
 
+import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.api.common.exception.StatusCode
+import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.event.EventAssignedUser
+import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.jpa.event.entity.EventAssignedUserEntity
 import com.backgu.amaker.infra.jpa.event.repository.EventAssignedRepository
 import org.springframework.stereotype.Service
@@ -27,4 +31,11 @@ class EventAssignedUserService(
                 createAssignedUsers
                     .map { EventAssignedUserEntity.of(it) },
             ).map { it.toDomain() }
+
+    fun getByUserAndEvent(
+        user: User,
+        event: Event,
+    ): EventAssignedUser =
+        eventAssignedRepository.findByUserIdAndEventId(user.id, event.id)?.toDomain()
+            ?: throw BusinessException(StatusCode.EVENT_ASSIGNED_USER_NOT_FOUND)
 }

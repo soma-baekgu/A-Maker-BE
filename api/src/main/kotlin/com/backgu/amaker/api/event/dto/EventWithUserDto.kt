@@ -5,7 +5,7 @@ import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
-class EventWithUserDto(
+data class EventWithUserDto(
     val id: Long,
     val eventTitle: String,
     val deadLine: LocalDateTime,
