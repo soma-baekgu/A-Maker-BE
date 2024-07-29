@@ -9,6 +9,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
@@ -58,5 +60,31 @@ class EventCommentFacadeServiceTest {
         }.isInstanceOf(BusinessException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.EVENT_ASSIGNED_USER_NOT_FOUND)
+    }
+
+    @Test
+    @DisplayName("reply comments 조회")
+    fun findReplyComments() {
+        // given
+        val userId = "test-user-id"
+        val replyEvent = replyCommentFixtures.setUp(userId = "test-user-id")
+        ReplyCommentCreateDto("test-content")
+        replyCommentFixtures.replyCommentFixture.createPersistedReplyComments(userId, replyEvent.id, 100)
+
+        val pageable =
+            PageRequest.of(
+                0,
+                20,
+                Sort.by("id").ascending(),
+            )
+
+        // when
+        val result = eventCommentFacadeService.findReplyComments(userId, replyEvent.id, pageable)
+
+        // then
+        assertThat(result).isNotNull
+        assertThat(result.content.size).isEqualTo(20)
+        assertThat(result.totalElements).isEqualTo(100)
+        assertThat(result.content[0].id).isLessThan(result.content[1].id)
     }
 }
