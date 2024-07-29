@@ -23,4 +23,16 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
         userId: String,
         workspaceId: Long,
     ): WorkspaceUserEntity?
+
+    @Query(
+        "select case when count(c)> 0 then true else false end " +
+            "from Chat c " +
+            "inner join ChatRoom ch on ch.id = c.chatRoomId " +
+            "inner join WorkspaceUser wu on wu.workspaceId = ch.workspaceId " +
+            "where wu.userId = :userId and c.id = :chatId",
+    )
+    fun existsByUserIdAndChatIdInWorkspace(
+        userId: String,
+        chatId: Long,
+    ): Boolean
 }

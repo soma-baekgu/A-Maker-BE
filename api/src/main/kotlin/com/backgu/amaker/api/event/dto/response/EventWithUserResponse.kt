@@ -4,7 +4,7 @@ import com.backgu.amaker.api.event.dto.EventWithUserDto
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-class EventWithUserResponse(
+data class EventWithUserResponse(
     @Schema(
         description = "이벤트 제목",
         example = "우리 어디서 만날지",
@@ -30,6 +30,16 @@ class EventWithUserResponse(
         example = "[\"http://a-maker.com/hi1.png\", \"http://a-maker.com/hi2.png\"]",
     )
     val users: List<String>,
+    @Schema(
+        description = "완료된 이벤트 수",
+        example = "2",
+    )
+    val finishedCount: Int,
+    @Schema(
+        description = "총 배정된 이벤트 수",
+        example = "5",
+    )
+    val totalAssignedCount: Int,
 ) {
     companion object {
         fun of(event: EventWithUserDto) =
@@ -39,6 +49,8 @@ class EventWithUserResponse(
                 notificationStartTime = event.notificationStartTime,
                 notificationInterval = event.notificationInterval,
                 users = event.users.map { it.picture },
+                finishedCount = event.finishedCount,
+                totalAssignedCount = event.totalAssignedCount,
             )
     }
 }

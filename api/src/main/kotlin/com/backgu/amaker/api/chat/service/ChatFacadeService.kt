@@ -101,7 +101,10 @@ class ChatFacadeService(
         val userMap = userService.findAllByUserIdsToMap(eventAssignedUsers.map { it.userId })
         val eventUsers = eventAssignedUsers.mapNotNull { userMap[it.userId] }
 
-        return EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers))
+        return EventChatWithUserDto.of(
+            chat,
+            EventWithUserDto.of(event, eventUsers, eventAssignedUsers.count { it.isFinished }),
+        )
     }
 
     private fun markMostRecentChatAsRead(
@@ -123,7 +126,8 @@ class ChatFacadeService(
         if (ChatType.isEventChat(chat.chatType)) {
             val event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
             val eventUsers = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
-            EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers))
+            val finishedNumber = eventUserMap[event.id]?.count { it.isFinished } ?: 0
+            EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers, finishedNumber))
         } else {
             chat
         }
