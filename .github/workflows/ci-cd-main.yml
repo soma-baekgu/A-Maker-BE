@@ -48,7 +48,7 @@ jobs:
 
       - name: Docker build
         run: |
-          docker build -f Dockerfile-api -t ${{secret.API_IMAGE}}
+          docker build -f Dockerfile-api -t ${{secrets.API_IMAGE}}
 
       - name: Docker Push
         run: |
