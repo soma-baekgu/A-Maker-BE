@@ -1,0 +1,7 @@
+services:
+  application:
+    container_name: backgu-api
+    image: 730335493019.dkr.ecr.ap-northeast-2.amazonaws.com/backgu-repository:api
+    ports:
+      - "8080:8080"
+    restart: on-failure
