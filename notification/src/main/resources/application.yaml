@@ -27,26 +27,7 @@ spring:
             enable: true
 
   kafka:
-    bootstrap-servers: ["localhost:9092"]
-
-
-oauth:
-  google:
-    client-id: ${CLIENT_ID}
-    client-secret: ${CLIENT_SECRET}
-    redirect-uri: "http://localhost:3000/login"
-    base-url: "https://accounts.google.com/o/oauth2/auth"
-    oauth-url: "https://oauth2.googleapis.com"
-    api-url: "https://www.googleapis.com"
-    client-name: Google
-    scope: email,profile
-
-
-jwt:
-  client-secret: ${JWT_SECRET}
-  expiration: 86400000
-  issuer: a-maker
-
+    bootstrap-servers: [ "localhost:9092" ]
 
 management:
   endpoint:
@@ -60,4 +41,3 @@ management:
     web:
       exposure:
         include: health,info,metrics,prometheus
-
