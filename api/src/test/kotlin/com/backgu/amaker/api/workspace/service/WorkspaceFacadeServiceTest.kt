@@ -187,10 +187,14 @@ class WorkspaceFacadeServiceTest {
         val memberId = "member"
         val member: User = fixtures.user.createPersistedUser(memberId)
 
-        fixtures.workspaceUser.createPersistedWorkspaceUser(
+        fixtures.workspaceUser.createPersistedWorkspaceLeader(
             workspaceId = workspace.id,
             leaderId = leaderId,
+        )
+        fixtures.workspaceUser.createPersistedWorkspaceMember(
+            workspaceId = workspace.id,
             memberIds = listOf(memberId),
+            WorkspaceUserStatus.PENDING,
         )
 
         val chatRoom: ChatRoom =
@@ -209,6 +213,41 @@ class WorkspaceFacadeServiceTest {
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
 
         verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
+    }
+
+    @Test
+    @DisplayName("워크스페이스 유저 활성화 실패")
+    fun activateWorkspaceUserLimitedUser() {
+        // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
+        val leaderId = "leader"
+        fixtures.user.createPersistedUser(leaderId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스")
+        workspace.belongingNumber = workspace.workspacePlan.belongingLimit
+        fixtures.workspace.save(workspace)
+
+        val member: User = fixtures.user.createPersistedUser()
+
+        fixtures.workspaceUser.createPersistedWorkspaceLeader(
+            workspaceId = workspace.id,
+            leaderId = leaderId,
+        )
+        fixtures.workspaceUser.createPersistedWorkspaceMember(
+            workspaceId = workspace.id,
+            memberIds = listOf(member.id),
+            WorkspaceUserStatus.PENDING,
+        )
+
+        val chatRoom: ChatRoom =
+            fixtures.chatRoom.createPersistedChatRoom(workspaceId = workspace.id, chatRoomType = ChatRoomType.DEFAULT)
+        fixtures.chatRoomUser.createPersistedChatRoomUser(chatRoomId = chatRoom.id, userIds = listOf(leaderId))
+
+        // when
+        assertThatThrownBy { workspaceFacadeService.activateWorkspaceUser(member.id, workspace.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.INVALID_WORKSPACE_JOIN)
     }
 
     @DisplayName("워크스페이스의 기본 채팅방을 조회")

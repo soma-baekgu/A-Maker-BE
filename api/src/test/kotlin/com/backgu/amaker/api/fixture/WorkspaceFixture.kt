@@ -1,6 +1,8 @@
 package com.backgu.amaker.api.fixture
 
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
+import com.backgu.amaker.domain.workspace.Workspace
+import com.backgu.amaker.domain.workspace.WorkspacePlan
 import com.backgu.amaker.infra.jpa.workspace.entity.WorkspaceEntity
 import com.backgu.amaker.infra.jpa.workspace.repository.WorkspaceRepository
 import org.springframework.stereotype.Component
@@ -17,9 +19,11 @@ class WorkspaceFixture(
             id: Long = idValue.incrementAndGet(),
             name: String = nameBuilder(id),
             thumbnail: String = thumbnailBuilder(id),
+            plan: WorkspacePlan = WorkspacePlan.BASIC,
         ) = WorkspaceEntity(
             name = name,
             thumbnail = thumbnail,
+            workspacePlan = plan,
         )
 
         fun createWorkspaceRequest(
@@ -39,10 +43,15 @@ class WorkspaceFixture(
         id: Long = idValue.incrementAndGet(),
         name: String = nameBuilder(id),
         thumbnail: String = thumbnailBuilder(id),
+        plan: WorkspacePlan = WorkspacePlan.BASIC,
     ) = workspaceRepository
         .save(
-            createWorkspace(name = name, thumbnail = thumbnail),
+            createWorkspace(name = name, thumbnail = thumbnail, plan = plan),
         ).toDomain()
+
+    fun save(workspace: Workspace) {
+        workspaceRepository.save(WorkspaceEntity.of(workspace))
+    }
 
     fun deleteAll() {
         workspaceRepository.deleteAll()
