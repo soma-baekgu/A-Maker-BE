@@ -1,7 +1,7 @@
 package com.backgu.amaker.notification.service
 
 import com.backgu.amaker.application.notification.mail.event.EmailEvent
-import com.backgu.amaker.application.notification.service.NotificationService
+import com.backgu.amaker.application.notification.service.NotificationWithCallBackService
 import com.backgu.amaker.infra.mail.constants.EmailConstants
 import com.backgu.amaker.infra.mail.service.EmailHandler
 import com.ninjasquad.springmockk.MockkBean
@@ -15,9 +15,9 @@ import kotlin.test.Test
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NotificationServiceImplTest {
+class NotificationWithCallBackServiceImplTest {
     @Autowired
-    lateinit var notificationServiceImpl: NotificationService
+    lateinit var notificationWithCallBackServiceImpl: NotificationWithCallBackService
 
     @MockkBean
     lateinit var emailHandler: EmailHandler
@@ -36,7 +36,7 @@ class NotificationServiceImplTest {
                 content = "bye",
             )
         // when
-        notificationServiceImpl.handleNotificationEvent(emailEvent)
+        notificationWithCallBackServiceImpl.handleNotificationEvent(emailEvent)
 
         // then
         verify(exactly = 1) { emailHandler.handleEmailEvent(emailEvent) }
