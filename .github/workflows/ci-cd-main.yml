@@ -6,7 +6,7 @@ on:
       - 'main'
 
 env:
-  AWS_REGION: ap-northeast-2        # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ap-northeast-2
 
 jobs:
   build-api:
@@ -68,13 +68,13 @@ jobs:
           APP: "backgu-api"
           COMPOSE: "/home/ec2-user/compose/docker-compose-api.yaml"
         with:
-          host: ${{secrets.EC2_PROD_HOST}}
+          host: ${{secrets.EC2_PROD_BASTION}}
           username: ec2-user
           key: ${{secrets.EC2_PROD_PRIVATE_KEY}}
           port: 22
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            docker-compose -f $COMPOSE down
-            docker pull ${{secrets.API_IMAGE}}
-            docker-compose -f $COMPOSE up -d
+            ssh prod1 docker-compose -f $COMPOSE down
+            ssh prod1 docker pull ${{secrets.API_IMAGE}}
+            ssh prod1 docker-compose -f $COMPOSE up -d
