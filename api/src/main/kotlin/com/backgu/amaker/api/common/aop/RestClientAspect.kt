@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.config
+package com.backgu.amaker.api.common.aop
 
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Aspect
 @Component
 class RestClientAspect {
-    @Pointcut("within(@CaughtHttpExchange *)")
+    @Pointcut("within(@com.backgu.amaker.api.common.annotation.CaughtHttpExchange *)")
     fun caughtHttpExchange() {
     }
 
