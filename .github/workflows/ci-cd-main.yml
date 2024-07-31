@@ -71,14 +71,15 @@ jobs:
           APP: "backgu-api"
           COMPOSE: "/home/ec2-user/compose/docker-compose-api.yaml"
         with:
-          host: ${{secrets.EC2_PROD_HOST}}
+          host: ${{secrets.EC2_PROD_BASTION}}
           username: ec2-user
           key: ${{secrets.EC2_PROD_PRIVATE_KEY}}
           port: 22
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1
-            docker-compose -f $COMPOSE down
-            docker pull ${{secrets.API_IMAGE}}
-            docker-compose -f $COMPOSE up -d
+            ssh prod1 << 'EOF'
+              docker-compose -f $COMPOSE down
+              docker pull ${{secrets.API_IMAGE}}
+              docker-compose -f $COMPOSE up -d
+            EOF
