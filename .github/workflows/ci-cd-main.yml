@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'main'
+  pull_request:
+    branches:
+      - 'develop'
 
 env:
   AWS_REGION: ap-northeast-2        # set this to your preferred AWS region, e.g. us-west-1
@@ -75,6 +78,7 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
+            ssh prod1
             docker-compose -f $COMPOSE down
             docker pull ${{secrets.API_IMAGE}}
             docker-compose -f $COMPOSE up -d
