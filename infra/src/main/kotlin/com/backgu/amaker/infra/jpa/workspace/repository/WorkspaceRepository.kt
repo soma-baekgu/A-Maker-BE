@@ -1,7 +1,10 @@
 package com.backgu.amaker.infra.jpa.workspace.repository
 
 import com.backgu.amaker.infra.jpa.workspace.entity.WorkspaceEntity
+import jakarta.persistence.LockModeType
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Lock
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
@@ -19,4 +22,19 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
             "order by wu.id desc limit 1",
     )
     fun getDefaultWorkspaceByUserId(userId: String): WorkspaceEntity?
+
+    @Modifying
+    @Query(
+        "update Workspace w " +
+            "set w.belongingNumber = w.belongingNumber + 1 " +
+            "where w.id = :workspaceId and w.belongingNumber + 1 < :limit",
+    )
+    fun updateBelongingWithLimit(
+        workspaceId: Long,
+        limit: Int,
+    ): Int
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select w from Workspace w where w.id = :id")
+    fun getLockedWorkspaceById(id: Long): WorkspaceEntity?
 }
