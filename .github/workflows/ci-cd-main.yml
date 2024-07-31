@@ -78,7 +78,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1
-            docker-compose -f $COMPOSE down
-            docker pull ${{secrets.API_IMAGE}}
-            docker-compose -f $COMPOSE up -d
+            ssh prod1 docker-compose -f $COMPOSE down
+            ssh prod1 docker pull ${{secrets.API_IMAGE}}
+            ssh prod1 docker-compose -f $COMPOSE up -d
