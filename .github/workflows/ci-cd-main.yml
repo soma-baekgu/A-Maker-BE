@@ -129,7 +129,7 @@ jobs:
         run: |
           cd ./api/src/main/resources/
           touch ./application.yaml
-          echo "${{ secrets.YAML_PROD_NOTIFIACTION }}" > ./application.yaml
+          echo "${{ secrets.YAML_PROD_NOTIFICATION }}" > ./application.yaml
         shell: bash
 
       - name: Grant execute permission for gradlew
