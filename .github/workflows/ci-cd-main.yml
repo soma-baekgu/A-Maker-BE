@@ -96,7 +96,7 @@ jobs:
           script: |
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.API_IMAGE}}
-            ssh prod1 docker-compose -f $COMPOSE up -d
+            ssh prod1 docker-compose -p api -f $COMPOSE up -d
 
   build-notification:
     runs-on: ubuntu-latest
@@ -182,4 +182,4 @@ jobs:
           script: |
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.NOTIFICATION_IMAGE}}
-            ssh prod1 docker-compose -f $COMPOSE up -d
+            ssh prod1 docker-compose -p notification -f $COMPOSE up -d
