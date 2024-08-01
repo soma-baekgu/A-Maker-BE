@@ -253,4 +253,32 @@ class WorkspaceFacadeServiceTest {
             .extracting("statusCode")
             .isEqualTo(StatusCode.WORKSPACE_NOT_FOUND)
     }
+
+    @Test
+    @DisplayName("워크스페이스에 유저 초대")
+    fun inviteWorkspaceUser() {
+        // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
+
+        val leaderId = "leader"
+        fixtures.user.createPersistedUser(leaderId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = leaderId)
+
+        val memberEmail = "invitee@example.com"
+        val member: User = fixtures.user.createPersistedUser(email = "invitee@example.com")
+
+        // when
+        workspaceFacadeService.inviteWorkspaceUser(leaderId, workspace.id, memberEmail)
+        val workspaceUser: WorkspaceUser = workspaceUserService.getWorkspaceUser(workspace, member)
+
+        // then
+        assertThat(workspaceUser).isNotNull
+        assertThat(workspaceUser.status).isEqualTo(WorkspaceUserStatus.PENDING)
+        assertThat(workspaceUser.userId).isEqualTo(member.id)
+        assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
+        assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+
+        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
+    }
 }
