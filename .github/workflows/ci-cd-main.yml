@@ -58,8 +58,8 @@ jobs:
 
       - name: Delete existing image with same tag
         run: |
-          existing_image=$(aws ecr describe-images --repository-name backgu-repository --image-ids imageTag=api --query 'imageDetails[0].imageDigest' --output text)
-          if [ "$existing_image" != "None" ]; then
+          existing_image=$(aws ecr describe-images --repository-name backgu-repository --image-ids imageTag=api --query 'imageDetails[0].imageDigest' --output text 2>/dev/null)
+          if [ "$existing_image" != "None" ] && [ -n "$existing_image" ]; then
             aws ecr batch-delete-image --repository-name backgu-repository --image-ids imageDigest=$existing_image
           fi
         env:
@@ -137,8 +137,8 @@ jobs:
 
       - name: Delete existing image with same tag
         run: |
-          existing_image=$(aws ecr describe-images --repository-name backgu-repository --image-ids imageTag=notification --query 'imageDetails[0].imageDigest' --output text)
-          if [ "$existing_image" != "None" ]; then
+          existing_image=$(aws ecr describe-images --repository-name backgu-repository --image-ids imageTag=notification --query 'imageDetails[0].imageDigest' --output text 2>/dev/null)
+          if [ "$existing_image" != "None" ] && [ -n "$existing_image" ]; then
             aws ecr batch-delete-image --repository-name backgu-repository --image-ids imageDigest=$existing_image
           fi
         env:
