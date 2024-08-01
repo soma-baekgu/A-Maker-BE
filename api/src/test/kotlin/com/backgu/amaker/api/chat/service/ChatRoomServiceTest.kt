@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.chat.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
 import com.backgu.amaker.domain.chat.ChatRoomType
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
@@ -7,13 +8,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
-@SpringBootTest
 @DisplayName("ChatRoomService 테스트")
-class ChatRoomServiceTest {
+class ChatRoomServiceTest : IntegrationTest() {
     @Autowired
     lateinit var chatRoomService: ChatRoomService
 

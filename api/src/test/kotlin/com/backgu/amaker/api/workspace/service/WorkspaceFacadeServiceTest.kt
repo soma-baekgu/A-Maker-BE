@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.workspace.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
@@ -21,14 +22,12 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
-@SpringBootTest
 @AutoConfigureMockMvc
-class WorkspaceFacadeServiceTest {
+class WorkspaceFacadeServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var workspaceFixtureFacade: WorkspaceFixtureFacade
 

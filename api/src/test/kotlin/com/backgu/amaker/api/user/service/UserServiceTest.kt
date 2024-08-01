@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.user.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.common.service.IdPublisher
@@ -11,13 +12,11 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("UserService 테스트")
 @Transactional
-@SpringBootTest
-class UserServiceTest {
+class UserServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var userService: UserService
 
