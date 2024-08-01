@@ -2,13 +2,14 @@ package com.backgu.amaker.api.user.controller
 
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
+import com.backgu.amaker.api.user.dto.request.EmailExistsRequest
 import com.backgu.amaker.api.user.dto.response.EmailExistsResponse
 import com.backgu.amaker.api.user.service.UserFacadeService
-import jakarta.validation.constraints.Email
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -19,12 +20,12 @@ class UserController(
 ) : UserSwagger {
     @GetMapping("/email/exists")
     override fun checkEmail(
-        @RequestParam @Email email: String,
+        @ModelAttribute @Valid emailExistsRequest: EmailExistsRequest,
     ): ResponseEntity<ApiResult<EmailExistsResponse>> =
         ResponseEntity.ok().body(
             apiHandler.onSuccess(
                 EmailExistsResponse.of(
-                    userFacadeService.existsByEmail(email),
+                    userFacadeService.existsByEmail(emailExistsRequest.email),
                 ),
             ),
         )
