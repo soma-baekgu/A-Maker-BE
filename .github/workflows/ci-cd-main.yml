@@ -127,7 +127,7 @@ jobs:
 
       - name: make application.yaml
         run: |
-          cd ./api/src/main/resources/
+          cd ./notification/src/main/resources/
           touch ./application.yaml
           echo "${{ secrets.YAML_PROD_NOTIFICATION }}" > ./application.yaml
         shell: bash
