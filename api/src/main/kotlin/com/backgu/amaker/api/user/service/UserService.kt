@@ -5,12 +5,9 @@ import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.jpa.user.entity.UserEntity
 import com.backgu.amaker.infra.jpa.user.reposotory.UserRepository
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-
-private val logger = KotlinLogging.logger {}
 
 @Service
 @Transactional(readOnly = true)
@@ -23,12 +20,7 @@ class UserService(
         return savedUser.toDomain()
     }
 
-    fun getById(id: String): User =
-        userRepository.findByIdOrNull(id)?.toDomain() ?: run {
-            // TODO 로깅 전략 세우기
-            logger.error { "User not found : $id" }
-            throw BusinessException(StatusCode.USER_NOT_FOUND)
-        }
+    fun getById(id: String): User = userRepository.findByIdOrNull(id)?.toDomain() ?: throw BusinessException(StatusCode.USER_NOT_FOUND)
 
     fun getByEmail(email: String): User =
         userRepository.findByEmail(email)?.toDomain() ?: throw BusinessException(

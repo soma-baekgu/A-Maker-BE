@@ -35,6 +35,7 @@ enum class StatusCode(
     INVALID_WORKSPACE_CREATE("4000", "잘못된 워크스페이스 생성 요청입니다."),
     ALREADY_JOINED_WORKSPACE("4000", "이미 가입된 워크스페이스입니다."),
     INVALID_WORKSPACE_JOIN("4000", "워크스페이스에 가입할 수 없습니다.\n플랜을 업드레이드 하세요"),
+    INVALID_WORKSPACE_INVITE("4000", "워크스페이스에 초대할 수 없습니다."),
 
     // workspaceUser
     WORKSPACE_UNREACHABLE("4000", "워크스페이스에 접근할 수 없습니다."),

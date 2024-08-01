@@ -152,6 +152,25 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.save(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(workspaceUser)
+        return WorkspaceUserDto.of(user.email, workspaceUser)
+    }
+
+    @Transactional
+    fun inviteWorkspaceUser(
+        userId: String,
+        workspaceId: Long,
+        inviteeEmail: String,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+        val workspace = workspaceService.getById(workspaceId)
+        workspaceUserService.verifyUserHasAdminPrivileges(workspace, user)
+
+        val invitee = userService.getByEmail(inviteeEmail)
+        workspaceUserService.validateUserNotRelatedInWorkspace(invitee, workspace)
+
+        val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
+        notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(invitee, workspace))
+
+        return WorkspaceUserDto.of(invitee.email, workspaceUser)
     }
 }
