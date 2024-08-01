@@ -53,6 +53,22 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Delete existing image with same tag
+        run: |
+          if aws ecr list-images \
+                  --repository-name backgu-repository \
+                  --region ${{env.AWS_REGION}} \
+                  --query 'imageIds[?imageTag==`api`]' \
+                  --output text | grep -q 'api'; then
+              aws ecr batch-delete-image \
+                  --repository-name backgu-repository \
+                  --image-ids imageTag=api \
+                  --region ap-northeast-2
+              echo "Image with tag 'api' deleted successfully."
+          else
+              echo "Image with tag 'api' not found. No action taken."
+          fi
+
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -77,4 +93,90 @@ jobs:
           script: |
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.API_IMAGE}}
-            ssh prod1 docker-compose -f $COMPOSE up -d
+            ssh prod1 docker-compose -p api -f $COMPOSE up -d
+
+  build-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.0
+
+      - name: AWS IAM
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3.3.2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: make application.yaml
+        run: |
+          cd ./notification/src/main/resources/
+          touch ./application.yaml
+          echo "${{ secrets.YAML_PROD_NOTIFICATION }}" > ./application.yaml
+        shell: bash
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew :notification:build -x test
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Delete existing image with same tag
+        run: |
+          if aws ecr list-images \
+                  --repository-name backgu-repository \
+                  --region ${{env.AWS_REGION}} \
+                  --query 'imageIds[?imageTag==`notification`]' \
+                  --output text | grep -q 'notification'; then
+              aws ecr batch-delete-image \
+                  --repository-name backgu-repository \
+                  --image-ids imageTag=notification \
+                  --region ap-northeast-2
+              echo "Image with tag 'notification' deleted successfully."
+          else
+              echo "Image with tag 'notification' not found. No action taken."
+          fi
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: backgu-repository
+          IMAGE_TAG: notification
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f Dockerfile-notification .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy Images with Docker compose
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          APP: "backgu-notification"
+          COMPOSE: "/home/ec2-user/compose/docker-compose-notification.yaml"
+        with:
+          host: ${{secrets.EC2_PROD_BASTION}}
+          username: ec2-user
+          key: ${{secrets.EC2_PROD_PRIVATE_KEY}}
+          port: 22
+          envs: APP, COMPOSE
+          script_stop: true
+          script: |
+            ssh prod1 docker-compose -f $COMPOSE down
+            ssh prod1 docker pull ${{secrets.NOTIFICATION_IMAGE}}
+            ssh prod1 docker-compose -p notification -f $COMPOSE up -d
