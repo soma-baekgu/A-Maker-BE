@@ -2,6 +2,7 @@ package com.backgu.amaker.api.chat.service
 
 import com.backgu.amaker.api.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
@@ -17,13 +18,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("ChatRoomFacadeService 테스트")
 @Transactional
-@SpringBootTest
-class ChatRoomFacadeServiceTest {
+class ChatRoomFacadeServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var chatRoomFixture: ChatRoomFixture
 
@@ -112,39 +111,32 @@ class ChatRoomFacadeServiceTest {
         val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
         fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
 
-        val defaultChatRoom =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
+        val defaultChatRoom = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             defaultChatRoom.id,
             member.map { it.id }.plus(leader.id),
         )
 
-        val leaderNotRegistered1 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered1 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered1.id, member.map { it.id })
-        val leaderNotRegistered2 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered2 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered2.id, member.map { it.id })
-        val leaderNotRegistered3 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered3 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered3.id, member.map { it.id })
 
-        val leadRegistered1 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leadRegistered1 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             leadRegistered1.id,
             member.map { it.id }.plus(leader.id),
         )
-        val leadRegistered2 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leadRegistered2 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             leadRegistered2.id,
             member.map { it.id }.plus(leader.id),
         )
 
         // when
-        val result: BriefChatRoomViewDto =
-            chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
 
         // then
         assertThat(result.chatRooms).isNotNull
@@ -167,39 +159,32 @@ class ChatRoomFacadeServiceTest {
         val workspace = fixtures.workspaceFixture.createPersistedWorkspace(name = "test-workspace")
         fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
 
-        val defaultChatRoom =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
+        val defaultChatRoom = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             defaultChatRoom.id,
             member.map { it.id }.plus(leader.id),
         )
 
-        val leaderNotRegistered1 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered1 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered1.id, member.map { it.id })
-        val leaderNotRegistered2 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered2 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered2.id, member.map { it.id })
-        val leaderNotRegistered3 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leaderNotRegistered3 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(leaderNotRegistered3.id, member.map { it.id })
 
-        val leadRegistered1 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leadRegistered1 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             leadRegistered1.id,
             member.map { it.id }.plus(leader.id),
         )
-        val leadRegistered2 =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val leadRegistered2 = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(
             leadRegistered2.id,
             member.map { it.id }.plus(leader.id),
         )
 
         // when
-        val result: BriefChatRoomViewDto =
-            chatRoomFacadeService.findNotRegisteredChatRooms(leaderId, workspace.id)
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findNotRegisteredChatRooms(leaderId, workspace.id)
 
         // then
         assertThat(result.chatRooms).isNotNull
@@ -230,8 +215,7 @@ class ChatRoomFacadeServiceTest {
         fixtures.workspaceUserFixture.createPersistedWorkspaceUser(workspace.id, leader.id, member.map { it.id })
 
         // when
-        val result: BriefChatRoomViewDto =
-            chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
+        val result: BriefChatRoomViewDto = chatRoomFacadeService.findChatRooms(leaderId, workspace.id)
 
         // then
         assertThat(result.chatRooms).isNotNull
@@ -243,8 +227,7 @@ class ChatRoomFacadeServiceTest {
     fun joinChatRoom() {
         // given
         val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
-        val newChatRoom =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val newChatRoom = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
 
         // when
         val chatRoomUser = chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, newChatRoom.id)
@@ -270,10 +253,13 @@ class ChatRoomFacadeServiceTest {
         fixtures.chatRoomFixture.deleteChatRoom(noChatRoomId)
 
         // when & then
-        assertThatThrownBy { chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, noChatRoomId) }
-            .isInstanceOf(BusinessException::class.java)
-            .extracting("statusCode")
-            .isEqualTo(StatusCode.CHAT_ROOM_NOT_FOUND)
+        assertThatThrownBy {
+            chatRoomFacadeService.joinChatRoom(
+                members[0].id,
+                workspace.id,
+                noChatRoomId,
+            )
+        }.isInstanceOf(BusinessException::class.java).extracting("statusCode").isEqualTo(StatusCode.CHAT_ROOM_NOT_FOUND)
     }
 
     @Test
@@ -281,13 +267,17 @@ class ChatRoomFacadeServiceTest {
     fun joinAlreadyJoinedChatRoom() {
         // given
         val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
-        val newChatRoom =
-            fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
+        val newChatRoom = fixtures.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.CUSTOM)
         fixtures.chatRoomUserFixture.createPersistedChatRoomUser(newChatRoom.id, members.map { it.id })
 
         // when & then
-        assertThatThrownBy { chatRoomFacadeService.joinChatRoom(members[0].id, workspace.id, newChatRoom.id) }
-            .isInstanceOf(BusinessException::class.java)
+        assertThatThrownBy {
+            chatRoomFacadeService.joinChatRoom(
+                members[0].id,
+                workspace.id,
+                newChatRoom.id,
+            )
+        }.isInstanceOf(BusinessException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_ROOM_USER_ALREADY_EXIST)
     }

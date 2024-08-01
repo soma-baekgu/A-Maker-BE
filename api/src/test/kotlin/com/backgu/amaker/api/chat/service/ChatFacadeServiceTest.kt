@@ -5,6 +5,7 @@ import com.backgu.amaker.api.chat.dto.ChatListDto
 import com.backgu.amaker.api.chat.dto.ChatQuery
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
@@ -16,14 +17,12 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
 @DisplayName("ChatFacadeService 테스트")
 @Transactional
-@SpringBootTest
-class ChatFacadeServiceTest {
+class ChatFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var chatFacadeService: ChatFacadeService
 

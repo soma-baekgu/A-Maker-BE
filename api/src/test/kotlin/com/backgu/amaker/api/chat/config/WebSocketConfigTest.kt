@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.chat.config
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.StompFixtureFacade
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -12,7 +13,7 @@ import kotlin.test.Test
 
 @DisplayName("웹소켓 설정 테스트")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class WebSocketConfigTest {
+class WebSocketConfigTest : IntegrationTest() {
     @Autowired
     lateinit var fixtures: StompFixtureFacade
 

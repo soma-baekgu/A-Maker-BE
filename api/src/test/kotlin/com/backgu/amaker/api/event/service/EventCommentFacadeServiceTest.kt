@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.event.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
@@ -8,7 +9,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.annotation.Transactional
@@ -16,8 +16,7 @@ import kotlin.test.Test
 
 @DisplayName("EventFacadeService 테스트")
 @Transactional
-@SpringBootTest
-class EventCommentFacadeServiceTest {
+class EventCommentFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var eventCommentFacadeService: EventCommentFacadeService
 
