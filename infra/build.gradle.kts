@@ -31,6 +31,9 @@ dependencies {
     implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
     implementation("jakarta.persistence:jakarta.persistence-api")
     implementation("jakarta.annotation:jakarta.annotation-api")
+    //implementation("org.springframework.boot:spring-boot-starter-amqp")
+
+    //testImplementation("org.springframework.amqp:spring-rabbit-test")
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
