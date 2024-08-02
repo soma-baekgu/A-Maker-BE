@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.workspace.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.WorkspaceFixtureFacade
@@ -10,14 +11,12 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
 @DisplayName("WorkspaceService 테스트")
 @Transactional
-@SpringBootTest
-class WorkspaceServiceTest {
+class WorkspaceServiceTest : IntegrationTest() {
     @Autowired
     lateinit var fixtures: WorkspaceFixtureFacade
 

@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.auth.service
 
 import com.backgu.amaker.api.auth.dto.JwtTokenDto
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.AuthFixture
 import com.backgu.amaker.api.security.jwt.component.JwtComponent
 import com.ninjasquad.springmockk.MockkBean
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
@@ -19,8 +19,7 @@ import kotlin.test.Test
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
 @Transactional
-@SpringBootTest
-class AuthFacadeServiceTest {
+class AuthFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var authFacadeService: AuthFacadeService
 

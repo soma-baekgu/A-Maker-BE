@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.event.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.fixture.EventFixtureFacade
 import com.backgu.amaker.domain.chat.ChatRoom
@@ -8,15 +9,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import kotlin.test.Test
 
 @DisplayName("EventFacadeService 테스트")
 @Transactional
-@SpringBootTest
-class EventFacadeServiceTest {
+class EventFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var eventFacadeService: EventFacadeService
 

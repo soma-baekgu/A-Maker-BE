@@ -2,6 +2,7 @@ package com.backgu.amaker.api.chat.controller
 
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.DefaultChatWithUserResponse
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.StompFixtureFacade
 import com.backgu.amaker.domain.chat.ChatRoom
 import org.assertj.core.api.Assertions.assertThat
@@ -20,7 +21,7 @@ import kotlin.test.Test
 @DisplayName("ChatController 테스트")
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ChatControllerTest {
+class ChatControllerTest : IntegrationTest() {
     @Autowired
     lateinit var fixtures: StompFixtureFacade
 

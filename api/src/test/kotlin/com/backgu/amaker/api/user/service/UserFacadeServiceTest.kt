@@ -1,18 +1,17 @@
 package com.backgu.amaker.api.user.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.UserFixture
 import com.backgu.amaker.api.user.dto.EmailExistsDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
 @DisplayName("UserFacadeService 테스트")
 @Transactional
-@SpringBootTest
-class UserFacadeServiceTest {
+class UserFacadeServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var userFacadeService: UserFacadeService
 

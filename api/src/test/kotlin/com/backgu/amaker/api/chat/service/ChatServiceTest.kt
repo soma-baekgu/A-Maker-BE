@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.chat.service
 
+import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
 import com.backgu.amaker.domain.chat.ChatRoomType
@@ -9,13 +10,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("ChatService 테스트")
 @Transactional
-@SpringBootTest
-class ChatServiceTest {
+class ChatServiceTest : IntegrationTest() {
     @Autowired
     lateinit var chatService: ChatService
 
@@ -28,7 +27,7 @@ class ChatServiceTest {
         fun setUp(
             @Autowired fixture: ChatFixtureFacade,
         ) {
-            fixture.setUp(userId = "basic-data-set-up")
+            fixture.setUp()
         }
     }
 

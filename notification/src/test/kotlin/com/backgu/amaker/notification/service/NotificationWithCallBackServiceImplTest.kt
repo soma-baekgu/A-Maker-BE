@@ -4,6 +4,7 @@ import com.backgu.amaker.application.notification.mail.event.EmailEvent
 import com.backgu.amaker.application.notification.service.NotificationWithCallBackService
 import com.backgu.amaker.infra.mail.constants.EmailConstants
 import com.backgu.amaker.infra.mail.service.EmailHandler
+import com.backgu.amaker.notification.common.container.IntegrationTest
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
@@ -15,7 +16,7 @@ import kotlin.test.Test
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NotificationWithCallBackServiceImplTest {
+class NotificationWithCallBackServiceImplTest : IntegrationTest() {
     @Autowired
     lateinit var notificationWithCallBackServiceImpl: NotificationWithCallBackService
 
