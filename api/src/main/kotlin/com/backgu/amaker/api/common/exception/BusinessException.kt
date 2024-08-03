@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.common.exception
 
+import com.backgu.amaker.common.status.StatusCode
 import org.springframework.http.HttpStatus
 import kotlin.RuntimeException
 

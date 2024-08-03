@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.security.config
 
-import com.backgu.amaker.api.security.filter.JwtAuthenticationTokenFilter
 import com.backgu.amaker.api.security.handler.AuthAccessDeniedHandler
 import com.backgu.amaker.api.security.handler.AuthEntryPoint
+import com.backgu.amaker.common.security.jwt.web.JwtAuthenticationTokenFilter
 import com.backgu.amaker.domain.user.UserRole
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

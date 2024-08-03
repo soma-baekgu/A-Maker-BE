@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.workspace.service
 
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
 import com.backgu.amaker.domain.workspace.WorkspaceUser

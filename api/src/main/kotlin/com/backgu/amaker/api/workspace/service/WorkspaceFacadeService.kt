@@ -6,7 +6,6 @@ import com.backgu.amaker.api.chat.service.ChatRoomUserService
 import com.backgu.amaker.api.common.annotation.DistributedLock
 import com.backgu.amaker.api.common.annotation.DistributedLockKey
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.user.service.UserService
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
@@ -15,6 +14,7 @@ import com.backgu.amaker.api.workspace.dto.WorkspacesDto
 import com.backgu.amaker.api.workspace.event.WorkspaceInvitedEvent
 import com.backgu.amaker.api.workspace.event.WorkspaceJoinedEvent
 import com.backgu.amaker.application.notification.service.NotificationEventService
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace

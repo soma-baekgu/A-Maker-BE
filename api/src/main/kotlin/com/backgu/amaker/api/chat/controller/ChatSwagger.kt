@@ -6,7 +6,7 @@ import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
-import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.parameters.RequestBody

@@ -7,11 +7,11 @@ import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.event.dto.EventWithUserDto
 import com.backgu.amaker.api.event.service.EventAssignedUserService
 import com.backgu.amaker.api.event.service.EventService
 import com.backgu.amaker.api.user.service.UserService
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomUser

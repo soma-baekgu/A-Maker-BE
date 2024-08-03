@@ -1,12 +1,13 @@
 package com.backgu.amaker.api.security.jwt.component
 
 import com.auth0.jwt.exceptions.JWTDecodeException
-import com.backgu.amaker.api.common.container.IntegrationTest
+import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.backgu.amaker.domain.user.UserRole
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import kotlin.test.Test
 

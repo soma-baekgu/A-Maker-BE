@@ -2,9 +2,9 @@ package com.backgu.amaker.api.user.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.common.service.IdPublisher
 import com.backgu.amaker.api.fixture.UserFixture
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.user.UserRole
 import org.assertj.core.api.Assertions.assertThat

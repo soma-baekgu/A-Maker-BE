@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.chat.config
 
 import com.backgu.amaker.api.chat.annotation.ChattingLoginUser
-import com.backgu.amaker.api.security.JwtAuthentication
-import com.backgu.amaker.api.security.JwtAuthenticationToken
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthenticationToken
 import org.springframework.core.MethodParameter
 import org.springframework.messaging.Message
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver

@@ -2,9 +2,9 @@ package com.backgu.amaker.api.event.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
 import com.backgu.amaker.api.fixture.ReplyCommentFixtureFacade
+import com.backgu.amaker.common.status.StatusCode
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName

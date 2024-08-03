@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.common.exception
+package com.backgu.amaker.common.status
 
 enum class StatusCode(
     val code: String,
@@ -6,6 +6,12 @@ enum class StatusCode(
 ) {
     // OK
     SUCCESS("2000", "성공"),
+
+    // UNAUTHORIZED
+    UNAUTHORIZED("4010", "로그인이 필요합니다."),
+
+    // Access Denied
+    ACCESS_DENIED("4030", "접근 권한이 없습니다."),
 
     // INTERNAL_SERVER_ERROR
     INTERNAL_SERVER_ERROR("5000", "죄송합니다. 다음에 다시 시도해주세요."),
