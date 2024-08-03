@@ -18,6 +18,11 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
         status: WorkspaceUserStatus,
     ): Boolean
 
+    fun existsByUserIdAndWorkspaceId(
+        userId: String,
+        workspaceId: Long,
+    ): Boolean
+
     @Query("select wu from WorkspaceUser wu where wu.userId = :userId and wu.workspaceId = :workspaceId")
     fun findByUserIdAndWorkspaceId(
         userId: String,

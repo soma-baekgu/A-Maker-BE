@@ -3,9 +3,10 @@ package com.backgu.amaker.api.workspace.controller
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.security.JwtAuthentication
-import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
+import com.backgu.amaker.api.workspace.dto.request.WorkspaceInviteRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
+import com.backgu.amaker.api.workspace.dto.response.WorkspaceUserResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspacesResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -89,5 +92,20 @@ interface WorkspaceSwagger {
     fun activateWorkspaceInvite(
         @Parameter(hidden = true) token: JwtAuthentication,
         workspaceId: Long,
-    ): ResponseEntity<ApiResult<WorkspaceUserDto>>
+    ): ResponseEntity<ApiResult<WorkspaceUserResponse>>
+
+    @Operation(summary = "워크스페이스 유저 초대", description = "해당 이메일로 워크스페이스에 초대합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "204",
+                description = "워크스페이스 유저 초대 성공",
+            ),
+        ],
+    )
+    fun inviteWorkspace(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("workspace-id") workspaceId: Long,
+        @ModelAttribute @Valid workspaceInviteRequest: WorkspaceInviteRequest,
+    ): ResponseEntity<ApiResult<WorkspaceUserResponse>>
 }

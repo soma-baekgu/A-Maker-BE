@@ -38,6 +38,15 @@ class WorkspaceUserService(
         }
     }
 
+    fun validateUserNotRelatedInWorkspace(
+        user: User,
+        workspace: Workspace,
+    ) {
+        if (workspaceUserRepository.existsByUserIdAndWorkspaceId(user.id, workspace.id)) {
+            throw BusinessException(StatusCode.INVALID_WORKSPACE_INVITE)
+        }
+    }
+
     fun getWorkspaceUser(
         workspace: Workspace,
         user: User,

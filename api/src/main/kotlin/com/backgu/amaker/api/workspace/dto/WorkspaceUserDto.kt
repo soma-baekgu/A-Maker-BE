@@ -1,22 +1,25 @@
 package com.backgu.amaker.api.workspace.dto
 
+import com.backgu.amaker.domain.workspace.WorkspaceRole
 import com.backgu.amaker.domain.workspace.WorkspaceUser
-import io.swagger.v3.oas.annotations.media.Schema
+import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
 
 class WorkspaceUserDto(
-    @Schema(description = "워크스페이스 ID", example = "231")
+    val email: String,
     val workspaceId: Long,
-    @Schema(description = "워크스페이스 권한", example = "Leader")
-    val workspaceRole: String,
-    @Schema(description = "워크스페이스 상태", example = "ACTIVE")
-    val status: String,
+    val workspaceRole: WorkspaceRole,
+    val status: WorkspaceUserStatus,
 ) {
     companion object {
-        fun of(workspaceUser: WorkspaceUser): WorkspaceUserDto =
+        fun of(
+            email: String,
+            workspaceUser: WorkspaceUser,
+        ): WorkspaceUserDto =
             WorkspaceUserDto(
+                email = email,
                 workspaceId = workspaceUser.workspaceId,
-                workspaceRole = workspaceUser.workspaceRole.value,
-                status = workspaceUser.status.value,
+                workspaceRole = workspaceUser.workspaceRole,
+                status = workspaceUser.status,
             )
     }
 }

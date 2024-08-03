@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.user.controller
 
 import com.backgu.amaker.api.common.dto.response.ApiResult
+import com.backgu.amaker.api.user.dto.request.EmailExistsRequest
 import com.backgu.amaker.api.user.dto.response.EmailExistsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -21,6 +22,6 @@ interface UserSwagger {
         ],
     )
     fun checkEmail(
-        @Email email: String,
+        @Email email: EmailExistsRequest,
     ): ResponseEntity<ApiResult<EmailExistsResponse>>
 }

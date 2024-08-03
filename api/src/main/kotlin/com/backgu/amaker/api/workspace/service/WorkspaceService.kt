@@ -25,10 +25,7 @@ class WorkspaceService(
     }
 
     fun getById(id: Long): Workspace =
-        workspaceRepository.findByIdOrNull(id)?.toDomain() ?: run {
-            logger.error { "Workspace not found : $id" }
-            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
-        }
+        workspaceRepository.findByIdOrNull(id)?.toDomain() ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
 
     fun getWorkspaceByIds(workspaceIds: List<Long>): List<Workspace> =
         workspaceRepository.findByWorkspaceIds(workspaceIds).map {
