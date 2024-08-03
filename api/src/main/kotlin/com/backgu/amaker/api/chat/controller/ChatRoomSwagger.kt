@@ -5,7 +5,7 @@ import com.backgu.amaker.api.chat.dto.response.BriefChatRoomResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomsViewResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
-import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

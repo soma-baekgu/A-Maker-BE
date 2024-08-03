@@ -2,7 +2,7 @@ package com.backgu.amaker.api.fixture
 
 import com.backgu.amaker.api.chat.dto.request.ChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.DefaultChatWithUserResponse
-import com.backgu.amaker.api.security.jwt.component.JwtComponent
+import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule

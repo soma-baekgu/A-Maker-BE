@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.chat.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoomType
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("ChatService 테스트")

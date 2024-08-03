@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.security
+package com.backgu.amaker.common.security.jwt.authentication
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
@@ -11,7 +11,7 @@ class JwtAuthenticationToken : AbstractAuthenticationToken {
         this.principal = principal
     }
 
-    internal constructor(principal: JwtAuthentication, authorities: Collection<GrantedAuthority>) : super(
+    constructor(principal: JwtAuthentication, authorities: Collection<GrantedAuthority>) : super(
         authorities,
     ) {
         super.setAuthenticated(true)
