@@ -106,6 +106,6 @@ interface WorkspaceSwagger {
     fun inviteWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
-        @ModelAttribute @Valid email: WorkspaceInviteRequest,
+        @ModelAttribute @Valid workspaceInviteRequest: WorkspaceInviteRequest,
     ): ResponseEntity<ApiResult<WorkspaceUserResponse>>
 }
