@@ -3,12 +3,12 @@ package com.backgu.amaker.api.workspace.controller
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
-import com.backgu.amaker.api.security.JwtAuthentication
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.api.workspace.service.WorkspaceFacadeService
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal

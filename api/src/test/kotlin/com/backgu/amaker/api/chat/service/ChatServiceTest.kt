@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.chat.service
 
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoomType
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy

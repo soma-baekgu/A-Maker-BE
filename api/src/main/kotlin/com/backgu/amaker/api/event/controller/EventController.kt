@@ -5,7 +5,7 @@ import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
 import com.backgu.amaker.api.event.service.EventFacadeService
-import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal

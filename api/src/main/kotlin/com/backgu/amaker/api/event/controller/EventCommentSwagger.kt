@@ -5,7 +5,7 @@ import com.backgu.amaker.api.common.dto.response.PageResponse
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
-import com.backgu.amaker.api.security.JwtAuthentication
+import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

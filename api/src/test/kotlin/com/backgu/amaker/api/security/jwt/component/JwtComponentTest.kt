@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.security.jwt.component
 
 import com.auth0.jwt.exceptions.JWTDecodeException
+import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.backgu.amaker.domain.user.UserRole
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
