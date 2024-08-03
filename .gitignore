@@ -43,3 +43,4 @@ out/
 kafka_data
 
 .run
+/*/src/*/resources/application-test.yaml
