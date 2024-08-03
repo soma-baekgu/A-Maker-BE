@@ -3,7 +3,6 @@ package com.backgu.amaker.api.workspace.controller
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
 import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
-import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceInviteRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
@@ -101,8 +100,14 @@ class WorkspaceController(
     override fun activateWorkspaceInvite(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
-    ): ResponseEntity<ApiResult<WorkspaceUserDto>> =
+    ): ResponseEntity<ApiResult<WorkspaceUserResponse>> =
         ResponseEntity
             .ok()
-            .body(apiHandler.onSuccess(workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId)))
+            .body(
+                apiHandler.onSuccess(
+                    WorkspaceUserResponse.of(
+                        workspaceFacadeService.activateWorkspaceUser(token.id, workspaceId),
+                    ),
+                ),
+            )
 }
