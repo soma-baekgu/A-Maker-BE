@@ -1,0 +1,68 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: a-maker
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+jwt:
+  client-secret: ${JWT_SECRET}
+  expiration: 86400000
+  issuer: a-maker
+
+swagger:
+  url: http://localhost:8080
+  locate: http://localhost:8080
+
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://127.0.0.1:3000
+    - https://localhost:3000
+    - https://127.0.0.1:3000
+  allowed-methods:
+    - GET
+    - HEAD
+    - POST
+    - PUT
+    - DELETE
+    - PATCH
+    - OPTIONS
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+websocket:
+  allowed-origins:
+    - http://localhost:3000
+    - http://127.0.0.1:3000
+    - https://localhost:3000
+    - https://127.0.0.1:3000
+
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.transaction: TRACE
+#    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
