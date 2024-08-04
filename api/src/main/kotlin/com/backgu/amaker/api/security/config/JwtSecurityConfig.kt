@@ -1,24 +1,30 @@
 package com.backgu.amaker.api.security.config
 
-import com.backgu.amaker.api.security.JwtAuthenticationProvider
-import com.backgu.amaker.api.security.filter.JwtAuthenticationTokenFilter
+import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.handler.AuthAccessDeniedHandler
-import com.backgu.amaker.api.security.jwt.component.JwtComponent
-import com.backgu.amaker.api.user.service.UserService
+import com.backgu.amaker.common.security.jwt.component.JwtComponent
+import com.backgu.amaker.common.security.jwt.utils.JwtAuthenticationTokenExtractor
+import com.backgu.amaker.common.security.jwt.web.JwtAuthenticationTokenFilter
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class JwtSecurityConfig(
-    private var jwtComponent: JwtComponent,
-    private var userService: UserService,
-) {
+class JwtSecurityConfig {
     @Bean
-    fun jwtAuthenticationFilter(): JwtAuthenticationTokenFilter = JwtAuthenticationTokenFilter(jwtComponent)
+    fun jwtComponent(jwtConfig: JwtConfig): JwtComponent = JwtComponent(jwtConfig)
 
     @Bean
-    fun jwtAuthenticationProvider(): JwtAuthenticationProvider = JwtAuthenticationProvider(userService)
+    fun jwtAuthenticationTokenExtractor(jwtComponent: JwtComponent): JwtAuthenticationTokenExtractor =
+        JwtAuthenticationTokenExtractor(jwtComponent)
 
     @Bean
-    fun jwtAccessDeniedHandler(): AuthAccessDeniedHandler = AuthAccessDeniedHandler()
+    fun jwtAuthenticationFilter(jwtAuthenticationTokenExtractor: JwtAuthenticationTokenExtractor): JwtAuthenticationTokenFilter =
+        JwtAuthenticationTokenFilter(jwtAuthenticationTokenExtractor)
+
+    @Bean
+    fun jwtAccessDeniedHandler(
+        apiHandler: ApiHandler,
+        objectMapper: ObjectMapper,
+    ): AuthAccessDeniedHandler = AuthAccessDeniedHandler(apiHandler, objectMapper)
 }

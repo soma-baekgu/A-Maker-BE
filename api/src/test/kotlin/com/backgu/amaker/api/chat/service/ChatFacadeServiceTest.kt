@@ -7,8 +7,8 @@ import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
+import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomType

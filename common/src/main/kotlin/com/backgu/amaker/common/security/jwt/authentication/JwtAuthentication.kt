@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.security
+package com.backgu.amaker.common.security.jwt.authentication
 
 class JwtAuthentication(
     val id: String,

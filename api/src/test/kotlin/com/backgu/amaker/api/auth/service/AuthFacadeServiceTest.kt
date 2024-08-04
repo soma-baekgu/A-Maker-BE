@@ -3,7 +3,7 @@ package com.backgu.amaker.api.auth.service
 import com.backgu.amaker.api.auth.dto.JwtTokenDto
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.AuthFixture
-import com.backgu.amaker.api.security.jwt.component.JwtComponent
+import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
