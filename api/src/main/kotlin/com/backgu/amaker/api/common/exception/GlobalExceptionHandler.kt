@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.common.exception
 
-import com.backgu.amaker.api.common.dto.response.ApiError
 import com.backgu.amaker.api.common.infra.ApiHandler
+import com.backgu.amaker.common.http.response.ApiError
 import com.backgu.amaker.common.status.StatusCode
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest

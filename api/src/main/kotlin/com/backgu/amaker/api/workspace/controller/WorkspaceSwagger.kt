@@ -1,12 +1,12 @@
 package com.backgu.amaker.api.workspace.controller
 
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
-import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceInviteRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceUserResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspacesResponse
+import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

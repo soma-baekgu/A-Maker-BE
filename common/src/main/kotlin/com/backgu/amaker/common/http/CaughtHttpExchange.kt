@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.config
+package com.backgu.amaker.common.http
 
 import org.springframework.web.service.annotation.HttpExchange
 

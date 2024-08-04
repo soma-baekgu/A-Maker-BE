@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.file.controller
 
-import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.file.service.FileFacadeService
+import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal

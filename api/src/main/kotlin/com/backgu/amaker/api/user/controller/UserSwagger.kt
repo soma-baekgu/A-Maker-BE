@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.user.controller
 
-import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.user.dto.request.EmailExistsRequest
 import com.backgu.amaker.api.user.dto.response.EmailExistsResponse
+import com.backgu.amaker.common.http.response.ApiResult
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

@@ -1,9 +1,9 @@
 package com.backgu.amaker.api.common.infra
 
-import com.backgu.amaker.api.common.dto.response.ApiError
-import com.backgu.amaker.api.common.dto.response.ApiResult
-import com.backgu.amaker.api.common.dto.response.ApiSuccess
 import com.backgu.amaker.api.common.service.ClockHolder
+import com.backgu.amaker.common.http.response.ApiError
+import com.backgu.amaker.common.http.response.ApiResult
+import com.backgu.amaker.common.http.response.ApiSuccess
 import com.backgu.amaker.common.status.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

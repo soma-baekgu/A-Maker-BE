@@ -8,8 +8,8 @@ import com.backgu.amaker.api.chat.dto.request.FileChatCreateRequest
 import com.backgu.amaker.api.chat.dto.response.ChatListResponse
 import com.backgu.amaker.api.chat.dto.response.ChatWithUserResponse
 import com.backgu.amaker.api.chat.service.ChatFacadeService
-import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.common.infra.ApiHandler
+import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import com.backgu.amaker.domain.chat.ChatType
 import jakarta.validation.Valid

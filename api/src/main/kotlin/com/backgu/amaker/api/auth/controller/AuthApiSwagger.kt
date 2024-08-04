@@ -2,7 +2,7 @@ package com.backgu.amaker.api.auth.controller
 
 import com.backgu.amaker.api.auth.dto.response.JwtTokenResponse
 import com.backgu.amaker.api.auth.dto.response.OAuthUrlResponse
-import com.backgu.amaker.api.common.dto.response.ApiResult
+import com.backgu.amaker.common.http.response.ApiResult
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
