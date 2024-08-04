@@ -37,6 +37,8 @@ class SecurityConfig(
                 it
                     .requestMatchers("/actuator/**")
                     .hasRole(UserRole.ADMIN.value)
+                    .requestMatchers("/system/v1/**")
+                    .hasRole(UserRole.ADMIN.value)
                     .requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
                     .requestMatchers(

@@ -2,7 +2,7 @@ package com.backgu.amaker.realtime.security
 
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import com.backgu.amaker.common.status.StatusCode
-import com.backgu.amaker.realtime.common.RealTimeException
+import com.backgu.amaker.realtime.common.excpetion.RealTimeException
 import com.backgu.amaker.realtime.ws.constants.WebSocketConstants.Companion.USER_ID
 import com.backgu.amaker.realtime.ws.constants.WebSocketConstants.Companion.WORKSPACE_ID
 import com.backgu.amaker.realtime.ws.constants.WebSocketConstants.Companion.WS_WORKSPACE_ENDPOINT

@@ -3,7 +3,7 @@ package com.backgu.amaker.realtime.workspace.service
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
 import com.backgu.amaker.infra.jpa.workspace.repository.WorkspaceUserRepository
-import com.backgu.amaker.realtime.common.RealTimeException
+import com.backgu.amaker.realtime.common.excpetion.RealTimeException
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,13 +1,13 @@
 package com.backgu.amaker.api.event.controller
 
-import com.backgu.amaker.api.common.dto.response.ApiResult
-import com.backgu.amaker.api.common.dto.response.PageResponse
 import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentsViewResponse
 import com.backgu.amaker.api.event.service.EventCommentFacadeService
+import com.backgu.amaker.common.http.response.ApiResult
+import com.backgu.amaker.common.http.response.PageResponse
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest

@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.event.controller
 
-import com.backgu.amaker.api.common.dto.response.ApiResult
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
+import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
