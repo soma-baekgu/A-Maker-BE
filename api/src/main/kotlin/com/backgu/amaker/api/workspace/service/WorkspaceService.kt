@@ -6,7 +6,6 @@ import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
 import com.backgu.amaker.infra.jpa.workspace.entity.WorkspaceEntity
 import com.backgu.amaker.infra.jpa.workspace.repository.WorkspaceRepository
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

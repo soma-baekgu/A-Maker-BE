@@ -3,8 +3,8 @@ package com.backgu.amaker.api.common.aop
 import com.backgu.amaker.api.common.annotation.DistributedLock
 import com.backgu.amaker.api.common.annotation.DistributedLockKey
 import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.common.exception.StatusCode
 import com.backgu.amaker.api.common.service.LockService
+import com.backgu.amaker.common.status.StatusCode
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect

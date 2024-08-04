@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.common.exception
+package com.backgu.amaker.common.status
 
 enum class StatusCode(
     val code: String,
@@ -42,8 +42,6 @@ enum class StatusCode(
     ALREADY_JOINED_WORKSPACE("4000", "이미 가입된 워크스페이스입니다."),
     INVALID_WORKSPACE_JOIN("4000", "워크스페이스에 가입할 수 없습니다.\n플랜을 업드레이드 하세요"),
     INVALID_WORKSPACE_INVITE("4000", "워크스페이스에 초대할 수 없습니다."),
-    ALREADY_JOINED_WORKSPACE("4000", "이미 가입된 워크스페이스입니다."),
-    INVALID_WORKSPACE_JOIN("4000", "워크스페이스에 가입할 수 없습니다.\n플랜을 업드레이드 하세요"),
 
     // workspaceUser
     WORKSPACE_UNREACHABLE("4000", "워크스페이스에 접근할 수 없습니다."),

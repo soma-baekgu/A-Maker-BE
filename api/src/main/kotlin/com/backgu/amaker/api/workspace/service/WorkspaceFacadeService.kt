@@ -105,7 +105,7 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.save(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(workspaceUser)
+        return WorkspaceUserDto.of(user.email, workspaceUser)
     }
 
     @Transactional
@@ -128,7 +128,7 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.updateBelonging(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(workspaceUser)
+        return WorkspaceUserDto.of(user.email, workspaceUser)
     }
 
     @Transactional
