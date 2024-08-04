@@ -16,6 +16,7 @@ class RestClientAspect {
         try {
             jointPoint.proceed()
         } catch (e: Exception) {
+            println(e)
             null
         }
 }
