@@ -21,7 +21,6 @@ import org.testcontainers.utility.DockerImageName
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IntegrationTest {
     companion object {
-        val SERVER_ID = 12345L
         private val REDIS_CONTAINER: RedisContainer = RedisContainer(RedisContainer.DEFAULT_IMAGE_NAME.withTag("6"))
         private val MYSQL_CONTAINER: MySQLContainer<*> =
             MySQLContainer(DockerImageName.parse("mysql:8.0.26"))
