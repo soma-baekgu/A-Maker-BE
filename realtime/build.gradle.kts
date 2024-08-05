@@ -21,6 +21,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     testImplementation(kotlin("test"))
+    testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")
+    testImplementation("org.testcontainers:testcontainers:1.19.0")
+    testImplementation("org.testcontainers:mysql:1.16.0")
 }
 
 tasks.withType<KotlinCompile> {
