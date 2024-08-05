@@ -13,7 +13,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler
 
 @Component
 class WebSocketSessionHandler(
-    private val workspaceSessionFacadeService: WorkspaceSessionFacadeService
+    private val workspaceSessionFacadeService: WorkspaceSessionFacadeService,
 ) : TextWebSocketHandler() {
     override fun afterConnectionEstablished(session: WebSocketSession) {
         val userId: String = WebSocketSessionUtils.extractAttribute<String>(session, USER_ID)
