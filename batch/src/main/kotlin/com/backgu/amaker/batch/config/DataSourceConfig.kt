@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
+import java.util.Properties
 import javax.sql.DataSource
 
 @Configuration
@@ -45,6 +46,7 @@ class DataSourceConfig(
             dataSource = domainDataSource
             setPackagesToScan("com.backgu.amaker.infra.jpa")
             jpaVendorAdapter = HibernateJpaVendorAdapter()
+            setJpaProperties(hibernateProperties())
         }
 
     @Bean(name = ["transactionManager"])
@@ -68,4 +70,13 @@ class DataSourceConfig(
             .password(password)
             .driverClassName(driverClassName)
             .build()
+
+    private fun hibernateProperties(): Properties {
+        val properties = Properties()
+        properties["hibernate.physical_naming_strategy"] =
+            "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"
+        properties["hibernate.implicit_naming_strategy"] =
+            "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+        return properties
+    }
 }
