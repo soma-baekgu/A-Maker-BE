@@ -2,17 +2,17 @@ spring:
   application:
     name: a-maker
 
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+  batch-datasource:
+    url: jdbc:mysql://localhost:3306/amaker_batch?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    database: mysql
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
+  domain-datasource:
+    url: jdbc:mysql://localhost:3306/amaker?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   batch:
     jdbc:
@@ -27,3 +27,4 @@ spring:
     redis:
       host: localhost
       port: 6379
+
