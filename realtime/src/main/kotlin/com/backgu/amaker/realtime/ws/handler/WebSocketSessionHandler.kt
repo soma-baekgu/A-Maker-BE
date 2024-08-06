@@ -1,6 +1,6 @@
 package com.backgu.amaker.realtime.ws.handler
 
-import com.backgu.amaker.realtime.orchestration.ServerRegister
+import com.backgu.amaker.realtime.server.config.ServerConfig
 import com.backgu.amaker.realtime.utils.WebSocketSessionUtils
 import com.backgu.amaker.realtime.workspace.service.WorkspaceSessionFacadeService
 import com.backgu.amaker.realtime.workspace.session.WorkspaceWebSocketSession
@@ -14,6 +14,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler
 @Component
 class WebSocketSessionHandler(
     private val workspaceSessionFacadeService: WorkspaceSessionFacadeService,
+    private val serverConfig: ServerConfig,
 ) : TextWebSocketHandler() {
     override fun afterConnectionEstablished(session: WebSocketSession) {
         val userId: String = WebSocketSessionUtils.extractAttribute<String>(session, USER_ID)
@@ -21,7 +22,7 @@ class WebSocketSessionHandler(
         workspaceSessionFacadeService.enrollUserToWorkspaceSession(
             userId,
             workspaceId,
-            WorkspaceWebSocketSession(session.id, userId, workspaceId, ServerRegister.serverId, session),
+            WorkspaceWebSocketSession(session.id, userId, workspaceId, serverConfig.id, session),
         )
     }
 
@@ -35,7 +36,7 @@ class WebSocketSessionHandler(
         workspaceSessionFacadeService.dropOutWorkspaceSession(
             userId,
             workspaceId,
-            WorkspaceWebSocketSession(session.id, userId, workspaceId, ServerRegister.serverId, session),
+            WorkspaceWebSocketSession(session.id, userId, workspaceId, serverConfig.id, session),
         )
     }
 }

@@ -9,5 +9,5 @@ data class WorkspaceSession
         @JsonProperty("id") val id: String,
         @JsonProperty("userId") val userId: String,
         @JsonProperty("workspaceId") val workspaceId: Long,
-        @JsonProperty("realtimeId") val realtimeId: Long,
+        @JsonProperty("realtimeId") val realtimeId: String,
     )

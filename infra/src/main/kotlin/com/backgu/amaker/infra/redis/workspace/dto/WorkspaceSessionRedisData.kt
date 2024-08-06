@@ -10,7 +10,7 @@ data class WorkspaceSessionRedisData
         @JsonProperty("id") val id: String,
         @JsonProperty("userId") val userId: String,
         @JsonProperty("workspaceId") val workspaceId: Long,
-        @JsonProperty("realtimeId") val realtimeId: Long,
+        @JsonProperty("realtimeId") val realtimeId: String,
     ) {
         companion object {
             fun of(workspaceSession: WorkspaceSession) =

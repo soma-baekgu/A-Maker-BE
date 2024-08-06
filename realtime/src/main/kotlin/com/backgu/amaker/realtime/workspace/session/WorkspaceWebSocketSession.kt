@@ -6,7 +6,7 @@ class WorkspaceWebSocketSession<T>(
     val id: String,
     val userId: String,
     val workspaceId: Long,
-    val realTimeId: Long,
+    val realTimeId: String,
     val session: T,
 ) {
     fun toDomain() = WorkspaceSession(id, userId, workspaceId, realTimeId)

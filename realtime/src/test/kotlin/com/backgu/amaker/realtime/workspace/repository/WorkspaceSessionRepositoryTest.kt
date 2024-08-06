@@ -24,7 +24,7 @@ class WorkspaceSessionRepositoryTest : IntegrationTest() {
     fun addWorkspaceSessionTest() {
         // given
         val workspaceId = 1L
-        val workspaceSession = WorkspaceSession(UUID.randomUUID().toString(), "userId", workspaceId, 1)
+        val workspaceSession = WorkspaceSession(UUID.randomUUID().toString(), "userId", workspaceId, "1")
 
         // when
         workspaceSessionRepository.addWorkspaceSession(workspaceId, workspaceSession)
