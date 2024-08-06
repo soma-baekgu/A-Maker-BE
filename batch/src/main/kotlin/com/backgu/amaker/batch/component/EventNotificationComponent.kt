@@ -17,6 +17,7 @@ import org.springframework.batch.item.database.JdbcCursorItemReader
 import org.springframework.batch.item.database.JpaItemWriter
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.RowMapper
@@ -30,8 +31,10 @@ import javax.sql.DataSource
 class EventNotificationComponent(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
-    private val dataSource: DataSource,
+    @Qualifier("domainDataSource")
+    private val domainDataSource: DataSource,
     private val notificationEventService: NotificationEventService,
+    @Qualifier("entityManagerFactory")
     private val entityManagerFactory: EntityManagerFactory,
 ) {
     @Bean
@@ -45,7 +48,7 @@ class EventNotificationComponent(
     fun step(): Step =
         StepBuilder("eventNotificationStep", jobRepository)
             .chunk<EventNotificationCreateDto, EventNotificationEntity>(1000, transactionManager)
-            .reader(reader(dataSource))
+            .reader(reader(domainDataSource))
             .processor(processor())
             .writer(writer())
             .build()
