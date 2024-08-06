@@ -1,11 +1,9 @@
 package com.backgu.amaker.infra.notification.kafka.config
 
 import com.backgu.amaker.application.notification.event.NotificationEvent
-import com.backgu.amaker.application.notification.service.NotificationEventCallbackService
 import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.infra.kafka.config.KafkaConfig
 import com.backgu.amaker.infra.notification.kafka.service.KafkaNotificationEventCallbackService
-import com.backgu.amaker.infra.notification.kafka.service.KafkaNotificationEventService
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.context.annotation.Bean
@@ -19,7 +17,7 @@ import java.util.HashMap
 
 @Configuration
 @Import(KafkaConfig::class)
-class NotificationKafkaProducerConfig(
+class NotificationKafkaBatchProducerConfig(
     private val kafkaConfig: KafkaConfig,
 ) {
     @Bean
@@ -41,5 +39,5 @@ class NotificationKafkaProducerConfig(
     fun kafkaTemplate(): KafkaTemplate<String, NotificationEvent> = KafkaTemplate(producerFactory())
 
     @Bean
-    fun kafkaNotificationEventService(): NotificationEventService = KafkaNotificationEventService(kafkaTemplate())
+    fun notificationEventCallBackService(): NotificationEventService = KafkaNotificationEventCallbackService(kafkaTemplate())
 }
