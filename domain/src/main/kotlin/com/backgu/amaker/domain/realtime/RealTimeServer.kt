@@ -1,14 +1,14 @@
 package com.backgu.amaker.domain.realtime
 
 class RealTimeServer(
-    val id: Long,
+    val id: String,
     val schema: String,
     val address: String,
     val port: Int,
 ) {
     companion object {
         fun httpOf(
-            id: Long,
+            id: String,
             address: String,
             port: Int,
         ): RealTimeServer = RealTimeServer(id, "http", address, port)

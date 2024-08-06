@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.RedisHash
 @RedisHash("realtime")
 class RealTimeServerHash(
     @Id
-    val id: Long,
+    val id: String,
     val schema: String,
     val address: String,
     val port: Int,

@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.realtime.service
+package com.backgu.amaker.realtime.server.service
 
 import com.backgu.amaker.domain.realtime.RealTimeServer
 import com.backgu.amaker.infra.redis.realtime.hash.RealTimeServerHash
@@ -11,8 +11,4 @@ class RealTimeServerService(
 ) {
     fun save(realTimeServer: RealTimeServer): RealTimeServer =
         realTimeServerRepository.save(RealTimeServerHash.of(realTimeServer)).toDomain()
-
-    fun delete(id: Long) = realTimeServerRepository.deleteById(id)
-
-    fun findAll(): List<RealTimeServer> = realTimeServerRepository.findAll().map { it.toDomain() }
 }
