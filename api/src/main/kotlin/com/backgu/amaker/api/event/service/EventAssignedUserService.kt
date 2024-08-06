@@ -19,7 +19,8 @@ class EventAssignedUserService(
     fun save(eventAssigned: EventAssignedUser): EventAssignedUser =
         eventAssignedUserRepository.save(EventAssignedUserEntity.of(eventAssigned)).toDomain()
 
-    fun findAllByEventId(eventId: Long): List<EventAssignedUser> = eventAssignedUserRepository.findAllByEventId(eventId).map { it.toDomain() }
+    fun findAllByEventId(eventId: Long): List<EventAssignedUser> =
+        eventAssignedUserRepository.findAllByEventId(eventId).map { it.toDomain() }
 
     fun findByEventIdsToEventIdMapped(eventIds: List<Long>): Map<Long, List<EventAssignedUser>> =
         eventAssignedUserRepository.findByEventIdIn(eventIds).map { it.toDomain() }.groupBy { it.eventId }

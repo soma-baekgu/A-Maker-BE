@@ -1,10 +1,8 @@
 package com.backgu.amaker.infra.notification.kafka.config
 
 import com.backgu.amaker.application.notification.event.NotificationEvent
-import com.backgu.amaker.application.notification.service.NotificationEventCallbackService
 import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.infra.kafka.config.KafkaConfig
-import com.backgu.amaker.infra.notification.kafka.service.KafkaNotificationEventCallbackService
 import com.backgu.amaker.infra.notification.kafka.service.KafkaNotificationEventService
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
