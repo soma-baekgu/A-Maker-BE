@@ -37,7 +37,6 @@ class DataSourceConfig(
             databaseProperties.domainDatasource.driverClassName,
         )
 
-    @Primary
     @Bean(name = ["entityManagerFactory"])
     fun domainEntityManagerFactory(
         @Qualifier("domainDataSource") domainDataSource: DataSource,
