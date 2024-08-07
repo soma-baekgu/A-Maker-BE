@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.common.dto.response
+package com.backgu.amaker.common.http.response
 
 import io.swagger.v3.oas.annotations.media.Schema
 

@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.common.dto.response
+package com.backgu.amaker.common.http.response
 
 class ApiSuccess<T>(
     override val timestamp: String,

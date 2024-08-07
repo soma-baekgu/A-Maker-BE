@@ -31,8 +31,8 @@ class IntegrationTest {
         @JvmStatic
         @DynamicPropertySource
         fun overrideProps(registry: DynamicPropertyRegistry) {
-            registry.add("spring.redis.host") { REDIS_CONTAINER.host }
-            registry.add("spring.redis.port") { REDIS_CONTAINER.firstMappedPort }
+            registry.add("spring.data.redis.host") { REDIS_CONTAINER.host }
+            registry.add("spring.data.redis.port") { REDIS_CONTAINER.firstMappedPort }
             registry.add("spring.datasource.url") { MYSQL_CONTAINER.jdbcUrl }
             registry.add("spring.datasource.username") { MYSQL_CONTAINER.username }
             registry.add("spring.datasource.password") { MYSQL_CONTAINER.password }

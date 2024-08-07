@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.auth.infra
 
 import com.backgu.amaker.api.auth.dto.oauth.google.GoogleUserInfoDto
-import com.backgu.amaker.api.config.CaughtHttpExchange
+import com.backgu.amaker.common.http.CaughtHttpExchange
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.service.annotation.GetExchange
 

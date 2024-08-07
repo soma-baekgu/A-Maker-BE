@@ -1,4 +1,4 @@
-package com.backgu.amaker.realtime.common
+package com.backgu.amaker.realtime.common.excpetion
 
 import com.backgu.amaker.common.status.StatusCode
 
