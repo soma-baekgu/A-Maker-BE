@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.notification.kafka.config
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
+import com.backgu.amaker.domain.notifiacation.Notification
 import com.backgu.amaker.infra.kafka.config.KafkaConfig
 import com.backgu.amaker.infra.notification.kafka.deserializer.KafkaNotificationDeserializer
 import com.backgu.amaker.infra.notification.kafka.service.KafkaEventPublisher
@@ -39,11 +39,11 @@ class NotificationKafkaEventPublisherConfig(
     }
 
     @Bean
-    fun consumerFactory(): ConsumerFactory<String, NotificationEvent> = DefaultKafkaConsumerFactory(consumerConfig())
+    fun consumerFactory(): ConsumerFactory<String, Notification> = DefaultKafkaConsumerFactory(consumerConfig())
 
     @Bean
-    fun notificationContainerFactory(): KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, NotificationEvent>> {
-        val factory = ConcurrentKafkaListenerContainerFactory<String, NotificationEvent>()
+    fun notificationContainerFactory(): KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Notification>> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, Notification>()
         factory.consumerFactory = consumerFactory()
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
         return factory

@@ -2,8 +2,9 @@ package com.backgu.amaker.batch.component
 
 import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.batch.dto.EventNotificationCreateDto
-import com.backgu.amaker.batch.dto.EventNotificationEvent
-import com.backgu.amaker.domain.notifiacation.EventNotificationType
+import com.backgu.amaker.domain.notifiacation.Notification
+import com.backgu.amaker.domain.notifiacation.event.EventNotCompleted
+import com.backgu.amaker.domain.notifiacation.event.EventOverdue
 import com.backgu.amaker.infra.jpa.notification.entity.EventNotificationEntity
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Job
@@ -128,34 +129,22 @@ class EventNotificationComponent(
                             ?.isBefore(now) ?: false
 
                 if (shouldSendNotification) {
-                    val eventNotificationType =
-                        if (item.deadline.isBefore(now)) EventNotificationType.OVERDUE else EventNotificationType.NOT_COMPLETED
-
-                    notificationEventService.publishNotificationEvent(
-                        EventNotificationEvent(
-                            email = item.email,
-                            title = eventNotificationType.title,
-                            content =
-                                getFormattedMessage(
-                                    eventType = eventNotificationType,
-                                    eventTitle = item.eventTitle,
-                                    duration = Duration.between(now, item.deadline),
-                                ),
-                            notificationType = eventNotificationType,
-                        ),
-                    )
+                    val notification: Notification =
+                        if (item.deadline.isBefore(now)) {
+                            val eventOverdue = EventOverdue.of(item.userId, Duration.between(item.deadline, now))
+                            notificationEventService.publishNotificationEvent(eventOverdue)
+                            eventOverdue
+                        } else {
+                            val eventNotCompleted = EventNotCompleted.of(item.userId, Duration.between(now, item.deadline))
+                            notificationEventService.publishNotificationEvent(eventNotCompleted)
+                            eventNotCompleted
+                        }
 
                     EventNotificationEntity(
-                        title = eventNotificationType.title,
-                        content =
-                            getFormattedMessage(
-                                eventType = eventNotificationType,
-                                eventTitle = item.eventTitle,
-                                duration = Duration.between(now, item.deadline),
-                            ),
+                        title = notification.method.title,
+                        content = notification.method.message,
                         userId = item.userId,
                         eventId = item.eventId,
-                        eventNotificationType = eventNotificationType,
                     )
                 } else {
                     null
@@ -170,18 +159,4 @@ class EventNotificationComponent(
         JpaItemWriterBuilder<EventNotificationEntity>()
             .entityManagerFactory(entityManagerFactory)
             .build()
-
-    private fun getFormattedMessage(
-        eventType: EventNotificationType,
-        eventTitle: String,
-        duration: Duration,
-    ): String =
-        if (eventType == EventNotificationType.NOT_COMPLETED) {
-            val hours = duration.toHours()
-            val minutes = duration.toMinutes() % 60
-            val timeLeft = if (hours > 0) "${hours}시간 ${minutes}분" else "${minutes}분"
-            String.format(eventType.message, eventTitle, timeLeft)
-        } else {
-            String.format(eventType.message, eventTitle)
-        }
 }

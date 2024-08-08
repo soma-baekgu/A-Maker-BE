@@ -1,33 +1,33 @@
 package com.backgu.amaker.application.notification.service
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
 import com.backgu.amaker.application.notification.event.NotificationEventWithCallback
+import com.backgu.amaker.domain.notifiacation.Notification
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 
 private val logger = KotlinLogging.logger {}
 
-interface NotificationWithCallBackService {
+interface NotificationWithCallBackService : NotificationService {
     @Async
     @EventListener
     fun handleNotificationWithCallback(notificationEvent: NotificationEventWithCallback) {
         try {
             notificationEvent.preHandle()
-            handleNotificationEvent(notificationEvent.notificationEvent)
+            handleNotificationEvent(notificationEvent.notification)
             notificationEvent.postHandle()
         } catch (e: Exception) {
             notificationEvent.onFail(e)
-            onHandlerFailed(notificationEvent.notificationEvent, e)
+            onHandlerFailed(notificationEvent.notification, e)
         }
     }
 
-    fun handleNotificationEvent(notificationEvent: NotificationEvent)
+    override fun handleNotificationEvent(notification: Notification)
 
     fun onHandlerFailed(
-        notificationEvent: NotificationEvent,
+        notification: Notification,
         exception: Exception,
     ) {
-        logger.error { "notificationEvent = [$notificationEvent], exception = [$exception]" }
+        logger.error { "notificationEvent = [$notification], exception = [$exception]" }
     }
 }

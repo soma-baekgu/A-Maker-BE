@@ -1,8 +1,9 @@
 package com.backgu.amaker.infra.notification.kafka.config
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
 import com.backgu.amaker.application.notification.service.NotificationEventService
+import com.backgu.amaker.domain.notifiacation.Notification
 import com.backgu.amaker.infra.kafka.config.KafkaConfig
+import com.backgu.amaker.infra.notification.kafka.serializer.KafkaNotificationSerializer
 import com.backgu.amaker.infra.notification.kafka.service.KafkaNotificationEventCallbackService
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Import
 import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
-import org.springframework.kafka.support.serializer.JsonSerializer
 import java.util.HashMap
 
 @Configuration
@@ -24,7 +24,7 @@ class NotificationKafkaBatchProducerConfig(
     fun producerConfig(): Map<String, Any> {
         val props: HashMap<String, Any> = HashMap()
         props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaConfig.bootstrapServers
-        props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
+        props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = KafkaNotificationSerializer::class.java
         props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         props[ProducerConfig.ACKS_CONFIG] = "all"
         props[ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG] = true
@@ -33,10 +33,10 @@ class NotificationKafkaBatchProducerConfig(
     }
 
     @Bean
-    fun producerFactory(): ProducerFactory<String, NotificationEvent> = DefaultKafkaProducerFactory(producerConfig())
+    fun producerFactory(): ProducerFactory<String, Notification> = DefaultKafkaProducerFactory(producerConfig())
 
     @Bean
-    fun kafkaTemplate(): KafkaTemplate<String, NotificationEvent> = KafkaTemplate(producerFactory())
+    fun kafkaTemplate(): KafkaTemplate<String, Notification> = KafkaTemplate(producerFactory())
 
     @Bean
     fun notificationEventCallBackService(): NotificationEventService = KafkaNotificationEventCallbackService(kafkaTemplate())

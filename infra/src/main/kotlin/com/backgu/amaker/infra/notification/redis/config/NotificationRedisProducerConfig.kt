@@ -1,7 +1,7 @@
 package com.backgu.amaker.infra.notification.redis.config
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
 import com.backgu.amaker.application.notification.service.NotificationEventService
+import com.backgu.amaker.domain.notifiacation.Notification
 import com.backgu.amaker.infra.notification.redis.service.RedisNotificationEventService
 import com.backgu.amaker.infra.redis.config.RedisConfig
 import org.springframework.context.annotation.Bean
@@ -21,11 +21,11 @@ class NotificationRedisProducerConfig(
     fun redisConnectionFactory(): LettuceConnectionFactory = LettuceConnectionFactory(redisConfig.host, redisConfig.port)
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, NotificationEvent> {
-        val template = RedisTemplate<String, NotificationEvent>()
+    fun redisTemplate(): RedisTemplate<String, Notification> {
+        val template = RedisTemplate<String, Notification>()
         template.connectionFactory = redisConnectionFactory()
         template.keySerializer = StringRedisSerializer()
-        template.valueSerializer = Jackson2JsonRedisSerializer(NotificationEvent::class.java)
+        template.valueSerializer = Jackson2JsonRedisSerializer(Notification::class.java)
         return template
     }
 

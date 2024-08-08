@@ -1,6 +1,8 @@
 spring:
   application:
     name: a-maker
+  main:
+    web-application-type: none
 
   datasource:
     url: ${DB_URL}

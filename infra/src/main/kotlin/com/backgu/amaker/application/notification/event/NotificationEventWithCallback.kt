@@ -1,7 +1,9 @@
 package com.backgu.amaker.application.notification.event
 
+import com.backgu.amaker.domain.notifiacation.Notification
+
 interface NotificationEventWithCallback {
-    val notificationEvent: NotificationEvent
+    val notification: Notification
 
     fun preHandle() {}
 
