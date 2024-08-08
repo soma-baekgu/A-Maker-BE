@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
-@AutoConfigureMockMvc
 class WorkspaceFacadeServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var workspaceFixtureFacade: WorkspaceFixtureFacade
@@ -166,6 +165,7 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스 유저 활성화")
     fun activateWorkspaceUser() {
         // given
+        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
@@ -198,6 +198,7 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.userId).isEqualTo(memberId)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+
     }
 
     @Test
@@ -300,5 +301,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.userId).isEqualTo(member.id)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+
     }
 }

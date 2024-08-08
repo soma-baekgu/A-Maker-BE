@@ -7,8 +7,6 @@ import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.WorkspacesDto
-import com.backgu.amaker.api.workspace.event.WorkspaceInvitedEvent
-import com.backgu.amaker.api.workspace.event.WorkspaceJoinedEvent
 import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.notification.service.NotificationEventService
@@ -18,6 +16,7 @@ import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoom
+import com.backgu.amaker.domain.notifiacation.workspace.WorkspaceJoined
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
 import org.springframework.stereotype.Service
@@ -98,11 +97,10 @@ class WorkspaceFacadeService(
         if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
@@ -126,7 +124,7 @@ class WorkspaceFacadeService(
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
@@ -149,7 +147,7 @@ class WorkspaceFacadeService(
         workspaceUserService.validateUserNotRelatedInWorkspace(invitee, workspace)
 
         val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
-        notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(invitee, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
 
         return WorkspaceUserDto.of(invitee.email, workspaceUser)
     }

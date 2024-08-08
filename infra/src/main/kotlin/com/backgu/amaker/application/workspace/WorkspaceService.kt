@@ -45,7 +45,6 @@ class WorkspaceService(
         }
 
     fun getWorkspaceById(workspaceId: Long): Workspace =
-        workspaceRepository.findByIdOrNull(workspaceId)?.toDomain() ?: run {
-            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
-        }
+        workspaceRepository.findByIdOrNull(workspaceId)?.toDomain()
+            ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
 }
