@@ -27,7 +27,7 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
     @Query(
         "update Workspace w " +
             "set w.belongingNumber = w.belongingNumber + 1 " +
-            "where w.id = :workspaceId and w.belongingNumber + 1 < :limit",
+            "where w.id = :workspaceId and w.belongingNumber < :limit",
     )
     fun updateBelongingWithLimit(
         workspaceId: Long,
