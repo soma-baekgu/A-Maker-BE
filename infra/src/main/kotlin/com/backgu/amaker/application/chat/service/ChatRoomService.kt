@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.chat.service
+package com.backgu.amaker.application.chat.service
 
-import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomType

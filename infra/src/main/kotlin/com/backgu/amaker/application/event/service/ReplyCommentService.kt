@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.event.service
+package com.backgu.amaker.application.event.service
 
 import com.backgu.amaker.domain.event.ReplyComment
 import com.backgu.amaker.infra.jpa.event.entity.ReplyCommentEntity

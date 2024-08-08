@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.user.service
+package com.backgu.amaker.application.user.service
 
-import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.jpa.user.entity.UserEntity
@@ -44,6 +44,13 @@ class UserService(
             throw BusinessException(StatusCode.USER_NOT_FOUND)
         }
 
+        return users
+    }
+
+    // TODO 테스트
+    fun getByWorkspaceId(workspaceId: Long): List<User> {
+        val users = userRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
+        if (users.isEmpty()) throw BusinessException(StatusCode.USER_NOT_FOUND)
         return users
     }
 }

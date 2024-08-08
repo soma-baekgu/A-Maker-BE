@@ -1,9 +1,9 @@
 package com.backgu.amaker.api.user.controller
 
-import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.user.dto.request.EmailExistsRequest
 import com.backgu.amaker.api.user.dto.response.EmailExistsResponse
 import com.backgu.amaker.api.user.service.UserFacadeService
+import com.backgu.amaker.common.http.ApiHandler
 import com.backgu.amaker.common.http.response.ApiResult
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity

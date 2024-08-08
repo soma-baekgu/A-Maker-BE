@@ -1,7 +1,9 @@
 package com.backgu.amaker.api.chat.service
 
+import com.backgu.amaker.api.chat.service.query.ChatQueryService
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
+import com.backgu.amaker.application.chat.service.ChatService
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoomType
 import org.assertj.core.api.Assertions.assertThat
@@ -19,6 +21,9 @@ class ChatServiceTest : IntegrationTest() {
     lateinit var chatService: ChatService
 
     @Autowired
+    private lateinit var chatQueryService: ChatQueryService
+
+    @Autowired
     lateinit var chatFacadeFixture: ChatFixtureFacade
 
     companion object {
@@ -29,43 +34,6 @@ class ChatServiceTest : IntegrationTest() {
         ) {
             fixture.setUp()
         }
-    }
-
-    @Test
-    @DisplayName("커서 이전 채팅 조회 테스트")
-    fun findPreviousChatList() {
-        // given
-        val user = chatFacadeFixture.userFixture.createPersistedUser("findPreviousChatList")
-        val workspace = chatFacadeFixture.workspaceFixture.createPersistedWorkspace()
-        val chatRoom = chatFacadeFixture.chatRoomFixture.createPersistedChatRoom(workspace.id, ChatRoomType.DEFAULT)
-        chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, arrayListOf(user.id))
-        val chatRoomUsers = chatFacadeFixture.userFixture.createPersistedUsers(10)
-        chatFacadeFixture.chatRoomUserFixture.createPersistedChatRoomUser(chatRoom.id, chatRoomUsers.map { it.id })
-
-        chatFacadeFixture.chatFixture.createPersistedRandomUserChats(
-            chatRoom.id,
-            chatRoomUsers.map { it.id }.plus(user.id),
-            10,
-        )
-
-        val cursorChat = chatFacadeFixture.chatFixture.createPersistedChat(chatRoom.id, user.id)
-
-        chatFacadeFixture.chatFixture.createPersistedRandomUserChats(
-            chatRoom.id,
-            chatRoomUsers.map { it.id }.plus(user.id),
-            12,
-        )
-
-        chatFacadeFixture.setUp("different-set-up")
-
-        // when
-        val chatList = chatService.findPreviousChatList(chatRoom.id, cursorChat.id, 5)
-
-        // then
-        assertThat(chatList.size).isEqualTo(5)
-        assertThat(chatList.first().id).isLessThan(cursorChat.id)
-        assertThat(chatList.last().id).isLessThan(cursorChat.id)
-        assertThat(chatList).isSortedAccordingTo(Comparator.comparingLong { it.id })
     }
 
     @Test
@@ -96,7 +64,7 @@ class ChatServiceTest : IntegrationTest() {
         )
 
         // when
-        val chatList = chatService.findPreviousChatList(chatRoom.id, cursorChat.id, 15)
+        val chatList = chatQueryService.findPreviousChatList(chatRoom.id, cursorChat.id, 15)
 
         // then
         assertThat(chatList.size).isEqualTo(10)
@@ -133,7 +101,7 @@ class ChatServiceTest : IntegrationTest() {
         chatFacadeFixture.setUp("different-set-up")
 
         // when
-        val chatList = chatService.findPreviousChatList(chatRoom.id, cursorChat.id, 10)
+        val chatList = chatQueryService.findPreviousChatList(chatRoom.id, cursorChat.id, 10)
 
         // then
         assertThat(chatList.size).isEqualTo(10)
@@ -162,7 +130,7 @@ class ChatServiceTest : IntegrationTest() {
         )
 
         // when
-        val chatList = chatService.findPreviousChatList(chatRoom.id, cursorChat.id, 10)
+        val chatList = chatQueryService.findPreviousChatList(chatRoom.id, cursorChat.id, 10)
 
         // then
         assertThat(chatList.size).isEqualTo(0)
@@ -196,7 +164,7 @@ class ChatServiceTest : IntegrationTest() {
         chatFacadeFixture.setUp("different-set-up")
 
         // when
-        val chatList = chatService.findAfterChatList(chatRoom.id, cursorChat.id, 5)
+        val chatList = chatQueryService.findAfterChatList(chatRoom.id, cursorChat.id, 5)
 
         // then
         assertThat(chatList.size).isEqualTo(5)
@@ -231,7 +199,7 @@ class ChatServiceTest : IntegrationTest() {
         )
 
         // when
-        val chatList = chatService.findAfterChatList(chatRoom.id, cursorChat.id, 15)
+        val chatList = chatQueryService.findAfterChatList(chatRoom.id, cursorChat.id, 15)
 
         // then
         assertThat(chatList.size).isEqualTo(10)
@@ -266,7 +234,7 @@ class ChatServiceTest : IntegrationTest() {
         )
 
         // when
-        val chatList = chatService.findAfterChatList(chatRoom.id, cursorChat.id, 10)
+        val chatList = chatQueryService.findAfterChatList(chatRoom.id, cursorChat.id, 10)
 
         // then
         assertThat(chatList.size).isEqualTo(10)
@@ -289,7 +257,7 @@ class ChatServiceTest : IntegrationTest() {
         val cursorChat = chatFacadeFixture.chatFixture.createPersistedChat(chatRoom.id, user.id)
 
         // when
-        val chatList = chatService.findAfterChatList(chatRoom.id, cursorChat.id, 10)
+        val chatList = chatQueryService.findAfterChatList(chatRoom.id, cursorChat.id, 10)
 
         // then
         assertThat(chatList.size).isEqualTo(0)
@@ -309,7 +277,7 @@ class ChatServiceTest : IntegrationTest() {
         val targetChat = chatFacadeFixture.chatFixture.createPersistedChat(chatRoom.id, user.id)
 
         // when
-        val findChat = chatService.getOneWithUser(targetChat.id)
+        val findChat = chatQueryService.getOneWithUser(targetChat.id)
 
         // then
         assertThat(findChat.id).isEqualTo(targetChat.id)
@@ -326,7 +294,7 @@ class ChatServiceTest : IntegrationTest() {
     @DisplayName("채팅 조회 테스트: 채팅 아이디가 없을 때")
     fun getOneWithUserWithNoChatId() {
         // given & when & then
-        assertThatThrownBy { chatService.getOneWithUser(null) }
+        assertThatThrownBy { chatQueryService.getOneWithUser(null) }
             .isInstanceOf(RuntimeException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_NOT_FOUND)
@@ -339,7 +307,7 @@ class ChatServiceTest : IntegrationTest() {
         chatFacadeFixture.deleteAll()
 
         // when & then
-        assertThatThrownBy { chatService.getOneWithUser(1L) }
+        assertThatThrownBy { chatQueryService.getOneWithUser(1L) }
             .isInstanceOf(RuntimeException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_NOT_FOUND)

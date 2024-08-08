@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.event.service
+package com.backgu.amaker.application.event.service
 
-import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.infra.jpa.event.repository.EventRepository

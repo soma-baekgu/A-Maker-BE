@@ -1,9 +1,9 @@
 package com.backgu.amaker.api.event.controller
 
-import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
 import com.backgu.amaker.api.event.service.EventFacadeService
+import com.backgu.amaker.common.http.ApiHandler
 import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import jakarta.validation.Valid

@@ -5,9 +5,12 @@ import com.backgu.amaker.api.chat.dto.ChatRoomCreateDto
 import com.backgu.amaker.api.chat.dto.ChatRoomDto
 import com.backgu.amaker.api.chat.dto.ChatRoomWithUserDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
-import com.backgu.amaker.api.user.service.UserService
-import com.backgu.amaker.api.workspace.service.WorkspaceService
-import com.backgu.amaker.api.workspace.service.WorkspaceUserService
+import com.backgu.amaker.application.chat.service.ChatRoomService
+import com.backgu.amaker.application.chat.service.ChatRoomUserService
+import com.backgu.amaker.application.chat.service.ChatService
+import com.backgu.amaker.application.user.service.UserService
+import com.backgu.amaker.application.workspace.WorkspaceService
+import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomUser
