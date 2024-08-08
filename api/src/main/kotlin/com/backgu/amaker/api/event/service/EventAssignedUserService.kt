@@ -6,27 +6,28 @@ import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.event.EventAssignedUser
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.jpa.event.entity.EventAssignedUserEntity
-import com.backgu.amaker.infra.jpa.event.repository.EventAssignedRepository
+import com.backgu.amaker.infra.jpa.event.repository.EventAssignedUserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class EventAssignedUserService(
-    private val eventAssignedRepository: EventAssignedRepository,
+    private val eventAssignedUserRepository: EventAssignedUserRepository,
 ) {
     @Transactional
     fun save(eventAssigned: EventAssignedUser): EventAssignedUser =
-        eventAssignedRepository.save(EventAssignedUserEntity.of(eventAssigned)).toDomain()
+        eventAssignedUserRepository.save(EventAssignedUserEntity.of(eventAssigned)).toDomain()
 
-    fun findAllByEventId(eventId: Long): List<EventAssignedUser> = eventAssignedRepository.findAllByEventId(eventId).map { it.toDomain() }
+    fun findAllByEventId(eventId: Long): List<EventAssignedUser> =
+        eventAssignedUserRepository.findAllByEventId(eventId).map { it.toDomain() }
 
     fun findByEventIdsToEventIdMapped(eventIds: List<Long>): Map<Long, List<EventAssignedUser>> =
-        eventAssignedRepository.findByEventIdIn(eventIds).map { it.toDomain() }.groupBy { it.eventId }
+        eventAssignedUserRepository.findByEventIdIn(eventIds).map { it.toDomain() }.groupBy { it.eventId }
 
     @Transactional
     fun saveAll(createAssignedUsers: List<EventAssignedUser>): List<EventAssignedUser> =
-        eventAssignedRepository
+        eventAssignedUserRepository
             .saveAll(
                 createAssignedUsers
                     .map { EventAssignedUserEntity.of(it) },
@@ -36,6 +37,6 @@ class EventAssignedUserService(
         user: User,
         event: Event,
     ): EventAssignedUser =
-        eventAssignedRepository.findByUserIdAndEventId(user.id, event.id)?.toDomain()
+        eventAssignedUserRepository.findByUserIdAndEventId(user.id, event.id)?.toDomain()
             ?: throw BusinessException(StatusCode.EVENT_ASSIGNED_USER_NOT_FOUND)
 }

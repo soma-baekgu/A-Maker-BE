@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.event.dto.response
 
-import com.backgu.amaker.api.common.dto.response.PageResponse
 import com.backgu.amaker.api.event.dto.ReplyCommentWithUserDto
+import com.backgu.amaker.common.http.response.PageResponse
 import org.springframework.data.domain.Page
 
 data class ReplyCommentsViewResponse(

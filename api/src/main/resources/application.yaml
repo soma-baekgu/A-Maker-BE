@@ -87,6 +87,10 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 
+system:
+  user:
+    id: ${SYSTEM_USER_ID}
+
 amazon:
   s3:
     access-key: ${AWS_S3_ACCESS}
