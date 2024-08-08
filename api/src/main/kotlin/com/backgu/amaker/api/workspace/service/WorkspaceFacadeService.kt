@@ -39,13 +39,13 @@ class WorkspaceFacadeService(
         val leader: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.save(leader.createWorkspace(workspaceCreateDto.name))
         workspaceUserService.save(workspace.assignLeader(leader))
-        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, leader))
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(leader, workspace))
 
         val invitees = workspaceCreateDto.inviteesEmails.map { userService.getByEmail(it) }
         invitees.forEach {
             if (!leader.isNonInvitee(it)) throw BusinessException(StatusCode.INVALID_WORKSPACE_CREATE)
             workspaceUserService.save(workspace.inviteWorkspace(it))
-            notificationEventService.publishNotificationEvent(WorkspaceInvited.of(workspace, it))
+            notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(it, workspace))
         }
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createDefaultChatRoom())
@@ -93,7 +93,7 @@ class WorkspaceFacadeService(
         val workspace = workspaceService.getById(workspaceId)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
-        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
@@ -115,7 +115,7 @@ class WorkspaceFacadeService(
         workspaceUserService.validateUserNotRelatedInWorkspace(invitee, workspace)
 
         val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
-        notificationEventService.publishNotificationEvent(WorkspaceInvited.of(workspace, invitee))
+        notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(invitee, workspace))
 
         return WorkspaceUserDto.of(invitee.email, workspaceUser)
     }
