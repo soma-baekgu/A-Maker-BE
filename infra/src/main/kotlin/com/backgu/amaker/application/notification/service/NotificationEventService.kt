@@ -1,7 +1,7 @@
 package com.backgu.amaker.application.notification.service
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
+import com.backgu.amaker.domain.notifiacation.Notification
 
 interface NotificationEventService {
-    fun publishNotificationEvent(notificationEvent: NotificationEvent)
+    fun publishNotificationEvent(notification: Notification)
 }

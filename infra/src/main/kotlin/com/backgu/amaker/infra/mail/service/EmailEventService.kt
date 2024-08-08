@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.mail.service
 
-import com.backgu.amaker.application.notification.mail.event.EmailEvent
+import com.backgu.amaker.domain.notifiacation.Notification
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class EmailEventService(
     private val eventPublisher: ApplicationEventPublisher,
 ) {
-    fun publishEmailEvent(emailEvent: EmailEvent) {
+    fun publishEmailEvent(emailEvent: Notification) {
         eventPublisher.publishEvent(emailEvent)
     }
 }

@@ -1,6 +1,6 @@
 package com.backgu.amaker.infra.notification.redis.service
 
-import com.backgu.amaker.application.notification.mail.event.EmailEvent
+import com.backgu.amaker.domain.notifiacation.Notification
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.redis.connection.Message
@@ -16,7 +16,7 @@ class RedisEventPublisher(
         pattern: ByteArray?,
     ) {
         val notificationEvent =
-            objectMapper.readValue(String(message.body), EmailEvent::class.java)
+            objectMapper.readValue(String(message.body), Notification::class.java)
         applicationEventPublisher.publishEvent(notificationEvent)
     }
 }

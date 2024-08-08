@@ -87,6 +87,29 @@ class WorkspaceFacadeService(
     }
 
     @Transactional
+    fun activateWorkspaceUserWithPessimistic(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+
+        val workspace = workspaceService.getByIdWithPessimisticLock(workspaceId)
+        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
+
+        // TODO 트랜잭션 종료시점에 이벤트 publish
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        workspaceUserService.save(workspaceUser.activate())
+
+        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        workspaceService.save(workspace.increaseMember())
+
+        return WorkspaceUserDto.of(user.email, workspaceUser)
+    }
+
+    @Transactional
     fun activateWorkspaceUser(
         userId: String,
         workspaceId: Long,
@@ -147,7 +170,7 @@ class WorkspaceFacadeService(
         workspaceUserService.validateUserNotRelatedInWorkspace(invitee, workspace)
 
         val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
-        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, invitee))
 
         return WorkspaceUserDto.of(invitee.email, workspaceUser)
     }
