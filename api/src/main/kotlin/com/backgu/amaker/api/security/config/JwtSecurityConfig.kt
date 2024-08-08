@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.security.config
 
-import com.backgu.amaker.api.common.infra.ApiHandler
 import com.backgu.amaker.api.security.handler.AuthAccessDeniedHandler
+import com.backgu.amaker.common.http.ApiHandler
 import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.backgu.amaker.common.security.jwt.utils.JwtAuthenticationTokenExtractor
 import com.backgu.amaker.common.security.jwt.web.JwtAuthenticationTokenFilter

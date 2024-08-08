@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.auth.dto.oauth.google
 
-import com.backgu.amaker.api.common.service.IdPublisher
+import com.backgu.amaker.common.id.IdPublisher
 import com.backgu.amaker.domain.user.User
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming

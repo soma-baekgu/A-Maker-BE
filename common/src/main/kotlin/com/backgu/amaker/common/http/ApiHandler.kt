@@ -1,15 +1,13 @@
-package com.backgu.amaker.api.common.infra
+package com.backgu.amaker.common.http
 
-import com.backgu.amaker.api.common.service.ClockHolder
+import com.backgu.amaker.common.clock.ClockHolder
 import com.backgu.amaker.common.http.response.ApiError
 import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.http.response.ApiSuccess
 import com.backgu.amaker.common.status.StatusCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.stereotype.Component
 
-@Component
 class ApiHandler(
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,

@@ -1,8 +1,9 @@
 package com.backgu.amaker.api.workspace.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
-import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.fixture.WorkspaceFixtureFacade
+import com.backgu.amaker.application.workspace.WorkspaceUserService
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.user.User
 import org.assertj.core.api.Assertions.assertThatCode

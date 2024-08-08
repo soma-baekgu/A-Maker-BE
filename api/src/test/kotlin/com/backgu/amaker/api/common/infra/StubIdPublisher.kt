@@ -1,7 +1,7 @@
 package com.backgu.amaker.api.common.infra
 
 import com.backgu.amaker.api.common.annotation.IntegrationTestComponent
-import com.backgu.amaker.api.common.service.IdPublisher
+import com.backgu.amaker.common.id.IdPublisher
 
 @IntegrationTestComponent
 class StubIdPublisher : IdPublisher {
