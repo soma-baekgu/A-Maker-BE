@@ -52,4 +52,7 @@ enum class StatusCode(
 
     // eventAssignedUser
     EVENT_ASSIGNED_USER_NOT_FOUND("4000", "접근할 수 없는 이벤트입니다."),
+
+    // realtime
+    REALTIME_NOT_FOUND("4000", "세션정보를 찾을 수 없습니다."),
 }
