@@ -15,6 +15,7 @@ enum class StatusCode(
 
     // INTERNAL_SERVER_ERROR
     INTERNAL_SERVER_ERROR("5000", "죄송합니다. 다음에 다시 시도해주세요."),
+    RUN_AGAIN_AFTER_AWHILE("4000", "죄송합니다. 잠시후에 다시 시도해주세요."),
 
     // general
     INVALID_INPUT_VALUE("4000", "잘못된 입력입니다."),
@@ -38,6 +39,8 @@ enum class StatusCode(
     // workspace
     WORKSPACE_NOT_FOUND("4000", "워크스페이스를 찾을 수 없습니다."),
     INVALID_WORKSPACE_CREATE("4000", "잘못된 워크스페이스 생성 요청입니다."),
+    ALREADY_JOINED_WORKSPACE("4000", "이미 가입된 워크스페이스입니다."),
+    INVALID_WORKSPACE_JOIN("4000", "워크스페이스에 가입할 수 없습니다.\n플랜을 업드레이드 하세요"),
     INVALID_WORKSPACE_INVITE("4000", "워크스페이스에 초대할 수 없습니다."),
 
     // workspaceUser

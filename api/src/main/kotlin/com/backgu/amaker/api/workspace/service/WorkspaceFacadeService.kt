@@ -3,6 +3,8 @@ package com.backgu.amaker.api.workspace.service
 import com.backgu.amaker.api.chat.dto.ChatRoomDto
 import com.backgu.amaker.api.chat.service.ChatRoomService
 import com.backgu.amaker.api.chat.service.ChatRoomUserService
+import com.backgu.amaker.api.common.annotation.DistributedLock
+import com.backgu.amaker.api.common.annotation.DistributedLockKey
 import com.backgu.amaker.api.common.exception.BusinessException
 import com.backgu.amaker.api.user.service.UserService
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
@@ -48,6 +50,7 @@ class WorkspaceFacadeService(
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createDefaultChatRoom())
         chatRoomUserService.save(chatRoom.addUser(leader))
+        workspaceService.save(workspace)
 
         return WorkspaceDto.of(workspace)
     }
@@ -83,18 +86,71 @@ class WorkspaceFacadeService(
     }
 
     @Transactional
+    fun activateWorkspaceUserWithPessimistic(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+
+        val workspace = workspaceService.getByIdWithPessimisticLock(workspaceId)
+        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
+
+        // TODO 트랜잭션 종료시점에 이벤트 publish
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        workspaceUserService.save(workspaceUser.activate())
+
+        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        workspaceService.save(workspace.increaseMember())
+
+        return WorkspaceUserDto.of(user.email, workspaceUser)
+    }
+
+    @Transactional
     fun activateWorkspaceUser(
         userId: String,
         workspaceId: Long,
     ): WorkspaceUserDto {
         val user = userService.getById(userId)
+
         val workspace = workspaceService.getById(workspaceId)
+        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
+
+        // TODO 트랜잭션 종료시점에 이벤트 publish
         notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        workspaceService.updateBelonging(workspace.increaseMember())
+
+        return WorkspaceUserDto.of(user.email, workspaceUser)
+    }
+
+    @Transactional
+    @DistributedLock(domain = Workspace.DOMAIN_NAME)
+    fun activateWorkspaceUserWithDistributedLock(
+        userId: String,
+        @DistributedLockKey workspaceId: Long,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+
+        val workspace = workspaceService.getById(workspaceId)
+        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
+
+        // TODO 트랜잭션 종료시점에 이벤트 publish
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        workspaceUserService.save(workspaceUser.activate())
+
+        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        workspaceService.save(workspace.increaseMember())
 
         return WorkspaceUserDto.of(user.email, workspaceUser)
     }

@@ -15,6 +15,8 @@ class WorkspaceUser(
         return this
     }
 
+    fun isActivated() = this.status == WorkspaceUserStatus.ACTIVE
+
     fun isAdmin() = this.workspaceRole == WorkspaceRole.LEADER
 
     companion object {

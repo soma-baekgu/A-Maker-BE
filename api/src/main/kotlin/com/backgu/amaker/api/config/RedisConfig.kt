@@ -15,6 +15,8 @@ class RedisConfig {
     lateinit var host: String
     var port: Int = 0
 
+    fun getUrl(): String = "redis://$host:$port"
+
     @Bean
     fun redisConnectionFactory(): RedisConnectionFactory {
         val factory = LettuceConnectionFactory(host, port)

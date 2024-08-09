@@ -7,6 +7,12 @@ spring:
     hibernate:
       ddl-auto: create
 
+  redis:
+    data:
+      host: localhost
+      port: 6379
+
+
   mail:
     host: smtp.gmail.com
     port: 587
