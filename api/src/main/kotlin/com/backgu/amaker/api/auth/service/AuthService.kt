@@ -5,7 +5,7 @@ import com.backgu.amaker.api.auth.dto.oauth.google.GoogleOAuth2AccessTokenDto
 import com.backgu.amaker.api.auth.dto.oauth.google.GoogleUserInfoDto
 import com.backgu.amaker.api.auth.infra.GoogleApiClient
 import com.backgu.amaker.api.auth.infra.GoogleOAuthClient
-import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import org.springframework.stereotype.Service
 

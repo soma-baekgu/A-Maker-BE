@@ -2,6 +2,7 @@ package com.backgu.amaker.api.chat.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
+import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.domain.chat.ChatRoomType
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
 import org.assertj.core.api.Assertions.assertThat

@@ -1,8 +1,7 @@
-package com.backgu.amaker.api.common.exception
+package com.backgu.amaker.common.exception
 
 import com.backgu.amaker.common.status.StatusCode
 import org.springframework.http.HttpStatus
-import kotlin.RuntimeException
 
 class BusinessException(
     val statusCode: StatusCode,

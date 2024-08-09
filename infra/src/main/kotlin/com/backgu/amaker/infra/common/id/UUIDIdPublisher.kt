@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.common.infra
+package com.backgu.amaker.infra.common.id
 
-import com.backgu.amaker.api.common.service.IdPublisher
+import com.backgu.amaker.common.id.IdPublisher
 import org.springframework.stereotype.Component
 import java.util.UUID
 

@@ -1,6 +1,6 @@
 package com.backgu.amaker.api.security.jwt
 
-import com.backgu.amaker.api.user.service.UserService
+import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthenticationToken
 import com.backgu.amaker.domain.user.User

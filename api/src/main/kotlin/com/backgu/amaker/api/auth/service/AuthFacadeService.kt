@@ -2,8 +2,8 @@ package com.backgu.amaker.api.auth.service
 
 import com.backgu.amaker.api.auth.dto.JwtTokenDto
 import com.backgu.amaker.api.auth.dto.oauth.google.GoogleUserInfoDto
-import com.backgu.amaker.api.common.service.IdPublisher
-import com.backgu.amaker.api.user.service.UserService
+import com.backgu.amaker.application.user.service.UserService
+import com.backgu.amaker.common.id.IdPublisher
 import com.backgu.amaker.common.security.jwt.component.JwtComponent
 import com.backgu.amaker.domain.user.User
 import org.springframework.stereotype.Service

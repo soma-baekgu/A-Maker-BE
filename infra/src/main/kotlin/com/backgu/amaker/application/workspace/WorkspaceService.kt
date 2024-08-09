@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.workspace.service
+package com.backgu.amaker.application.workspace
 
-import com.backgu.amaker.api.common.exception.BusinessException
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
@@ -40,8 +40,9 @@ class WorkspaceService(
         }
 
     fun getDefaultWorkspaceByUserId(user: User): Workspace =
-        workspaceRepository.getDefaultWorkspaceByUserId(user.id)?.toDomain()
-            ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
+        workspaceRepository.getDefaultWorkspaceByUserId(user.id)?.toDomain() ?: run {
+            throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
+        }
 
     fun getWorkspaceById(workspaceId: Long): Workspace =
         workspaceRepository.findByIdOrNull(workspaceId)?.toDomain() ?: run {

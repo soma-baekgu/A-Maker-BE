@@ -4,7 +4,7 @@ import com.backgu.amaker.api.auth.config.AuthConfig
 import com.backgu.amaker.api.auth.dto.response.JwtTokenResponse
 import com.backgu.amaker.api.auth.dto.response.OAuthUrlResponse
 import com.backgu.amaker.api.auth.service.AuthFacadeService
-import com.backgu.amaker.api.common.infra.ApiHandler
+import com.backgu.amaker.common.http.ApiHandler
 import com.backgu.amaker.common.http.response.ApiResult
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

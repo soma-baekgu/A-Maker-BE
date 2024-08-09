@@ -1,6 +1,6 @@
-package com.backgu.amaker.api.common.infra
+package com.backgu.amaker.infra.common.clock
 
-import com.backgu.amaker.api.common.service.ClockHolder
+import com.backgu.amaker.common.clock.ClockHolder
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneOffset

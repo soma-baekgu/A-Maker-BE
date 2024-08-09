@@ -1,19 +1,21 @@
 package com.backgu.amaker.api.workspace.service
 
 import com.backgu.amaker.api.chat.dto.ChatRoomDto
-import com.backgu.amaker.api.chat.service.ChatRoomService
-import com.backgu.amaker.api.chat.service.ChatRoomUserService
 import com.backgu.amaker.api.common.annotation.DistributedLock
 import com.backgu.amaker.api.common.annotation.DistributedLockKey
-import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.user.service.UserService
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.WorkspacesDto
 import com.backgu.amaker.api.workspace.event.WorkspaceInvitedEvent
 import com.backgu.amaker.api.workspace.event.WorkspaceJoinedEvent
+import com.backgu.amaker.application.chat.service.ChatRoomService
+import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.notification.service.NotificationEventService
+import com.backgu.amaker.application.user.service.UserService
+import com.backgu.amaker.application.workspace.WorkspaceService
+import com.backgu.amaker.application.workspace.WorkspaceUserService
+import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.user.User
@@ -86,29 +88,6 @@ class WorkspaceFacadeService(
     }
 
     @Transactional
-    fun activateWorkspaceUserWithPessimistic(
-        userId: String,
-        workspaceId: Long,
-    ): WorkspaceUserDto {
-        val user = userService.getById(userId)
-
-        val workspace = workspaceService.getByIdWithPessimisticLock(workspaceId)
-        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
-
-        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
-        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
-
-        // TODO 트랜잭션 종료시점에 이벤트 publish
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
-        workspaceUserService.save(workspaceUser.activate())
-
-        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
-        workspaceService.save(workspace.increaseMember())
-
-        return WorkspaceUserDto.of(user.email, workspaceUser)
-    }
-
-    @Transactional
     fun activateWorkspaceUser(
         userId: String,
         workspaceId: Long,
@@ -119,6 +98,7 @@ class WorkspaceFacadeService(
         if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
