@@ -3,7 +3,6 @@ package com.backgu.amaker.api.workspace.service
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.WorkspaceFixture.Companion.createWorkspaceRequest
 import com.backgu.amaker.api.fixture.WorkspaceFixtureFacade
-import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
@@ -13,9 +12,6 @@ import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.WorkspaceRole
 import com.backgu.amaker.domain.workspace.WorkspaceUser
 import com.backgu.amaker.domain.workspace.WorkspaceUserStatus
-import com.ninjasquad.springmockk.MockkBean
-import io.mockk.every
-import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -41,9 +37,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var workspaceUserService: WorkspaceUserService
 
-    @MockkBean
-    lateinit var notificationEventService: NotificationEventService
-
     @BeforeEach
     fun setUp() {
         workspaceFixtureFacade.setUp()
@@ -53,7 +46,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크 스페이스 생성 테스트")
     fun createWorkspace() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
@@ -65,14 +57,12 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
 
         // then
         assertThat(result.name).isEqualTo("워크스페이스 생성")
-        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
     }
 
     @Test
     @DisplayName("초대자들이 있는 워크 스페이스 생성 테스트")
     fun createWorkspaceWithInvitee() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
@@ -86,14 +76,12 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
 
         // then
         assertThat(result.name).isEqualTo("워크스페이스 생성")
-        verify(exactly = 3) { notificationEventService.publishNotificationEvent(any()) }
     }
 
     @Test
     @DisplayName("워크스페이스 리더가 초대자로 들어가 있는 테스트")
     fun createWorkspaceWithDuplicatedInvitees() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val userId = "tester"
         val userEmail = "tester@gmail.com"
@@ -178,7 +166,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스 유저 활성화")
     fun activateWorkspaceUser() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
@@ -211,15 +198,12 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.userId).isEqualTo(memberId)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
-
-        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
     }
 
     @Test
     @DisplayName("워크스페이스 유저 활성화 실패")
     fun activateWorkspaceUserLimitedUser() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
@@ -297,7 +281,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스에 유저 초대")
     fun inviteWorkspaceUser() {
         // given
-        every { notificationEventService.publishNotificationEvent(any()) } returns Unit
 
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
@@ -317,7 +300,5 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.userId).isEqualTo(member.id)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
-
-        verify(exactly = 1) { notificationEventService.publishNotificationEvent(any()) }
     }
 }

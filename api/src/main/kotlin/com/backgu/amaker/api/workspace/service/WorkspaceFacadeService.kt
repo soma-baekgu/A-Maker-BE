@@ -1,12 +1,8 @@
 package com.backgu.amaker.api.workspace.service
 
 import com.backgu.amaker.api.chat.dto.ChatRoomDto
-import com.backgu.amaker.api.chat.service.ChatRoomService
-import com.backgu.amaker.api.chat.service.ChatRoomUserService
 import com.backgu.amaker.api.common.annotation.DistributedLock
 import com.backgu.amaker.api.common.annotation.DistributedLockKey
-import com.backgu.amaker.api.common.exception.BusinessException
-import com.backgu.amaker.api.user.service.UserService
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
@@ -102,7 +98,7 @@ class WorkspaceFacadeService(
         if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
-        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
+        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
