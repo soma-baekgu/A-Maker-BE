@@ -7,8 +7,6 @@ import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
 import com.backgu.amaker.api.workspace.dto.WorkspacesDto
-import com.backgu.amaker.api.workspace.event.WorkspaceInvitedEvent
-import com.backgu.amaker.api.workspace.event.WorkspaceJoinedEvent
 import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.notification.service.NotificationEventService
@@ -18,6 +16,8 @@ import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoom
+import com.backgu.amaker.domain.notifiacation.workspace.WorkspaceInvited
+import com.backgu.amaker.domain.notifiacation.workspace.WorkspaceJoined
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
 import org.springframework.stereotype.Service
@@ -41,18 +41,17 @@ class WorkspaceFacadeService(
         val leader: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.save(leader.createWorkspace(workspaceCreateDto.name))
         workspaceUserService.save(workspace.assignLeader(leader))
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(leader, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, leader))
 
         val invitees = workspaceCreateDto.inviteesEmails.map { userService.getByEmail(it) }
         invitees.forEach {
             if (!leader.isNonInvitee(it)) throw BusinessException(StatusCode.INVALID_WORKSPACE_CREATE)
             workspaceUserService.save(workspace.inviteWorkspace(it))
-            notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(it, workspace))
+            notificationEventService.publishNotificationEvent(WorkspaceInvited.of(workspace, it))
         }
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createDefaultChatRoom())
         chatRoomUserService.save(chatRoom.addUser(leader))
-        workspaceService.save(workspace)
 
         return WorkspaceDto.of(workspace)
     }
@@ -98,11 +97,33 @@ class WorkspaceFacadeService(
         if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
 
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
+        workspaceUserService.save(workspaceUser.activate())
+
+        chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
+        workspaceService.updateBelonging(workspace.increaseMember())
+
+        return WorkspaceUserDto.of(user.email, workspaceUser)
+    }
+
+    @Transactional
+    fun activateWorkspaceUserWithPessimisticLock(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUserDto {
+        val user = userService.getById(userId)
+
+        val workspace = workspaceService.getByIdWithPessimisticLock(workspaceId)
+        if (!workspace.isAvailToJoin()) throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
+
+        val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
+        if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
+
+        // TODO 트랜잭션 종료시점에 이벤트 publish
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
@@ -126,7 +147,7 @@ class WorkspaceFacadeService(
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
         // TODO 트랜잭션 종료시점에 이벤트 publish
-        notificationEventService.publishNotificationEvent(WorkspaceJoinedEvent(user, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
@@ -149,7 +170,7 @@ class WorkspaceFacadeService(
         workspaceUserService.validateUserNotRelatedInWorkspace(invitee, workspace)
 
         val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
-        notificationEventService.publishNotificationEvent(WorkspaceInvitedEvent(invitee, workspace))
+        notificationEventService.publishNotificationEvent(WorkspaceInvited.of(workspace, invitee))
 
         return WorkspaceUserDto.of(invitee.email, workspaceUser)
     }

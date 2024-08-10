@@ -1,6 +1,8 @@
 spring:
   application:
     name: a-maker
+  main:
+    web-application-type: none
 
   batch-datasource:
     url: jdbc:mysql://localhost:3306/amaker_batch?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true

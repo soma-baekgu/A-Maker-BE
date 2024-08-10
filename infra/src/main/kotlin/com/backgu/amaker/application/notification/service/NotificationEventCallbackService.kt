@@ -1,18 +1,18 @@
 package com.backgu.amaker.application.notification.service
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
+import com.backgu.amaker.domain.notifiacation.Notification
 
 interface NotificationEventCallbackService<T> : NotificationEventService {
-    override fun publishNotificationEvent(notificationEvent: NotificationEvent) {
+    override fun publishNotificationEvent(notification: Notification) {
         try {
-            val res = process(notificationEvent)
+            val res = process(notification)
             onSuccess(res)
         } catch (e: Exception) {
             onFailure(e)
         }
     }
 
-    fun process(notificationEvent: NotificationEvent): T
+    fun process(notification: Notification): T
 
     fun onSuccess(param: T)
 

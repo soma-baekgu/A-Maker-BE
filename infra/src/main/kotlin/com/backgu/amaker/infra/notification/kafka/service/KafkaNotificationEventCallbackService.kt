@@ -1,7 +1,7 @@
 package com.backgu.amaker.infra.notification.kafka.service
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
 import com.backgu.amaker.application.notification.service.NotificationEventCallbackService
+import com.backgu.amaker.domain.notifiacation.Notification
 import com.backgu.amaker.infra.kafka.config.KafkaConfig
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -12,10 +12,10 @@ import java.util.concurrent.CompletableFuture
 private val logger: KLogger = KotlinLogging.logger {}
 
 class KafkaNotificationEventCallbackService(
-    private val kafkaTemplate: KafkaTemplate<String, NotificationEvent>,
+    private val kafkaTemplate: KafkaTemplate<String, Notification>,
 ) : NotificationEventCallbackService<CompletableFuture<*>> {
-    override fun process(notificationEvent: NotificationEvent): CompletableFuture<SendResult<String, NotificationEvent>> =
-        kafkaTemplate.send(KafkaConfig.NOTIFICATION_TOPIC, notificationEvent)
+    override fun process(notification: Notification): CompletableFuture<SendResult<String, Notification>> =
+        kafkaTemplate.send(KafkaConfig.NOTIFICATION_TOPIC, notification)
 
     override fun onSuccess(param: CompletableFuture<*>) {
         param.join()

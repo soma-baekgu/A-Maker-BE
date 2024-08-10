@@ -1,18 +1,15 @@
 package com.backgu.amaker.notification.service
 
-import com.backgu.amaker.application.notification.event.NotificationEvent
-import com.backgu.amaker.application.notification.mail.event.EmailEvent
-import com.backgu.amaker.application.notification.service.NotificationService
-import com.backgu.amaker.infra.mail.service.EmailHandler
+import com.backgu.amaker.application.notification.service.NotificationWithCallBackService
+import com.backgu.amaker.domain.notifiacation.Notification
+import com.backgu.amaker.notification.service.adapter.NotificationHandlerAdapter
 import org.springframework.stereotype.Service
 
 @Service
 class NotificationServiceImpl(
-    private val emailHandler: EmailHandler,
-) : NotificationService {
-    override fun handleNotificationEvent(notificationEvent: NotificationEvent) {
-        when (notificationEvent) {
-            is EmailEvent -> emailHandler.handleEmailEvent(notificationEvent)
-        }
+    private val notificationHandlerAdapters: List<NotificationHandlerAdapter<*, *>>,
+) : NotificationWithCallBackService {
+    override fun handleNotificationEvent(notification: Notification) {
+        notificationHandlerAdapters.forEach { it.handle(notification) }
     }
 }

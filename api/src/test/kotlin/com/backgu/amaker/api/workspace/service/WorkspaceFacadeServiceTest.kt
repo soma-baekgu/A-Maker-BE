@@ -18,12 +18,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.transaction.annotation.Transactional
 
 @DisplayName("WorkspaceFacadeService 테스트")
 @Transactional
-@AutoConfigureMockMvc
 class WorkspaceFacadeServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var workspaceFixtureFacade: WorkspaceFixtureFacade
@@ -204,7 +202,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스 유저 활성화 실패")
     fun activateWorkspaceUserLimitedUser() {
         // given
-
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스")
@@ -234,6 +231,7 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
             .isEqualTo(StatusCode.INVALID_WORKSPACE_JOIN)
     }
 
+    @Test
     @DisplayName("워크스페이스의 기본 채팅방을 조회")
     fun getDefaultChatRoom() {
         // given
