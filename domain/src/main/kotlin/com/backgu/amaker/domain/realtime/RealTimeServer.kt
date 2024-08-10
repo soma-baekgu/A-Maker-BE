@@ -15,4 +15,6 @@ class RealTimeServer(
     }
 
     fun path(): String = "$schema://$address:$port"
+
+    override fun toString() = "RealTimeServer(id=$id, schema=$schema, address=$address, port=$port)"
 }
