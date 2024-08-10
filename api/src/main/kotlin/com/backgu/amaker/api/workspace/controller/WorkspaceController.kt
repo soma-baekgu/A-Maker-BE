@@ -96,7 +96,6 @@ class WorkspaceController(
                 ),
             )
 
-    // TODO issue
     @PutMapping("/{workspace-id}/invite/activate")
     override fun activateWorkspaceInvite(
         @AuthenticationPrincipal token: JwtAuthentication,
