@@ -23,6 +23,9 @@ enum class StatusCode(
     // user
     USER_NOT_FOUND("4000", "사용자를 찾을 수 없습니다."),
 
+    // userDevice
+    USER_DEVICE_DUPLICATED("4000", "이미 등록된 디바이스입니다."),
+
     // auth
     OAUTH_SOCIAL_LOGIN_FAILED("4000", "로그인에 실패했습니다."),
 
