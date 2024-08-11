@@ -14,7 +14,6 @@ class SchedulerConfig(
     private val eventNotificationJob: Job,
 ) {
     @Scheduled(cron = "0 * * * * ?")
-    @Throws(Exception::class)
     fun runJob() {
         val jobParameters =
             JobParametersBuilder()

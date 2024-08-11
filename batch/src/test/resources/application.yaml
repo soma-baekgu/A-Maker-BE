@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: a-maker
+  main:
+    web-application-type: none
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+
+  kafka:
+    bootstrap-servers: [ "localhost:9092" ]
+
