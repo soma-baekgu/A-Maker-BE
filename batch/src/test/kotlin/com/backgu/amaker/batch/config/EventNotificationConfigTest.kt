@@ -30,7 +30,7 @@ class EventNotificationConfigTest : IntegrationTest() {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("이벤트 알림 배치 테스트")
     fun eventNotificationConfigTest() {
         // given
 

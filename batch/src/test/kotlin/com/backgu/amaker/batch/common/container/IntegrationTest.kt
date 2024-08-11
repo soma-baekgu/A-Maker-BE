@@ -2,6 +2,7 @@ package com.backgu.amaker.batch.common.container
 
 import org.springframework.batch.test.context.SpringBatchTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.KafkaContainer
@@ -9,6 +10,7 @@ import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 
+@ActiveProfiles("test")
 @SpringBatchTest
 @SpringBootTest
 @Testcontainers
@@ -30,14 +32,9 @@ class IntegrationTest {
         @JvmStatic
         @DynamicPropertySource
         fun overrideProps(registry: DynamicPropertyRegistry) {
-            registry.add("spring.domain-datasource.url") { MYSQL_CONTAINER.jdbcUrl }
-            registry.add("spring.domain-datasource.username") { MYSQL_CONTAINER.username }
-            registry.add("spring.domain-datasource.password") { MYSQL_CONTAINER.password }
-
-            registry.add("spring.batch-datasource.url") { MYSQL_CONTAINER.jdbcUrl }
-            registry.add("spring.batch-datasource.username") { MYSQL_CONTAINER.username }
-            registry.add("spring.batch-datasource.password") { MYSQL_CONTAINER.password }
-
+            registry.add("spring.datasource.url") { MYSQL_CONTAINER.jdbcUrl }
+            registry.add("spring.datasource.username") { MYSQL_CONTAINER.username }
+            registry.add("spring.datasource.password") { MYSQL_CONTAINER.password }
             registry.add("spring.kafka.bootstrap-servers") { KAFKA_CONTAINER.bootstrapServers }
         }
     }
