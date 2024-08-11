@@ -17,6 +17,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-batch")
 
     testImplementation(kotlin("test"))
+    testImplementation("org.springframework.batch:spring-batch-test")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.0")
+    testImplementation("org.testcontainers:mysql:1.20.0")
+    testImplementation("org.testcontainers:kafka:1.20.0")
+    testImplementation("org.testcontainers:testcontainers:1.20.0")
 }
 
 tasks.withType<KotlinCompile> {
