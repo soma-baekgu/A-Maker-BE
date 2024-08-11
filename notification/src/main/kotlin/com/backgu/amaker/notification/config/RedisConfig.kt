@@ -1,4 +1,4 @@
-package com.backgu.amaker.realtime.config
+package com.backgu.amaker.notification.config
 
 import com.backgu.amaker.infra.redis.session.SessionRedisData
 import org.springframework.boot.context.properties.ConfigurationProperties
