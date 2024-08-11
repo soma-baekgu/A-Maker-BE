@@ -3,12 +3,10 @@ package com.backgu.amaker.notification.realtime.handler
 import com.backgu.amaker.domain.notifiacation.RealTimeBasedNotification
 import com.backgu.amaker.domain.realtime.RealTimeServer
 import com.backgu.amaker.notification.realtime.service.RealTimeCallService
-import com.backgu.amaker.notification.realtime.service.RealTimeService
 import org.springframework.stereotype.Service
 
 @Service
 class RealTimeHandler(
-    private val workspaceSessionService: RealTimeService,
     private val realTimeCallService: RealTimeCallService,
 ) {
     fun handleUserRealTimeNotification(
