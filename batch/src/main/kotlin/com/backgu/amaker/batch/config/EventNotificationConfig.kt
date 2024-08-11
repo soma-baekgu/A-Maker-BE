@@ -48,6 +48,10 @@ class EventNotificationConfig(
     @StepScope
     fun compositeWriter(): CompositeItemWriter<NotificationWithEntityDto> =
         CompositeItemWriterBuilder<NotificationWithEntityDto>()
-            .delegates(listOf(eventNotificationWriter, notificationPublisherWriter))
-            .build()
+            .delegates(
+                listOf(
+                    eventNotificationWriter.dbWriter(),
+                    notificationPublisherWriter.pubWriter(),
+                ),
+            ).build()
 }
