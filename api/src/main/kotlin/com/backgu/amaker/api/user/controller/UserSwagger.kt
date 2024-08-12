@@ -9,11 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.Valid
-import jakarta.validation.constraints.Email
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.ModelAttribute
 
 @Tag(name = "users", description = "유저 API")
 interface UserSwagger {
@@ -22,13 +18,12 @@ interface UserSwagger {
         value = [
             ApiResponse(
                 responseCode = "200",
+
                 description = "이메일 확인 성공",
             ),
         ],
     )
-    fun checkEmail(
-        @Email email: EmailExistsRequest,
-    ): ResponseEntity<ApiResult<EmailExistsResponse>>
+    fun checkEmail(email: EmailExistsRequest): ResponseEntity<ApiResult<EmailExistsResponse>>
 
     @Operation(summary = "fcm 디바이스 토큰 등록", description = "fcm 푸시 알림 전송용 토큰을 등록합니다.")
     @ApiResponses(
@@ -40,7 +35,7 @@ interface UserSwagger {
         ],
     )
     fun registerUserDevice(
-        @AuthenticationPrincipal token: JwtAuthentication,
-        @ModelAttribute @Valid userDeviceDto: UserDeviceCreateRequest,
+        token: JwtAuthentication,
+        userDeviceDto: UserDeviceCreateRequest,
     ): ResponseEntity<Void>
 }

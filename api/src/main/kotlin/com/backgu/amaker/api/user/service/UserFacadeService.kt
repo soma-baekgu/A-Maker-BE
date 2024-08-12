@@ -15,5 +15,6 @@ class UserFacadeService(
 ) {
     fun existsByEmail(email: String): EmailExistsDto = EmailExistsDto.of(user = userService.findByEmail(email))
 
+    @Transactional
     fun registerUserDevice(userDeviceDto: UserDeviceDto): UserDeviceDto = UserDeviceDto.of(userDeviceService.save(userDeviceDto.toDomain()))
 }
