@@ -48,3 +48,8 @@ management:
     web:
       exposure:
         include: health,info,metrics,prometheus
+
+fcm:
+  file: hi.json
+  base-url: https://fcm.googleapis.com/v1/projects/a-maker-2b48b
+  auth-url: https://www.googleapis.com/auth/cloud-platform
