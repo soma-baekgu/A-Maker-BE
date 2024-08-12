@@ -14,5 +14,4 @@ class FCMConfig {
         get() = "$FCM_PREFIX/$field"
     lateinit var baseUrl: String
     lateinit var authUrl: String
-
 }
