@@ -18,7 +18,6 @@ interface UserSwagger {
         value = [
             ApiResponse(
                 responseCode = "200",
-
                 description = "이메일 확인 성공",
             ),
         ],
