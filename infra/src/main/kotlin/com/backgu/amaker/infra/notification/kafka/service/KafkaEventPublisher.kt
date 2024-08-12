@@ -31,7 +31,6 @@ class KafkaEventPublisher(
                 }
 
                 override fun onFail(exception: Exception) {
-                    ack.acknowledge()
                     consumer.commitSync()
                 }
             },

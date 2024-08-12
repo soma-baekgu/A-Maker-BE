@@ -23,4 +23,6 @@ class UserDeviceService(
             throw BusinessException(StatusCode.USER_DEVICE_DUPLICATED)
         }
     }
+
+    fun findByUserIds(userIds: List<String>): List<UserDevice> = userDeviceRepository.findByUserIds(userIds).map { it.toDomain() }
 }

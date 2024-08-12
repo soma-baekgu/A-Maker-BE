@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync
 @EnableAsync
 @SpringBootApplication
 @EntityScan(basePackages = ["com.backgu.amaker.infra"])
-@EnableJpaRepositories(basePackages = ["com.backgu.amaker.infra.jpa.user"])
+@EnableJpaRepositories(basePackages = ["com.backgu.amaker.infra.jpa.user", "com.backgu.amaker.infra.jpa.workspace"])
 @EnableRedisRepositories(basePackages = ["com.backgu.amaker.infra.redis"])
 @ComponentScan("com.backgu.amaker.notification", "com.backgu.amaker.infra.mail")
 class NotificationApplication
