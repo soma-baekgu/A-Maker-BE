@@ -18,7 +18,7 @@ import java.time.LocalDateTime
     JsonSubTypes.Type(value = EventChatWithUserCache::class, name = "REACTION"),
     JsonSubTypes.Type(value = EventChatWithUserCache::class, name = "TASK"),
 )
-interface ChatWithUserCache<T> {
+sealed interface ChatWithUserCache<T> {
     val id: Long
     val chatRoomId: Long
     val content: T

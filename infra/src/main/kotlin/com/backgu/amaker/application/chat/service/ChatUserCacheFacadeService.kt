@@ -68,10 +68,6 @@ class ChatUserCacheFacadeService(
 
                 return chat.toDomain(user, chat.content.toDomain(allUsers))
             }
-
-            else -> {
-                throw IllegalArgumentException("Invalid chat type")
-            }
         }
     }
 
