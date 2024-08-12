@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -38,7 +39,7 @@ class UserController(
     @PostMapping("/devices")
     override fun registerUserDevice(
         @AuthenticationPrincipal token: JwtAuthentication,
-        @ModelAttribute @Valid userDeviceDto: UserDeviceCreateRequest,
+        @RequestBody @Valid userDeviceDto: UserDeviceCreateRequest,
     ): ResponseEntity<Void> {
         userFacadeService.registerUserDevice(userDeviceDto.toDto(userId = token.id))
         return ResponseEntity.status(HttpStatus.CREATED).build()
