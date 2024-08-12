@@ -299,4 +299,39 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
     }
+
+    @Test
+    @DisplayName("워크스페이스 단건 조회")
+    fun getWorkspace() {
+        // given
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
+
+        // when
+        val result = workspaceFacadeService.getWorkspace(userId, workspace.id)
+
+        // then
+        assertThat(result.workspaceId).isEqualTo(workspace.id)
+        assertThat(result.name).isEqualTo("워크스페이스1")
+    }
+
+    @Test
+    @DisplayName("워크스페이스 단건 조회 실패 - 권한 없는 워크스페이스")
+    fun getWorkspaceNotIn() {
+        val diffUser = "diffUser"
+        fixtures.user.createPersistedUser(diffUser)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = diffUser)
+
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy { workspaceFacadeService.getWorkspace(userId, workspace.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
+    }
 }

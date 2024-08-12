@@ -76,6 +76,17 @@ class WorkspaceController(
             ),
         )
 
+    @GetMapping("/{workspace-id}")
+    override fun getWorkspace(
+        @PathVariable("workspace-id") workspaceId: Long,
+        @AuthenticationPrincipal token: JwtAuthentication,
+    ): ResponseEntity<ApiResult<WorkspaceResponse>> =
+        ResponseEntity.ok().body(
+            apiHandler.onSuccess(
+                WorkspaceResponse.of(workspaceFacadeService.getWorkspace(token.id, workspaceId)),
+            ),
+        )
+
     @PostMapping("/{workspace-id}/invite")
     override fun inviteWorkspace(
         @AuthenticationPrincipal token: JwtAuthentication,
