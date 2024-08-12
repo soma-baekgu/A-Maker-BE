@@ -160,4 +160,15 @@ class ChatRoomFacadeService(
 
         return chatRoomUserService.save(chatRoom.addUser(user))
     }
+
+    fun getChatRoom(
+        userId: String,
+        chatRoomId: Long,
+    ): ChatRoomDto {
+        val user: User = userService.getById(userId)
+        val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        return ChatRoomDto.of(chatRoom)
+    }
 }

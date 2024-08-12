@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @RestController
-@RequestMapping("/api/v1/workspaces/{workspace-id}")
+@RequestMapping("/api/v1")
 class ChatRoomController(
     private val chatRoomFacadeService: ChatRoomFacadeService,
     private val apiHandler: ApiHandler,
 ) : ChatRoomSwagger {
-    @PostMapping("/chat-rooms")
+    @PostMapping("/workspaces/{workspace-id}/chat-rooms")
     override fun createChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
@@ -43,7 +43,7 @@ class ChatRoomController(
             ).body(apiHandler.onSuccess(ChatRoomResponse.of(chatRoom)))
     }
 
-    @GetMapping("/chat-rooms")
+    @GetMapping("/workspaces/{workspace-id}/chat-rooms")
     override fun findChatRooms(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
@@ -61,7 +61,7 @@ class ChatRoomController(
                 ),
             )
 
-    @GetMapping("/chat-rooms/not-joined")
+    @GetMapping("/workspaces/{workspace-id}/chat-rooms/not-joined")
     override fun findChatRoomsNotJoined(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
@@ -79,7 +79,7 @@ class ChatRoomController(
                 ),
             )
 
-    @GetMapping("/chat-rooms/joined")
+    @GetMapping("/workspaces/{workspace-id}/chat-rooms/joined")
     override fun findChatRoomsJoined(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
@@ -97,7 +97,7 @@ class ChatRoomController(
                 ),
             )
 
-    @PostMapping("/chat-rooms/{chat-room-id}/join")
+    @PostMapping("/workspaces/{workspace-id}/chat-rooms/{chat-room-id}/join")
     override fun joinChatRoom(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("workspace-id") workspaceId: Long,
@@ -106,4 +106,18 @@ class ChatRoomController(
         chatRoomFacadeService.joinChatRoom(token.id, workspaceId, chatRoomId)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
+
+    @GetMapping("/chat-rooms/{chat-room-id}")
+    override fun getChatRoom(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+    ): ResponseEntity<ApiResult<ChatRoomResponse>> =
+        ResponseEntity.ok().body(
+            apiHandler.onSuccess(
+                ChatRoomResponse.of(
+                    chatRoomFacadeService.getChatRoom(token.id, chatRoomId),
+                ),
+            ),
+        )
+
 }
