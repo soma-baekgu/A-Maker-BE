@@ -5,6 +5,7 @@ import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceInviteRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceUserResponse
+import com.backgu.amaker.api.workspace.dto.response.WorkspaceUsersResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
@@ -79,16 +80,22 @@ interface WorkspaceSwagger {
         token: JwtAuthentication,
     ): ResponseEntity<ApiResult<WorkspaceResponse>>
 
-    @Deprecated("사용하지 않음")
-    @Operation(summary = "기본 채팅방 조회", description = "워크스페이스의 기본 채팅방을 조회합니다.")
+    @Operation(summary = "워크스페이스 참여 유저 조회", description = "워크스페이스에 참여하고 있는 유저들을 조회합니다.")
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "기본 채팅방 조회 성공",
+                description = "워크스페이스 참여 유저 조회 성공",
             ),
         ],
     )
+    fun getWorkspaceUsers(
+        @PathVariable("workspace-id")
+        @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
+        workspaceId: Long,
+        @AuthenticationPrincipal token: JwtAuthentication,
+    ): ResponseEntity<ApiResult<WorkspaceUsersResponse>>
+
     fun getDefaultChatRoom(
         @PathVariable
         @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
