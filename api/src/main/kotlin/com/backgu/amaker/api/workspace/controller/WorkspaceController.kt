@@ -5,6 +5,7 @@ import com.backgu.amaker.api.workspace.dto.request.WorkspaceCreateRequest
 import com.backgu.amaker.api.workspace.dto.request.WorkspaceInviteRequest
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspaceUserResponse
+import com.backgu.amaker.api.workspace.dto.response.WorkspaceUsersResponse
 import com.backgu.amaker.api.workspace.dto.response.WorkspacesResponse
 import com.backgu.amaker.api.workspace.service.WorkspaceFacadeService
 import com.backgu.amaker.common.http.ApiHandler
@@ -84,6 +85,17 @@ class WorkspaceController(
         ResponseEntity.ok().body(
             apiHandler.onSuccess(
                 WorkspaceResponse.of(workspaceFacadeService.getWorkspace(token.id, workspaceId)),
+            ),
+        )
+
+    @GetMapping("/{workspace-id}/users")
+    override fun getWorkspaceUsers(
+        @PathVariable("workspace-id") workspaceId: Long,
+        @AuthenticationPrincipal token: JwtAuthentication,
+    ): ResponseEntity<ApiResult<WorkspaceUsersResponse>> =
+        ResponseEntity.ok().body(
+            apiHandler.onSuccess(
+                WorkspaceUsersResponse.of(workspaceFacadeService.getWorkspaceUsers(token.id, workspaceId)),
             ),
         )
 

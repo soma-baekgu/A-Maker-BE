@@ -27,6 +27,9 @@ class WorkspaceUserService(
 
     fun findWorkspaceIdsByUser(user: User): List<Long> = workspaceUserRepository.findWorkspaceIdsByUserId(user.id)
 
+    fun findWorkSpaceUserByWorkspaceId(workspaceId: Long): List<WorkspaceUser> =
+        workspaceUserRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
+
     fun validUserInWorkspace(
         userId: String,
         workspaceId: Long,

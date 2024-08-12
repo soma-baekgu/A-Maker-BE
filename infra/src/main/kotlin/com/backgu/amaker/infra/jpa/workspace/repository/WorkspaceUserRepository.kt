@@ -40,4 +40,7 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
         userId: String,
         chatId: Long,
     ): Boolean
+
+    @Query("select wu from WorkspaceUser wu where wu.workspaceId = :workspaceId and wu.status = 'ACTIVE'")
+    fun findByWorkspaceId(workspaceId: Long): List<WorkspaceUserEntity>
 }
