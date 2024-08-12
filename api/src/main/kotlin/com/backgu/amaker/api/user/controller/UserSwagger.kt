@@ -22,7 +22,7 @@ interface UserSwagger {
             ),
         ],
     )
-    fun checkEmail(email: EmailExistsRequest): ResponseEntity<ApiResult<EmailExistsResponse>>
+    fun checkEmail(emailExistsRequest: EmailExistsRequest): ResponseEntity<ApiResult<EmailExistsResponse>>
 
     @Operation(summary = "fcm 디바이스 토큰 등록", description = "fcm 푸시 알림 전송용 토큰을 등록합니다.")
     @ApiResponses(
@@ -36,5 +36,5 @@ interface UserSwagger {
     fun registerUserDevice(
         token: JwtAuthentication,
         userDeviceDto: UserDeviceCreateRequest,
-    ): ResponseEntity<Void>
+    ): ResponseEntity<Unit>
 }

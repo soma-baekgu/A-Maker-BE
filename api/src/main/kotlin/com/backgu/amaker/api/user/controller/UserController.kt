@@ -40,7 +40,7 @@ class UserController(
     override fun registerUserDevice(
         @AuthenticationPrincipal token: JwtAuthentication,
         @RequestBody @Valid userDeviceDto: UserDeviceCreateRequest,
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<Unit> {
         userFacadeService.registerUserDevice(userDeviceDto.toDto(userId = token.id))
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }

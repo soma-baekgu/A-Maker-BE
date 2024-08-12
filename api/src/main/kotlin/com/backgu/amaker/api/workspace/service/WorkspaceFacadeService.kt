@@ -97,7 +97,7 @@ class WorkspaceFacadeService(
 
         val workspaceUsers = workspaceUserService.findWorkSpaceUserByWorkspaceId(workspaceId)
 
-        val users = userService.findAllByUserIds(workspaceUsers.map { it.userId })
+        val users = userService.getAllByUserIds(workspaceUsers.map { it.userId })
 
         val workspaceUserMap = workspaceUsers.associateBy { it.userId }
 
