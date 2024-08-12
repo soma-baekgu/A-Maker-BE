@@ -4,6 +4,7 @@ import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.event.dto.ReplyEventDetailDto
 import com.backgu.amaker.api.event.dto.ReplyEventDto
 import com.backgu.amaker.api.user.dto.UserDto
+import com.backgu.amaker.application.chat.event.EventChatSaveEvent
 import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.chat.service.ChatService
@@ -14,6 +15,7 @@ import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatType
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -26,6 +28,7 @@ class EventFacadeService(
     private val chatService: ChatService,
     private val replyEventService: ReplyEventService,
     private val eventAssignedUserService: EventAssignedUserService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun createReplyEvent(
@@ -55,6 +58,13 @@ class EventFacadeService(
         chatRoomUserService.validateUsersInChatRoom(users, chatRoom)
 
         eventAssignedUserService.saveAll(replyEvent.createAssignedUsers(users))
+
+        eventPublisher.publishEvent(
+            EventChatSaveEvent.of(
+                chatRoomId,
+                chat.createEventChatWithUser(replyEvent, user, users),
+            ),
+        )
 
         return ReplyEventDto.of(replyEvent)
     }

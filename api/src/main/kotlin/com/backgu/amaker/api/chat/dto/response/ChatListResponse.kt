@@ -21,7 +21,7 @@ class ChatListResponse(
                 cursor = chatListDto.cursor,
                 size = chatListDto.size,
                 chatList = chatListDto.chatList.map { ChatWithUserResponse.of(it) },
-                nextCursor = chatListDto.chatList.first().id,
+                chatListDto.chatList.firstOrNull()?.id ?: chatListDto.cursor,
             )
 
         fun afterOf(chatListDto: ChatListDto) =
@@ -30,7 +30,7 @@ class ChatListResponse(
                 cursor = chatListDto.cursor,
                 size = chatListDto.size,
                 chatList = chatListDto.chatList.map { ChatWithUserResponse.of(it) },
-                nextCursor = chatListDto.chatList.last().id,
+                nextCursor = chatListDto.chatList.lastOrNull()?.id ?: chatListDto.cursor,
             )
     }
 }

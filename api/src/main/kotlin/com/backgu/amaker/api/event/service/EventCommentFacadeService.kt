@@ -3,8 +3,7 @@ package com.backgu.amaker.api.event.service
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
 import com.backgu.amaker.api.event.dto.ReplyCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentWithUserDto
-import com.backgu.amaker.application.chat.service.ChatRoomService
-import com.backgu.amaker.application.chat.service.ChatService
+import com.backgu.amaker.application.chat.event.FinishedCountUpdateEvent
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.event.service.ReplyCommentService
 import com.backgu.amaker.application.event.service.ReplyEventService
@@ -12,6 +11,7 @@ import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -24,9 +24,8 @@ class EventCommentFacadeService(
     private val replyEventService: ReplyEventService,
     private val eventAssignedUserService: EventAssignedUserService,
     private val replyCommentService: ReplyCommentService,
-    private val chatService: ChatService,
-    private val chatRoomService: ChatRoomService,
     private val workspaceUserService: WorkspaceUserService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun createReplyComment(
@@ -42,6 +41,8 @@ class EventCommentFacadeService(
         val replyComment = replyCommentService.save(event.addReplyComment(user, replyCommentCreateDto.content))
 
         eventAssignedUserService.save(eventAssignedUser.updateIsFinished(true))
+
+        eventPublisher.publishEvent(FinishedCountUpdateEvent.of(chatId = event.id))
 
         return ReplyCommentDto.of(replyComment)
     }

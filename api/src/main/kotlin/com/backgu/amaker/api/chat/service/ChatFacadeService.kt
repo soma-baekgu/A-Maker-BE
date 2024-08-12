@@ -6,11 +6,13 @@ import com.backgu.amaker.api.chat.dto.ChatQuery
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
 import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
-import com.backgu.amaker.api.chat.service.query.ChatQueryService
 import com.backgu.amaker.api.event.dto.EventWithUserDto
+import com.backgu.amaker.application.chat.event.DefaultChatSaveEvent
+import com.backgu.amaker.application.chat.service.ChatQueryService
 import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.chat.service.ChatService
+import com.backgu.amaker.application.chat.service.ChatUserCacheFacadeService
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.event.service.EventService
 import com.backgu.amaker.application.user.service.UserService
@@ -20,9 +22,11 @@ import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.chat.ChatRoomUser
 import com.backgu.amaker.domain.chat.ChatType
+import com.backgu.amaker.domain.chat.DefaultChatWithUser
 import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.event.EventAssignedUser
 import com.backgu.amaker.domain.user.User
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -36,6 +40,8 @@ class ChatFacadeService(
     private val eventService: EventService,
     private val chatQueryService: ChatQueryService,
     private val eventAssignedUserService: EventAssignedUserService,
+    private val chatUserCacheFacadeService: ChatUserCacheFacadeService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun createChat(
@@ -50,6 +56,8 @@ class ChatFacadeService(
         val chat: Chat = chatService.save(chatRoom.createChat(user, chatCreateDto.content, chatType))
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
+        eventPublisher.publishEvent(DefaultChatSaveEvent.of(chatRoomId, chat.createDefaultChatWithUser(user)))
+
         return DefaultChatWithUserDto.of(chat, user)
     }
 
@@ -59,16 +67,39 @@ class ChatFacadeService(
         chatQuery: ChatQuery,
     ): ChatListDto {
         markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
-        val chatList = chatQueryService.findPreviousChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+
+        val cachedChats =
+            chatUserCacheFacadeService.findPreviousChats(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+        val dbQuerySize = chatQuery.size - cachedChats.size
+
+        if (dbQuerySize <= 0) {
+            return ChatListDto.of(
+                chatQuery,
+                cachedChats.map { ChatWithUserDto.of(it) },
+            )
+        }
+
+        val firstChatId = cachedChats.firstOrNull()?.id ?: chatQuery.cursor
+        val chatListFromDB =
+            chatQueryService.findPreviousChatList(chatQuery.chatRoomId, firstChatId, dbQuerySize)
 
         val eventMap =
-            eventService.findEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
+            eventService.findEventByIdsToMap(chatListFromDB.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
         val eventUserMap = eventAssignedUserService.findByEventIdsToEventIdMapped(eventMap.keys.toList())
         val userMap = userService.findAllByUserIdsToMap(eventUserMap.values.flatten().map { it.userId })
 
+        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
+
         return ChatListDto.of(
             chatQuery,
-            chatList.map { mapToChatWithUser(it, eventMap, eventUserMap, userMap) },
+            chatListFromDB.map {
+                mapToChatWithUser(
+                    it,
+                    eventMap,
+                    eventUserMap,
+                    userMap,
+                )
+            } + cachedChats.map { ChatWithUserDto.of(it) },
         )
     }
 
@@ -77,13 +108,21 @@ class ChatFacadeService(
         userId: String,
         chatQuery: ChatQuery,
     ): ChatListDto {
-        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
+        chatUserCacheFacadeService
+            .findAfterChats(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+            ?.let { return ChatListDto.of(chatQuery, it.map { chatWithUser -> ChatWithUserDto.of(chatWithUser) }) }
+
         val chatList = chatQueryService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
+        for (defaultChatWithUser in chatList) {
+            println(defaultChatWithUser.id)
+        }
 
         val eventMap =
             eventService.findEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
         val eventUserMap = eventAssignedUserService.findByEventIdsToEventIdMapped(eventMap.keys.toList())
         val userMap = userService.findAllByUserIdsToMap(eventUserMap.values.flatten().map { it.userId })
+
+        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
 
         return ChatListDto.of(
             chatQuery,
@@ -96,15 +135,25 @@ class ChatFacadeService(
         userId: String,
         chatRoomId: Long,
     ): ChatWithUserDto<*> {
-        val chatRoomUser = markMostRecentChatAsRead(chatRoomId, userId)
+        val chatRoomUser = chatRoomUserService.getByUserIdAndChatRoomId(userId, chatRoomId)
+
+        val cachedChat =
+            chatRoomUser.lastReadChatId?.let {
+                chatUserCacheFacadeService.findChat(chatRoomId, it)
+            }
+
+        if (cachedChat != null) return ChatWithUserDto.of(cachedChat)
+
         val chat = chatQueryService.getOneWithUser(chatRoomUser.lastReadChatId)
 
-        if (!ChatType.isEventChat(chat.chatType)) return chat
+        if (!ChatType.isEventChat(chat.chatType)) return DefaultChatWithUserDto.of(chat)
 
         val event = eventService.getEventById(chat.id)
         val eventAssignedUsers = eventAssignedUserService.findAllByEventId(event.id)
         val userMap = userService.findAllByUserIdsToMap(eventAssignedUsers.map { it.userId })
         val eventUsers = eventAssignedUsers.mapNotNull { userMap[it.userId] }
+
+        markMostRecentChatAsRead(chatRoomId, userId)
 
         return EventChatWithUserDto.of(
             chat,
@@ -123,7 +172,7 @@ class ChatFacadeService(
     }
 
     private fun mapToChatWithUser(
-        chat: DefaultChatWithUserDto,
+        chat: DefaultChatWithUser,
         eventMap: Map<Long, Event>,
         eventUserMap: Map<Long, List<EventAssignedUser>>,
         userMap: Map<String, User>,
@@ -134,6 +183,6 @@ class ChatFacadeService(
             val finishedNumber = eventUserMap[event.id]?.count { it.isFinished } ?: 0
             EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers, finishedNumber))
         } else {
-            chat
+            DefaultChatWithUserDto.of(chat)
         }
 }

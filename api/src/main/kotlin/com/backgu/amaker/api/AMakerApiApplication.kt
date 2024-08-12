@@ -13,7 +13,14 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EntityScan(basePackages = ["com.backgu.amaker.infra"])
 @EnableRedisRepositories(basePackages = ["com.backgu.amaker.infra.redis"])
 @EnableJpaRepositories(basePackages = ["com.backgu.amaker.infra"])
-@SpringBootApplication(scanBasePackages = ["com.backgu.amaker.api", "com.backgu.amaker.infra.jpa"])
+@SpringBootApplication(
+    scanBasePackages = [
+        "com.backgu.amaker.api",
+        "com.backgu.amaker.infra.jpa",
+        "com.backgu.amaker.infra.redis.chat",
+        "com.backgu.amaker.infra.redis.user",
+    ],
+)
 class AMakerApiApplication
 
 fun main(args: Array<String>) {

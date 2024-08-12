@@ -13,4 +13,20 @@ abstract class Event(
     val updatedAt: LocalDateTime,
 ) {
     fun createAssignedUsers(userIds: List<User>): List<EventAssignedUser> = userIds.map { EventAssignedUser(eventId = id, userId = it.id) }
+
+    fun createEventWithUser(
+        users: List<User>,
+        finishedCount: Int,
+        totalAssignedCount: Int,
+    ): EventWithUser =
+        EventWithUser(
+            id,
+            eventTitle,
+            deadLine,
+            notificationStartTime,
+            notificationInterval,
+            users,
+            finishedCount,
+            totalAssignedCount,
+        )
 }

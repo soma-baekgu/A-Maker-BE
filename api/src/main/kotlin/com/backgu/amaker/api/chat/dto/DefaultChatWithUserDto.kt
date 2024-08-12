@@ -3,8 +3,8 @@ package com.backgu.amaker.api.chat.dto
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatType
+import com.backgu.amaker.domain.chat.DefaultChatWithUser
 import com.backgu.amaker.domain.user.User
-import com.backgu.amaker.infra.jpa.chat.query.ChatWithUserQuery
 import java.time.LocalDateTime
 
 class DefaultChatWithUserDto(
@@ -31,21 +31,35 @@ class DefaultChatWithUserDto(
                 user = UserDto(id = user.id, name = user.name, email = user.email, picture = user.picture),
             )
 
-        fun of(chatWithUserQuery: ChatWithUserQuery) =
+        fun of(chatWithUser: DefaultChatWithUser) =
             DefaultChatWithUserDto(
-                id = chatWithUserQuery.id,
-                chatRoomId = chatWithUserQuery.chatRoomId,
-                content = chatWithUserQuery.content,
-                chatType = chatWithUserQuery.chatType,
-                createdAt = chatWithUserQuery.createdAt,
-                updatedAt = chatWithUserQuery.updatedAt,
+                id = chatWithUser.id,
+                chatRoomId = chatWithUser.chatRoomId,
+                content = chatWithUser.content,
+                chatType = chatWithUser.chatType,
+                createdAt = chatWithUser.createdAt,
+                updatedAt = chatWithUser.updatedAt,
                 user =
                     UserDto(
-                        id = chatWithUserQuery.user.id,
-                        name = chatWithUserQuery.user.name,
-                        email = chatWithUserQuery.user.email,
-                        picture = chatWithUserQuery.user.picture,
+                        id = chatWithUser.user.id,
+                        name = chatWithUser.user.name,
+                        email = chatWithUser.user.email,
+                        picture = chatWithUser.user.picture,
                     ),
+            )
+
+        fun of(
+            defaultChatWithUser: DefaultChatWithUser,
+            user: User,
+        ): DefaultChatWithUserDto =
+            DefaultChatWithUserDto(
+                id = defaultChatWithUser.id,
+                chatRoomId = defaultChatWithUser.chatRoomId,
+                content = defaultChatWithUser.content,
+                chatType = defaultChatWithUser.chatType,
+                createdAt = defaultChatWithUser.createdAt,
+                updatedAt = defaultChatWithUser.updatedAt,
+                user = UserDto(id = user.id, name = user.name, email = user.email, picture = user.picture),
             )
     }
 }

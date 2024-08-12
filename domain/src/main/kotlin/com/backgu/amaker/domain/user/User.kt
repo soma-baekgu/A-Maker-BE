@@ -16,4 +16,21 @@ class User(
     }
 
     fun isNonInvitee(invitee: User) = email != invitee.email
+
+    companion object {
+        fun of(
+            id: String,
+            name: String,
+            email: String,
+            picture: String,
+            userRole: UserRole = UserRole.USER,
+        ): User =
+            User(
+                id = id,
+                name = name,
+                email = email,
+                picture = picture,
+                userRole = userRole,
+            )
+    }
 }

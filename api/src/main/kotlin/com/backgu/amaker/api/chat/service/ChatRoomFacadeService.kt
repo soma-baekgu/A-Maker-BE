@@ -57,7 +57,7 @@ class ChatRoomFacadeService(
 
         // 채팅방에 참여한 유저들의 도메인 조회
         val userMap: Map<String, User> =
-            userService.findAllByUserIds(chatRoomUsers.map { it.userId }).associateBy { it.id }
+            userService.getAllByUserIds(chatRoomUsers.map { it.userId }).associateBy { it.id }
 
         // 채팅방의 읽지 않은 채팅 수 조회
         val unreadChatCountMap =
