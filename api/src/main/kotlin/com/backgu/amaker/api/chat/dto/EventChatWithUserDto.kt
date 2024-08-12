@@ -3,6 +3,7 @@ package com.backgu.amaker.api.chat.dto
 import com.backgu.amaker.api.event.dto.EventWithUserDto
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.domain.chat.ChatType
+import com.backgu.amaker.domain.chat.ChatWithUser
 import java.time.LocalDateTime
 
 class EventChatWithUserDto(
@@ -16,7 +17,7 @@ class EventChatWithUserDto(
 ) : ChatWithUserDto<EventWithUserDto> {
     companion object {
         fun of(
-            chat: ChatWithUserDto<*>,
+            chat: ChatWithUser<*>,
             eventDto: EventWithUserDto,
         ): EventChatWithUserDto =
             EventChatWithUserDto(
@@ -26,7 +27,7 @@ class EventChatWithUserDto(
                 chatType = chat.chatType,
                 createdAt = chat.createdAt,
                 updatedAt = chat.updatedAt,
-                user = chat.user,
+                user = UserDto.of(chat.user),
             )
     }
 }

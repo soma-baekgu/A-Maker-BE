@@ -2,6 +2,7 @@ package com.backgu.amaker.api.event.dto
 
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.domain.event.Event
+import com.backgu.amaker.domain.event.EventWithUser
 import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
@@ -19,7 +20,7 @@ data class EventWithUserDto(
         fun of(
             event: Event,
             users: List<User>,
-            finishedCount: Int,
+            finishedCount: Int = 0,
         ): EventWithUserDto =
             EventWithUserDto(
                 id = event.id,
@@ -30,6 +31,18 @@ data class EventWithUserDto(
                 users = users.map { UserDto.of(it) },
                 finishedCount = finishedCount,
                 totalAssignedCount = users.size,
+            )
+
+        fun of(eventWithUser: EventWithUser): EventWithUserDto =
+            EventWithUserDto(
+                id = eventWithUser.id,
+                eventTitle = eventWithUser.eventTitle,
+                deadLine = eventWithUser.deadLine,
+                notificationStartTime = eventWithUser.notificationStartTime,
+                notificationInterval = eventWithUser.notificationInterval,
+                users = eventWithUser.users.map { UserDto.of(it) },
+                finishedCount = eventWithUser.finishedCount,
+                totalAssignedCount = eventWithUser.totalAssignedCount,
             )
     }
 }
