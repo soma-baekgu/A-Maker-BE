@@ -87,6 +87,7 @@ class ChatFacadeServiceTest : IntegrationTest() {
         // then
         assertThat(previousChat.chatList).hasSize(10)
         assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
+        assertThat(previousChat.cursor).isEqualTo(currentChat.id)
         assertThat(previousChat.cursor).isNotEqualTo(prevChats.last().id)
     }
 
@@ -111,6 +112,7 @@ class ChatFacadeServiceTest : IntegrationTest() {
         // then
         assertThat(previousChat.chatList).hasSize(5)
         assertThat(previousChat.size).isEqualTo(previousChat.chatList.size)
+        assertThat(previousChat.cursor).isEqualTo(currentChat.id)
         assertThat(previousChat.cursor).isNotEqualTo(prevChats.last().id)
     }
 
@@ -143,7 +145,7 @@ class ChatFacadeServiceTest : IntegrationTest() {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        val prevChats = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
+        fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
         val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
         fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
 
@@ -154,32 +156,36 @@ class ChatFacadeServiceTest : IntegrationTest() {
                 ChatQuery(currentChat.id, chatRoom.id, 10),
             )
 
+        for (chatWithUserDto in findAfterChats.chatList) {
+            println(chatWithUserDto.id)
+        }
+        println(findAfterChats.chatList.last().id)
         // then
         assertThat(findAfterChats.chatList).hasSize(10)
         assertThat(findAfterChats.size).isEqualTo(findAfterChats.chatList.size)
-        assertThat(findAfterChats.cursor).isNotEqualTo(prevChats.last().id)
+        assertThat(findAfterChats.cursor).isEqualTo(currentChat.id)
+        assertThat(currentChat.id).isNotEqualTo(findAfterChats.chatList.last().id)
     }
 
     @Test
-    @DisplayName("이전 채팅 조회 테스트")
+    @DisplayName("이후 채팅 조회 테스트 - 이후 채팅이 없는 경우")
     fun getAfterChatTestWhenNoAfterChat() {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
         val prevChats: List<Chat> = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
         val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
-        fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 10)
 
         // when
-        val findPrevChats: ChatListDto =
+        val findAfterChats: ChatListDto =
             chatFacadeService.getAfterChat(
                 userId,
                 ChatQuery(currentChat.id, chatRoom.id, 10),
             )
 
         // then
-        assertThat(findPrevChats.chatList).hasSize(10)
-        assertThat(findPrevChats.cursor).isNotEqualTo(prevChats.last().id)
+        assertThat(findAfterChats.chatList).hasSize(0)
+        assertThat(findAfterChats.cursor).isEqualTo(currentChat.id)
     }
 
     @Test

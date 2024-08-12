@@ -1,8 +1,8 @@
 package com.backgu.amaker.api.chat.service
 
-import com.backgu.amaker.api.chat.service.query.ChatQueryService
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatFixtureFacade
+import com.backgu.amaker.application.chat.service.ChatQueryService
 import com.backgu.amaker.application.chat.service.ChatService
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.ChatRoomType

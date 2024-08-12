@@ -4,7 +4,6 @@ import com.backgu.amaker.api.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
-import com.backgu.amaker.api.fixture.ChatRoomFixture
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
@@ -23,9 +22,6 @@ import org.springframework.transaction.annotation.Transactional
 @DisplayName("ChatRoomFacadeService 테스트")
 @Transactional
 class ChatRoomFacadeServiceTest : IntegrationTest() {
-    @Autowired
-    private lateinit var chatRoomFixture: ChatRoomFixture
-
     @Autowired
     lateinit var chatRoomFacadeService: ChatRoomFacadeService
 
