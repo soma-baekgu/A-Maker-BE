@@ -44,7 +44,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크 스페이스 생성 테스트")
     fun createWorkspace() {
         // given
-
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
 
@@ -61,7 +60,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("초대자들이 있는 워크 스페이스 생성 테스트")
     fun createWorkspaceWithInvitee() {
         // given
-
         val userId = "tester"
         fixtures.user.createPersistedUser(userId)
         fixtures.user.createPersistedUser(email = "a@example.com")
@@ -80,7 +78,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스 리더가 초대자로 들어가 있는 테스트")
     fun createWorkspaceWithDuplicatedInvitees() {
         // given
-
         val userId = "tester"
         val userEmail = "tester@gmail.com"
         fixtures.user.createPersistedUser(
@@ -279,7 +276,6 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
     @DisplayName("워크스페이스에 유저 초대")
     fun inviteWorkspaceUser() {
         // given
-
         val leaderId = "leader"
         fixtures.user.createPersistedUser(leaderId)
         val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
@@ -298,5 +294,87 @@ class WorkspaceFacadeServiceTest : IntegrationTest() {
         assertThat(workspaceUser.userId).isEqualTo(member.id)
         assertThat(workspaceUser.workspaceId).isEqualTo(workspace.id)
         assertThat(workspaceUser.workspaceRole).isEqualTo(WorkspaceRole.MEMBER)
+    }
+
+    @Test
+    @DisplayName("워크스페이스 단건 조회")
+    fun getWorkspace() {
+        // given
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = userId)
+
+        // when
+        val result = workspaceFacadeService.getWorkspace(userId, workspace.id)
+
+        // then
+        assertThat(result.workspaceId).isEqualTo(workspace.id)
+        assertThat(result.name).isEqualTo("워크스페이스1")
+    }
+
+    @Test
+    @DisplayName("워크스페이스 단건 조회 실패 - 권한 없는 워크스페이스")
+    fun getWorkspaceNotIn() {
+        val diffUser = "diffUser"
+        fixtures.user.createPersistedUser(diffUser)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = diffUser)
+
+        val userId = "tester"
+        fixtures.user.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy { workspaceFacadeService.getWorkspace(userId, workspace.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
+    }
+
+    @Test
+    @DisplayName("워크스페이스 유저 조회")
+    fun findWorkspaceUsers() {
+        // given
+        val leaderId = "leader"
+        val member1Id = "member1"
+        val member2Id = "member2"
+        fixtures.user.createPersistedUser(leaderId)
+        fixtures.user.createPersistedUser(member1Id)
+        fixtures.user.createPersistedUser(member2Id)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(
+            workspaceId = workspace.id,
+            leaderId = leaderId,
+            memberIds = listOf(member1Id, member2Id),
+        )
+
+        // when
+        val result = workspaceFacadeService.getWorkspaceUsers(leaderId, workspace.id)
+
+        // then
+        assertThat(result.workspaceId).isEqualTo(workspace.id)
+        assertThat(result.users.size).isEqualTo(3)
+        result.users.partition { it.workspaceRole == WorkspaceRole.LEADER }.let { (leaders, members) ->
+            assertThat(leaders.size).isEqualTo(1)
+            assertThat(members.size).isEqualTo(2)
+        }
+    }
+
+    @Test
+    @DisplayName("워크스페이스 유저 조회 실패 - 권한 없는 워크스페이스")
+    fun findWorkspaceUsersNotIn() {
+        // given
+        val userId = "tester"
+        val leaderId = "leader"
+        fixtures.user.createPersistedUser(userId)
+        fixtures.user.createPersistedUser(leaderId)
+        val workspace = fixtures.workspace.createPersistedWorkspace(name = "워크스페이스1")
+        fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = leaderId)
+
+        // when & then
+        assertThatThrownBy { workspaceFacadeService.getWorkspace(userId, workspace.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
     }
 }

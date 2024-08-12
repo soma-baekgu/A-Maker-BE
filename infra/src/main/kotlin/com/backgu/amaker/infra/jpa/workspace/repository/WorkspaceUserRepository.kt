@@ -49,4 +49,7 @@ interface WorkspaceUserRepository : JpaRepository<WorkspaceUserEntity, Long> {
         workspaceId: Long,
         status: WorkspaceUserStatus,
     ): List<String>
+
+    @Query("select wu from WorkspaceUser wu where wu.workspaceId = :workspaceId and wu.status = 'ACTIVE'")
+    fun findByWorkspaceId(workspaceId: Long): List<WorkspaceUserEntity>
 }

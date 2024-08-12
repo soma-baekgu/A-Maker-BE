@@ -6,6 +6,7 @@ import com.backgu.amaker.api.common.annotation.DistributedLockKey
 import com.backgu.amaker.api.workspace.dto.WorkspaceCreateDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceDto
 import com.backgu.amaker.api.workspace.dto.WorkspaceUserDto
+import com.backgu.amaker.api.workspace.dto.WorkspaceUsersDto
 import com.backgu.amaker.api.workspace.dto.WorkspacesDto
 import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
@@ -56,6 +57,18 @@ class WorkspaceFacadeService(
         return WorkspaceDto.of(workspace)
     }
 
+    fun getWorkspace(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceDto {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
+
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        return WorkspaceDto.of(workspace)
+    }
+
     fun findWorkspaces(userId: String): WorkspacesDto {
         val user: User = userService.getById(userId)
 
@@ -71,6 +84,32 @@ class WorkspaceFacadeService(
     fun getDefaultWorkspace(userId: String): WorkspaceDto {
         val user: User = userService.getById(userId)
         return workspaceService.getDefaultWorkspaceByUserId(user).let { WorkspaceDto.of(it) }
+    }
+
+    fun getWorkspaceUsers(
+        userId: String,
+        workspaceId: Long,
+    ): WorkspaceUsersDto {
+        val user: User = userService.getById(userId)
+        val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
+
+        workspaceUserService.validUserInWorkspace(user, workspace)
+
+        val workspaceUsers = workspaceUserService.findWorkSpaceUserByWorkspaceId(workspaceId)
+
+        val users = userService.findAllByUserIds(workspaceUsers.map { it.userId })
+
+        val workspaceUserMap = workspaceUsers.associateBy { it.userId }
+
+        return WorkspaceUsersDto.of(
+            workspaceId = workspace.id,
+            name = workspace.name,
+            thumbnail = workspace.thumbnail,
+            users =
+                users.map {
+                    WorkspaceUserDto.of(it, workspaceUserMap[it.id] ?: throw BusinessException(StatusCode.SERVER_ERROR))
+                },
+        )
     }
 
     fun getDefaultChatRoom(
@@ -106,7 +145,7 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.updateBelonging(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(user.email, workspaceUser)
+        return WorkspaceUserDto.of(user, workspaceUser)
     }
 
     @Transactional
@@ -129,7 +168,7 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.updateBelonging(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(user.email, workspaceUser)
+        return WorkspaceUserDto.of(user, workspaceUser)
     }
 
     @Transactional
@@ -153,7 +192,7 @@ class WorkspaceFacadeService(
         chatRoomUserService.save(chatRoomService.getDefaultChatRoomByWorkspaceId(workspaceId).addUser(user))
         workspaceService.save(workspace.increaseMember())
 
-        return WorkspaceUserDto.of(user.email, workspaceUser)
+        return WorkspaceUserDto.of(user, workspaceUser)
     }
 
     @Transactional
@@ -172,6 +211,6 @@ class WorkspaceFacadeService(
         val workspaceUser = workspaceUserService.save(workspace.inviteWorkspace(invitee))
         notificationEventService.publishNotificationEvent(WorkspaceInvited.of(workspace, invitee))
 
-        return WorkspaceUserDto.of(invitee.email, workspaceUser)
+        return WorkspaceUserDto.of(invitee, workspaceUser)
     }
 }

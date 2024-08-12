@@ -58,4 +58,7 @@ enum class StatusCode(
 
     // realtime
     REALTIME_NOT_FOUND("4000", "세션정보를 찾을 수 없습니다."),
+
+    // serverError
+    SERVER_ERROR("5000", "서버 에러입니다."),
 }
