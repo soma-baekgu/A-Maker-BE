@@ -63,6 +63,22 @@ interface WorkspaceSwagger {
         @Parameter(hidden = true) token: JwtAuthentication,
     ): ResponseEntity<ApiResult<WorkspaceResponse>>
 
+    @Operation(summary = "workspace 단건 조회", description = "워크스페이스를 조회합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "단일 워크스페이스 조회 성공",
+            ),
+        ],
+    )
+    fun getWorkspace(
+        @PathVariable
+        @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
+        workspaceId: Long,
+        token: JwtAuthentication,
+    ): ResponseEntity<ApiResult<WorkspaceResponse>>
+
     @Deprecated("사용하지 않음")
     @Operation(summary = "기본 채팅방 조회", description = "워크스페이스의 기본 채팅방을 조회합니다.")
     @ApiResponses(
@@ -90,7 +106,9 @@ interface WorkspaceSwagger {
         ],
     )
     fun activateWorkspaceInvite(
-        @Parameter(hidden = true) token: JwtAuthentication,
+        @Parameter(hidden = true)
+        token: JwtAuthentication,
+        @Parameter(description = "워크스페이스 ID", required = true, `in` = ParameterIn.PATH)
         workspaceId: Long,
     ): ResponseEntity<ApiResult<WorkspaceUserResponse>>
 
