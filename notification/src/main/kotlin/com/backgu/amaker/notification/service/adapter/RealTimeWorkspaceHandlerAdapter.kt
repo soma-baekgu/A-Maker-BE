@@ -3,7 +3,6 @@ package com.backgu.amaker.notification.service.adapter
 import com.backgu.amaker.application.user.service.UserDeviceService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.domain.notifiacation.Notification
-import com.backgu.amaker.domain.notifiacation.UserNotification
 import com.backgu.amaker.domain.notifiacation.WorkspaceNotification
 import com.backgu.amaker.domain.notifiacation.method.NotificationMethod
 import com.backgu.amaker.domain.notifiacation.method.RealTimeNotificationMethod
@@ -44,9 +43,6 @@ class RealTimeWorkspaceHandlerAdapter(
                 }.flatten()
 
         val failedUsers: List<String> = userIds.filterNot { it in successUsers }
-        failedUsers.map { UserNotification(it, notification.method) }.forEach {
-            applicationEventPublisher.publishEvent(it)
-        }
 
         val pushNotification = notification.toPushNotification(userDeviceService.findByUserIds(failedUsers))
         applicationEventPublisher.publishEvent(pushNotification)
