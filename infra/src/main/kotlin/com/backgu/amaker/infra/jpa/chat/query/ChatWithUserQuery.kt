@@ -2,6 +2,7 @@ package com.backgu.amaker.infra.jpa.chat.query
 
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatType
+import com.backgu.amaker.domain.chat.DefaultChatWithUser
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.jpa.user.query.UserQuery
 import com.querydsl.core.annotations.QueryProjection
@@ -21,6 +22,23 @@ class ChatWithUserQuery
         userEmail: String,
         userPicture: String,
     ) {
+        fun toDomain(): DefaultChatWithUser =
+            DefaultChatWithUser(
+                id = id,
+                chatRoomId = chatRoomId,
+                content = content,
+                chatType = chatType,
+                createdAt = createdAt,
+                updatedAt = updatedAt,
+                user =
+                    User.of(
+                        id = user.id,
+                        name = user.name,
+                        email = user.email,
+                        picture = user.picture,
+                    ),
+            )
+
         companion object {
             fun of(
                 chat: Chat,
