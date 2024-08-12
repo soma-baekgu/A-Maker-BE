@@ -4,7 +4,6 @@ import com.backgu.amaker.api.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
 import com.backgu.amaker.api.common.container.IntegrationTest
 import com.backgu.amaker.api.fixture.ChatRoomFacadeFixture
-import com.backgu.amaker.api.fixture.ChatRoomFixture
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
@@ -23,9 +22,6 @@ import org.springframework.transaction.annotation.Transactional
 @DisplayName("ChatRoomFacadeService 테스트")
 @Transactional
 class ChatRoomFacadeServiceTest : IntegrationTest() {
-    @Autowired
-    private lateinit var chatRoomFixture: ChatRoomFixture
-
     @Autowired
     lateinit var chatRoomFacadeService: ChatRoomFacadeService
 
@@ -280,5 +276,49 @@ class ChatRoomFacadeServiceTest : IntegrationTest() {
         }.isInstanceOf(BusinessException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_ROOM_USER_ALREADY_EXIST)
+    }
+
+    @Test
+    @DisplayName("채팅방 조회")
+    fun getChatRoom() {
+        // given
+        val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
+
+        // when
+        val result = chatRoomFacadeService.getChatRoom(members[0].id, defaultChatRoom.id)
+
+        // then
+        assertThat(result).isNotNull
+        assertThat(result.chatRoomId).isEqualTo(defaultChatRoom.id)
+    }
+
+    @Test
+    @DisplayName("채팅방 조회 실패 - 권한 없는 채팅방 조회")
+    fun getChatRoomNotIn() {
+        // given
+        val userId = "tester"
+        val (workspace, defaultChatRoom, members) = fixtures.setUp(userId = "leader")
+        fixtures.userFixture.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy { chatRoomFacadeService.getChatRoom(userId, defaultChatRoom.id) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
+    }
+
+    @Test
+    @DisplayName("채팅방 조회 실패 - 채팅방이 없는 경우")
+    fun getChatRoomNotFound() {
+        // given
+        val userId = "tester"
+        val chatRoomId = 0L
+        fixtures.userFixture.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy { chatRoomFacadeService.getChatRoom(userId, chatRoomId) }
+            .isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_NOT_FOUND)
     }
 }
