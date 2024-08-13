@@ -32,7 +32,9 @@ class UserService(
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)?.toDomain()
 
-    fun getAllByUserIds(userIds: List<String>): List<User> {
+    fun getAllByUserIds(userIds: List<String>): List<User> = getAllByUserIds(userIds.toSet())
+
+    fun getAllByUserIds(userIds: Set<String>): List<User> {
         val users = userRepository.findAllByIdIn(userIds).map { it.toDomain() }
         if (userIds.size != users.size) {
             throw BusinessException(StatusCode.USER_NOT_FOUND)
@@ -41,7 +43,7 @@ class UserService(
     }
 
     fun findAllByUserIdsToMap(userIds: List<String>): Map<String, User> =
-        userRepository.findAllByIdIn(userIds).map { it.toDomain() }.associateBy { it.id }
+        userRepository.findAllByIdIn(userIds.toSet()).map { it.toDomain() }.associateBy { it.id }
 
     fun getAllByUserEmails(userIds: List<String>): List<User> {
         val users = userRepository.findAllByEmailIn(userIds).map { it.toDomain() }
