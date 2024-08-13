@@ -94,7 +94,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 ${{secrets.REGISTRY_LOGIN}}
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.IMAGE_API}}
             ssh prod1 docker-compose -p api -f $COMPOSE up -d
@@ -181,7 +180,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 ${{secrets.REGISTRY_LOGIN}}
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.IMAGE_NOTIFICATION}}
             ssh prod1 docker-compose -p notification -f $COMPOSE up -d
@@ -268,7 +266,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 ${{secrets.REGISTRY_LOGIN}}
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.IMAGE_BATCH}}
             ssh prod1 docker-compose -p batch -f $COMPOSE up -d
@@ -355,7 +352,6 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 ${{secrets.REGISTRY_LOGIN}}
             ssh prod1 docker-compose -f $COMPOSE down
             ssh prod1 docker pull ${{secrets.IMAGE_REALTIME}}
             ssh prod1 docker-compose -p realtime -f $COMPOSE up -d
