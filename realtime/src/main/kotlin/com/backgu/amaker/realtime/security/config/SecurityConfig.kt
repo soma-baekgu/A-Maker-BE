@@ -31,6 +31,8 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }.authorizeHttpRequests {
                 it
+                    .requestMatchers(HttpMethod.GET, "/actuator/health")
+                    .permitAll()
                     .requestMatchers("/actuator/**")
                     .hasRole(UserRole.ADMIN.value)
                     .requestMatchers(HttpMethod.OPTIONS, "/**")
