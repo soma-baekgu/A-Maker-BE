@@ -3,6 +3,7 @@ package com.backgu.amaker.api.chat.service
 import com.backgu.amaker.api.chat.dto.BriefChatRoomViewDto
 import com.backgu.amaker.api.chat.dto.ChatRoomCreateDto
 import com.backgu.amaker.api.chat.dto.ChatRoomDto
+import com.backgu.amaker.api.chat.dto.ChatRoomUsersDto
 import com.backgu.amaker.api.chat.dto.ChatRoomWithUserDto
 import com.backgu.amaker.api.chat.dto.ChatRoomsViewDto
 import com.backgu.amaker.application.chat.service.ChatRoomService
@@ -170,5 +171,19 @@ class ChatRoomFacadeService(
         chatRoomUserService.validateUserInChatRoom(user, chatRoom)
 
         return ChatRoomDto.of(chatRoom)
+    }
+
+    fun getChatRoomUsers(
+        userId: String,
+        chatRoomId: Long,
+    ): ChatRoomUsersDto {
+        val user: User = userService.getById(userId)
+        val chatRoom: ChatRoom = chatRoomService.getById(chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        val chatRoomUsers: List<ChatRoomUser> = chatRoomUserService.findAllByChatRoom(chatRoom)
+        val users = userService.getAllByUserIds(chatRoomUsers.map { it.userId })
+
+        return ChatRoomUsersDto.of(chatRoom, users)
     }
 }

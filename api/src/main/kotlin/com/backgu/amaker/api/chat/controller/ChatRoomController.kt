@@ -3,6 +3,7 @@ package com.backgu.amaker.api.chat.controller
 import com.backgu.amaker.api.chat.dto.request.ChatRoomCreateRequest
 import com.backgu.amaker.api.chat.dto.response.BriefChatRoomResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
+import com.backgu.amaker.api.chat.dto.response.ChatRoomUsersResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomsViewResponse
 import com.backgu.amaker.api.chat.service.ChatRoomFacadeService
 import com.backgu.amaker.common.http.ApiHandler
@@ -116,6 +117,19 @@ class ChatRoomController(
             apiHandler.onSuccess(
                 ChatRoomResponse.of(
                     chatRoomFacadeService.getChatRoom(token.id, chatRoomId),
+                ),
+            ),
+        )
+
+    @GetMapping("/chat-rooms/{chat-room-id}/users")
+    override fun getChatRoomUsers(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+    ): ResponseEntity<ApiResult<ChatRoomUsersResponse>> =
+        ResponseEntity.ok().body(
+            apiHandler.onSuccess(
+                ChatRoomUsersResponse.of(
+                    chatRoomFacadeService.getChatRoomUsers(token.id, chatRoomId),
                 ),
             ),
         )

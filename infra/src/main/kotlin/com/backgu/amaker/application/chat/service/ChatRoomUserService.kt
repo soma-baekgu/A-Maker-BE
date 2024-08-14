@@ -64,4 +64,7 @@ class ChatRoomUserService(
             throw BusinessException(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
         }
     }
+
+    fun findAllByChatRoom(chatRoom: ChatRoom): List<ChatRoomUser> =
+        chatRoomUserRepository.findAllByChatRoomId(chatRoom.id).map { it.toDomain() }
 }

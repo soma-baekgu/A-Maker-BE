@@ -22,4 +22,6 @@ interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
         userIds: List<String>,
         chatRoomId: Long,
     ): List<ChatRoomUserEntity>
+
+    fun findAllByChatRoomId(chatRoomId: Long): List<ChatRoomUserEntity>
 }
