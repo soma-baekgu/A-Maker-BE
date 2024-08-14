@@ -3,6 +3,7 @@ package com.backgu.amaker.api.chat.controller
 import com.backgu.amaker.api.chat.dto.request.ChatRoomCreateRequest
 import com.backgu.amaker.api.chat.dto.response.BriefChatRoomResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomResponse
+import com.backgu.amaker.api.chat.dto.response.ChatRoomUsersResponse
 import com.backgu.amaker.api.chat.dto.response.ChatRoomsViewResponse
 import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
@@ -102,4 +103,18 @@ interface ChatRoomSwagger {
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
     ): ResponseEntity<ApiResult<ChatRoomResponse>>
+
+    @Operation(summary = "채팅방 참여 유저 조회", description = "특정 채팅방에 참여한 유저를 조회합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "채팅방 유저 조회 성공",
+            ),
+        ],
+    )
+    fun getChatRoomUsers(
+        token: JwtAuthentication,
+        chatRoomId: Long,
+    ): ResponseEntity<ApiResult<ChatRoomUsersResponse>>
 }
