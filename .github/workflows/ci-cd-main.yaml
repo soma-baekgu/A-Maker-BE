@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - 'main'
-  pull_request:
-    branches:
-      - 'develop'
-
 env:
   AWS_REGION: ap-northeast-2
 
@@ -94,9 +90,9 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 docker-compose -f $COMPOSE down
-            ssh prod1 docker pull ${{secrets.IMAGE_API}}
-            ssh prod1 docker-compose -p api -f $COMPOSE up -d
+            ssh api1 docker-compose -f $COMPOSE down
+            ssh api1 docker pull ${{secrets.IMAGE_API}}
+            ssh api1 docker-compose -p api -f $COMPOSE up -d
 
   build-notification:
     runs-on: ubuntu-latest
@@ -180,9 +176,9 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 docker-compose -f $COMPOSE down
-            ssh prod1 docker pull ${{secrets.IMAGE_NOTIFICATION}}
-            ssh prod1 docker-compose -p notification -f $COMPOSE up -d
+            ssh notification1 docker-compose -f $COMPOSE down
+            ssh notification1 docker pull ${{secrets.IMAGE_NOTIFICATION}}
+            ssh notification1 docker-compose -p notification -f $COMPOSE up -d
 
   build-batch:
     runs-on: ubuntu-latest
@@ -266,9 +262,9 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 docker-compose -f $COMPOSE down
-            ssh prod1 docker pull ${{secrets.IMAGE_BATCH}}
-            ssh prod1 docker-compose -p batch -f $COMPOSE up -d
+            ssh batch1 docker-compose -f $COMPOSE down
+            ssh batch1 docker pull ${{secrets.IMAGE_BATCH}}
+            ssh batch1 docker-compose -p batch -f $COMPOSE up -d
 
   build-realtime:
     runs-on: ubuntu-latest
@@ -352,7 +348,7 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh prod1 docker-compose -f $COMPOSE down
-            ssh prod1 docker pull ${{secrets.IMAGE_REALTIME}}
-            ssh prod1 docker-compose -p realtime -f $COMPOSE up -d
+            ssh realtime1 docker-compose -f $COMPOSE down
+            ssh realtime1 docker pull ${{secrets.IMAGE_REALTIME}}
+            ssh realtime1 docker-compose -p realtime -f $COMPOSE up -d
 
