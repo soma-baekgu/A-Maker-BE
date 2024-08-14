@@ -321,4 +321,32 @@ class ChatRoomFacadeServiceTest : IntegrationTest() {
             .extracting("statusCode")
             .isEqualTo(StatusCode.CHAT_ROOM_NOT_FOUND)
     }
+
+    @Test
+    @DisplayName("채팅방 사용자 조회")
+    fun getChatRoomUsers() {
+        // given
+
+        // when
+        val result = chatRoomFacadeService.getChatRoomUsers(TEST_USER_ID, chatRoom.id)
+
+        // then
+        assertThat(result).isNotNull
+        assertThat(result.users.size).isEqualTo(11)
+    }
+
+    @Test
+    @DisplayName("채팅방 사용자 조회 실패 - 권한 없는 채팅방 사용자 조회")
+    fun failGetChatRoomUsersNotIn() {
+        // given
+        val userId = "tester"
+        fixtures.userFixture.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy {
+            chatRoomFacadeService.getChatRoomUsers(userId, chatRoom.id)
+        }.isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.CHAT_ROOM_USER_NOT_FOUND)
+    }
 }
