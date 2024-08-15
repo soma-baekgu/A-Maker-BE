@@ -1,0 +1,85 @@
+server:
+  id: real-time-1
+  port: 8081
+spring:
+  application:
+    name: a-maker
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/amaker
+    username: root
+    password: hi
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+oauth:
+  google:
+    client-id: abc
+    client-secret: abc
+    redirect-uri: "http://localhost:3000/login"
+    base-url: "http://127.0.0.1:5005/o/oauth2/auth"
+    oauth-url: "http://127.0.0.1:5005"
+    api-url: "http://127.0.0.1:5005"
+    client-name: Google
+    scope: email,profile
+
+
+jwt:
+  client-secret: hohohohoh
+  expiration: 1
+  issuer: hihihihi
+
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://127.0.0.1:3000
+    - https://localhost:3000
+    - https://127.0.0.1:3000
+  allowed-methods:
+    - GET
+    - HEAD
+    - POST
+    - PUT
+    - DELETE
+    - PATCH
+    - OPTIONS
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+websocket:
+  allowed-origins:
+    - "*"
+
+orchestration:
+  base-url: http://localhost:8080
+  open-port: 8081
+  user:
+    id: abc
+
+
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.transaction: TRACE
+#    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG

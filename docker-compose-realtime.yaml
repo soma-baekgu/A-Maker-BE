@@ -1,0 +1,6 @@
+services:
+  application:
+    container_name: backgu-realtime
+    image: 730335493019.dkr.ecr.ap-northeast-2.amazonaws.com/backgu-repository:realtime
+    network_mode: "host"
+    restart: on-failure

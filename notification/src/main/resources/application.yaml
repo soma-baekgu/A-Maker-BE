@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: a-maker
+  main:
+    web-application-type: none
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  kafka:
+    bootstrap-servers: [ "localhost:9092" ]
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+fcm:
+  file: hi.json
+  base-url: https://fcm.googleapis.com/v1/projects/a-maker-2b48b
+  auth-url: https://www.googleapis.com/auth/cloud-platform

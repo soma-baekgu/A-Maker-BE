@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: a-maker
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 123
+    password: 123
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+fcm:
+  file: a.json
+  base-url: https://fcm.googleapis.com/v1/projects/a-maker-2b48b
+  auth-url: https://www.googleapis.com/auth/cloud-platform

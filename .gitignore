@@ -38,3 +38,11 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+.Ds_Store
+kafka_data
+
+.run
+
+/*/src/*/resources/application-test.yaml
+/notification/src/*/resources/firebase/*.json

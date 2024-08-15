@@ -1,0 +1,6 @@
+.dockerignore
+docker-compose-dev.yaml
+docker-compose-ssl.yaml
+build
+.gradle
+Dockerfile*

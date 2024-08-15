@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: a-maker
+  main:
+    web-application-type: none
+
+  batch-datasource:
+    url: jdbc:mysql://localhost:3306/amaker_batch?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  domain-datasource:
+    url: jdbc:mysql://localhost:3306/amaker?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+
+  kafka:
+    bootstrap-servers: [ "localhost:9092" ]
+
