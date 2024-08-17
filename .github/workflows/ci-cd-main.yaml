@@ -126,7 +126,7 @@ jobs:
           cd ./notification/src/main/resources/
           touch ./application.yaml
           echo "${{ secrets.YAML_PROD_NOTIFICATION }}" > ./application.yaml
-          mkdir firebase
+          mkdir -p firebase
           echo "${{ secrets.FCM_ACCOUNT }}" > ./firebase/fcm.json
         shell: bash
 
