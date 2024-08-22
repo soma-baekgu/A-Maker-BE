@@ -6,7 +6,7 @@ import com.backgu.amaker.domain.user.UserDevice
 class PushNotification(
     override val method: NotificationMethod,
     val userDevices: List<UserDevice>,
-) : Notification{
+) : Notification {
     override val keyPrefix: String
         get() = "PUSH"
 
