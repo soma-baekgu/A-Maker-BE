@@ -9,6 +9,6 @@ class KafkaNotificationEventService(
     private val kafkaTemplate: KafkaTemplate<String, Notification>,
 ) : NotificationEventService {
     override fun publishNotificationEvent(notification: Notification) {
-        kafkaTemplate.send(KafkaConfig.NOTIFICATION_TOPIC, notification)
+        kafkaTemplate.send(KafkaConfig.NOTIFICATION_TOPIC, notification.getNotificationKey(), notification)
     }
 }
