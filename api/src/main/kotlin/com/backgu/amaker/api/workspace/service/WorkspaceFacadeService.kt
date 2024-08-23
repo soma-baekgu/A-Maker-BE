@@ -52,6 +52,7 @@ class WorkspaceFacadeService(
         }
 
         val chatRoom: ChatRoom = chatRoomService.save(workspace.createDefaultChatRoom())
+        workspaceService.save(workspace)
         chatRoomUserService.save(chatRoom.addUser(leader))
 
         return WorkspaceDto.of(workspace)
@@ -138,7 +139,6 @@ class WorkspaceFacadeService(
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
-        // TODO 트랜잭션 종료시점에 이벤트 publish
         notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
@@ -161,7 +161,6 @@ class WorkspaceFacadeService(
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
-        // TODO 트랜잭션 종료시점에 이벤트 publish
         notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
@@ -185,7 +184,6 @@ class WorkspaceFacadeService(
         val workspaceUser = workspaceUserService.getWorkspaceUser(workspace, user)
         if (workspaceUser.isActivated()) throw BusinessException(StatusCode.ALREADY_JOINED_WORKSPACE)
 
-        // TODO 트랜잭션 종료시점에 이벤트 publish
         notificationEventService.publishNotificationEvent(WorkspaceJoined.of(workspace, user))
         workspaceUserService.save(workspaceUser.activate())
 
