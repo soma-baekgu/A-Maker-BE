@@ -113,9 +113,6 @@ class ChatFacadeService(
             ?.let { return ChatListDto.of(chatQuery, it.map { chatWithUser -> ChatWithUserDto.of(chatWithUser) }) }
 
         val chatList = chatQueryService.findAfterChatList(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
-        for (defaultChatWithUser in chatList) {
-            println(defaultChatWithUser.id)
-        }
 
         val eventMap =
             eventService.findEventByIdsToMap(chatList.filter { ChatType.isEventChat(it.chatType) }.map { it.id })
