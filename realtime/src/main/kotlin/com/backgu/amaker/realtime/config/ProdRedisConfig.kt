@@ -1,5 +1,6 @@
 package com.backgu.amaker.realtime.config
 
+import com.backgu.amaker.infra.redis.session.SessionRedisData
 import io.lettuce.core.SocketOptions
 import io.lettuce.core.cluster.ClusterClientOptions
 import io.lettuce.core.cluster.ClusterTopologyRefreshOptions
@@ -14,6 +15,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
 
@@ -65,11 +67,11 @@ class ProdRedisConfig(
     }
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
-        val template = RedisTemplate<String, Any>()
+    fun redisTemplate(): RedisTemplate<String, SessionRedisData> {
+        val template = RedisTemplate<String, SessionRedisData>()
         template.connectionFactory = redisConnectionFactory()
         template.keySerializer = StringRedisSerializer()
-        template.valueSerializer = StringRedisSerializer()
+        template.valueSerializer = GenericJackson2JsonRedisSerializer()
         return template
     }
 }
