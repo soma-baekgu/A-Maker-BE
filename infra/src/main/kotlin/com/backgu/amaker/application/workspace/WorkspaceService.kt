@@ -47,4 +47,8 @@ class WorkspaceService(
     fun getWorkspaceById(workspaceId: Long): Workspace =
         workspaceRepository.findByIdOrNull(workspaceId)?.toDomain()
             ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
+
+    fun getWorkspaceIdByChatRoomId(chatRoomId: Long): Long =
+        workspaceRepository.getWorkspaceIdByChatRoomId(chatRoomId)
+            ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
 }

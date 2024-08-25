@@ -4,7 +4,7 @@ import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.infra.jpa.chat.entity.ChatEntity
-import com.backgu.amaker.infra.jpa.chat.repository.ChatRepository
+import com.backgu.amaker.infra.jpa.chat.query.ChatRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

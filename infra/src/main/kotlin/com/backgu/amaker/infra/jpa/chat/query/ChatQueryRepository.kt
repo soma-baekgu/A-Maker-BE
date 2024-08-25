@@ -1,6 +1,4 @@
-package com.backgu.amaker.infra.jpa.chat.repository
-
-import com.backgu.amaker.infra.jpa.chat.query.ChatWithUserQuery
+package com.backgu.amaker.infra.jpa.chat.query
 
 interface ChatQueryRepository {
     fun findTopByChatRoomIdLittleThanCursorLimitCountWithUser(

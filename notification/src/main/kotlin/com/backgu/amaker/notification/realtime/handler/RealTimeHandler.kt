@@ -10,10 +10,10 @@ class RealTimeHandler(
     private val realTimeCallService: RealTimeCallService,
 ) {
     fun handleUserRealTimeNotification(
-        userId: String,
+        userIds: List<String>,
         realTimeServer: RealTimeServer,
         event: RealTimeBasedNotification,
-    ): List<String> = realTimeCallService.sendUserRealTimeNotification(listOf(userId), realTimeServer, event)
+    ): List<String> = realTimeCallService.sendUserRealTimeNotification(userIds, realTimeServer, event)
 
     fun handlerWorkspaceRealTimeNotification(
         workspaceId: Long,
