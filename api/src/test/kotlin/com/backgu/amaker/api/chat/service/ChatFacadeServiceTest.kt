@@ -173,7 +173,7 @@ class ChatFacadeServiceTest : IntegrationTest() {
         // given
         val userId = "test-user-id"
         val chatRoom: ChatRoom = fixture.setUp(userId = userId)
-        val prevChats: List<Chat> = fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
+        fixture.chatFixture.createPersistedChats(chatRoom.id, userId, 30)
         val currentChat: Chat = fixture.chatFixture.createPersistedChat(chatRoom.id, userId, "현재 테스트 메시지")
 
         // when
