@@ -1,15 +1,13 @@
-package com.backgu.amaker.infra.mail.infra
+package com.backgu.amaker.notification.email.gmail.infra
 
-import com.backgu.amaker.application.notification.mail.service.EmailSender
+import com.backgu.amaker.notification.email.service.EmailSender
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
-import org.springframework.stereotype.Component
 
 private val logger = KotlinLogging.logger {}
 
-@Component
 class HtmlEmailSender(
     val mailSender: JavaMailSender,
 ) : EmailSender {
