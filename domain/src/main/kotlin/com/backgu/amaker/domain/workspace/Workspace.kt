@@ -35,7 +35,6 @@ class Workspace(
 
     fun createDefaultChatRoom(): ChatRoom = ChatRoom(workspaceId = id, name = "일반 채팅", chatRoomType = ChatRoomType.DEFAULT)
 
-    override fun toString(): String {
-        return "Workspace(id=$id, name='$name', thumbnail='$thumbnail', belongingNumber=$belongingNumber, workspacePlan=$workspacePlan)"
-    }
+    override fun toString(): String =
+        "Workspace(id=$id, name='$name', thumbnail='$thumbnail', belongingNumber=$belongingNumber, workspacePlan=$workspacePlan)"
 }

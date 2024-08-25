@@ -139,9 +139,15 @@ class ChatFacadeService(
                 chatUserCacheFacadeService.findChat(chatRoomId, it)
             }
 
-        if (cachedChat != null) return ChatWithUserDto.of(cachedChat)
+        if (cachedChat != null) {
+            markMostRecentChatAsRead(chatRoomId, userId)
+            return ChatWithUserDto.of(cachedChat)
+        }
 
-        val chat = chatQueryService.getOneWithUser(chatRoomUser.lastReadChatId)
+        val chat =
+            chatQueryService.getOneWithUser(
+                chatRoomUser.lastReadChatId ?: chatRoomService.getById(chatRoomId).lastChatId,
+            )
 
         if (!ChatType.isEventChat(chat.chatType)) return DefaultChatWithUserDto.of(chat)
 

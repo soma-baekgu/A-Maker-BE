@@ -58,8 +58,8 @@ class ChatUserCacheFacadeService(
                 userCacheService.save(fetchedUser)
             }
 
-        when (chat) {
-            is DefaultChatWithUserCache -> return chat.toDomain(user)
+        return when (chat) {
+            is DefaultChatWithUserCache -> chat.toDomain(user)
             is EventChatWithUserCache -> {
                 val userIds = chat.content.users
                 val cachedUsers = userCacheService.findAllByUserIds(userIds)
@@ -68,7 +68,7 @@ class ChatUserCacheFacadeService(
                     userService.getAllByUserIds(missingUserIds).onEach { userCacheService.save(it) }
                 val allUsers = cachedUsers + fetchedUsers
 
-                return chat.toDomain(user, chat.content.toDomain(allUsers))
+                chat.toDomain(user, chat.content.toDomain(allUsers))
             }
         }
     }
@@ -149,10 +149,6 @@ class ChatUserCacheFacadeService(
                 val allUsers = userIds.mapNotNull { cachedUsersMap[it] ?: fetchedUsersMap[it] }
 
                 return chat.toDomain(user, chat.content.toDomain(allUsers))
-            }
-
-            else -> {
-                throw IllegalArgumentException("Invalid chat type")
             }
         }
     }
