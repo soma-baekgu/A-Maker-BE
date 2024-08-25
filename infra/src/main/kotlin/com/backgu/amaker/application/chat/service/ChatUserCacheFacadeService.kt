@@ -12,7 +12,6 @@ import com.backgu.amaker.infra.redis.chat.data.ChatWithUserCache
 import com.backgu.amaker.infra.redis.chat.data.DefaultChatWithUserCache
 import com.backgu.amaker.infra.redis.chat.data.EventChatWithUserCache
 import com.backgu.amaker.infra.redis.chat.repository.ChatPipelinedQueryRepository
-import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.event.TransactionalEventListener
 

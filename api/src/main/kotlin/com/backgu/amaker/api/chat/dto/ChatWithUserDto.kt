@@ -6,7 +6,6 @@ import com.backgu.amaker.domain.chat.ChatType
 import com.backgu.amaker.domain.chat.ChatWithUser
 import com.backgu.amaker.domain.chat.DefaultChatWithUser
 import com.backgu.amaker.domain.chat.EventChatWithUser
-import com.backgu.amaker.domain.event.EventWithUser
 import java.time.LocalDateTime
 
 sealed interface ChatWithUserDto<T> {
