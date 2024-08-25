@@ -23,7 +23,10 @@ class WorkspaceService(
 
     @Transactional
     fun updateBelonging(workspace: Workspace) {
-        workspaceRepository.updateBelongingWithLimit(workspace.id, workspace.workspacePlan.belongingLimit) != 1 &&
+        workspaceRepository.updateBelongingWithLimit(
+            workspace.id,
+            workspace.workspacePlan.belongingLimit,
+        ) != 1 &&
             throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
     }
 

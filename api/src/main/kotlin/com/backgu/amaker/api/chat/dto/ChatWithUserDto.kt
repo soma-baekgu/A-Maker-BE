@@ -5,6 +5,7 @@ import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.domain.chat.ChatType
 import com.backgu.amaker.domain.chat.ChatWithUser
 import com.backgu.amaker.domain.chat.DefaultChatWithUser
+import com.backgu.amaker.domain.chat.EventChatWithUser
 import com.backgu.amaker.domain.event.EventWithUser
 import java.time.LocalDateTime
 
@@ -31,11 +32,11 @@ sealed interface ChatWithUserDto<T> {
                         user = UserDto.of(chatWithUser.user),
                     )
 
-                else ->
+                is EventChatWithUser ->
                     EventChatWithUserDto(
                         id = chatWithUser.id,
                         chatRoomId = chatWithUser.chatRoomId,
-                        content = EventWithUserDto.of(chatWithUser.content as EventWithUser),
+                        content = EventWithUserDto.of(chatWithUser.content),
                         chatType = chatWithUser.chatType,
                         createdAt = chatWithUser.createdAt,
                         updatedAt = chatWithUser.updatedAt,
