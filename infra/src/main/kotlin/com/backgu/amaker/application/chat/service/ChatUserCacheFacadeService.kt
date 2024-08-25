@@ -11,12 +11,14 @@ import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.infra.redis.chat.data.ChatWithUserCache
 import com.backgu.amaker.infra.redis.chat.data.DefaultChatWithUserCache
 import com.backgu.amaker.infra.redis.chat.data.EventChatWithUserCache
+import com.backgu.amaker.infra.redis.chat.repository.ChatPipelinedQueryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.event.TransactionalEventListener
 
 @Service
 class ChatUserCacheFacadeService(
     private val chatCacheService: ChatCacheService,
+    private val chatPipelinedQueryRepository: ChatPipelinedQueryRepository,
     private val userCacheService: UserCacheService,
     private val chatRoomUserCacheService: ChatRoomUserCacheService,
     private val userService: UserService,
@@ -103,7 +105,21 @@ class ChatUserCacheFacadeService(
             .map { chat -> mapChatToDto(chatRoomId, chat, cachedUsersMap) }
     }
 
-    fun mapChatToDto(
+    fun findAfterChatsWithPipelinedQuery(
+        chatRoomId: Long,
+        cursor: Long,
+        count: Int,
+    ): List<ChatWithUser<*>>? =
+        chatPipelinedQueryRepository.findAfterChats(chatRoomId, cursor, count)?.let { chats ->
+            userCacheService
+                .findAllByUserIds(chatRoomUserCacheService.findUserIds(chatRoomId).toList())
+                .associateBy { it.id }
+                .let { cachedUsersMap ->
+                    chats.map { chat -> mapChatToDto(chatRoomId, chat, cachedUsersMap) }
+                }
+        }
+
+    private fun mapChatToDto(
         chatRoomId: Long,
         chat: ChatWithUserCache<*>,
         cachedUsersMap: Map<String, User>,
