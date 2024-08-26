@@ -1,7 +1,5 @@
-package com.backgu.amaker.notification.email.templated
+package com.backgu.amaker.notification.email.service
 
-import com.backgu.amaker.application.notification.mail.service.EmailSender
-import com.backgu.amaker.application.notification.mail.service.EmailTemplateBuilder
 import com.backgu.amaker.domain.notifiacation.method.TemplateEmailNotificationMethod
 import com.backgu.amaker.domain.user.User
 import org.springframework.stereotype.Service
