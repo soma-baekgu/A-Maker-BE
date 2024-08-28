@@ -85,6 +85,7 @@ class ChatUserCacheFacadeService(
 
         return chatCacheService
             .findPreviousChats(chatRoomId, cursor, count)
+            .reversed()
             .map { chat -> mapChatToDto(chatRoomId, chat, cachedUsersMap) }
     }
 

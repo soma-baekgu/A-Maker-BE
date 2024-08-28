@@ -66,8 +66,6 @@ class ChatFacadeService(
         userId: String,
         chatQuery: ChatQuery,
     ): ChatListDto {
-        markMostRecentChatAsRead(chatQuery.chatRoomId, userId)
-
         val cachedChats =
             chatUserCacheFacadeService.findPreviousChats(chatQuery.chatRoomId, chatQuery.cursor, chatQuery.size)
         val dbQuerySize = chatQuery.size - cachedChats.size
@@ -149,14 +147,16 @@ class ChatFacadeService(
                 chatRoomUser.lastReadChatId ?: chatRoomService.getById(chatRoomId).lastChatId,
             )
 
-        if (!ChatType.isEventChat(chat.chatType)) return DefaultChatWithUserDto.of(chat)
+        markMostRecentChatAsRead(chatRoomId, userId)
+
+        if (!ChatType.isEventChat(chat.chatType)) {
+            return DefaultChatWithUserDto.of(chat)
+        }
 
         val event = eventService.getEventById(chat.id)
         val eventAssignedUsers = eventAssignedUserService.findAllByEventId(event.id)
         val userMap = userService.findAllByUserIdsToMap(eventAssignedUsers.map { it.userId })
         val eventUsers = eventAssignedUsers.mapNotNull { userMap[it.userId] }
-
-        markMostRecentChatAsRead(chatRoomId, userId)
 
         return EventChatWithUserDto.of(
             chat,
