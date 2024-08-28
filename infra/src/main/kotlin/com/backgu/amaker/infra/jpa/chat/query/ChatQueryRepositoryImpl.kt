@@ -1,8 +1,6 @@
-package com.backgu.amaker.infra.jpa.chat.repository
+package com.backgu.amaker.infra.jpa.chat.query
 
 import com.backgu.amaker.infra.jpa.chat.entity.QChatEntity.chatEntity
-import com.backgu.amaker.infra.jpa.chat.query.ChatWithUserQuery
-import com.backgu.amaker.infra.jpa.chat.query.QChatWithUserQuery
 import com.backgu.amaker.infra.jpa.user.entity.QUserEntity.userEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 

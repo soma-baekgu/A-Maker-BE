@@ -15,4 +15,7 @@ interface UserRepository : JpaRepository<UserEntity, String> {
 
     @Query("select u from User u join fetch WorkspaceUser wu on u.id = wu.userId where wu.workspaceId = :workspaceId")
     fun findByWorkspaceId(workspaceId: Long): List<UserEntity>
+
+    @Query("select u from User u join fetch ChatRoomUser cru on u.id = cru.userId where cru.chatRoomId = :chatRoomId")
+    fun findByChatRoomId(chatRoomId: Long): List<UserEntity>
 }

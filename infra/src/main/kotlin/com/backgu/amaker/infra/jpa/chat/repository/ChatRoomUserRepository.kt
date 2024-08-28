@@ -2,6 +2,7 @@ package com.backgu.amaker.infra.jpa.chat.repository
 
 import com.backgu.amaker.infra.jpa.chat.entity.ChatRoomUserEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 
 interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
     fun existsByUserIdAndChatRoomId(
@@ -24,4 +25,7 @@ interface ChatRoomUserRepository : JpaRepository<ChatRoomUserEntity, Long> {
     ): List<ChatRoomUserEntity>
 
     fun findAllByChatRoomId(chatRoomId: Long): List<ChatRoomUserEntity>
+
+    @Query("select cru.userId from ChatRoomUser cru where cru.chatRoomId = :chatRoomId")
+    fun findUserIdsByChatRoomId(chatRoomId: Long): List<String>
 }

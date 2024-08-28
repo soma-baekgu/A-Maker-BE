@@ -15,6 +15,7 @@ import com.backgu.amaker.application.chat.service.ChatService
 import com.backgu.amaker.application.chat.service.ChatUserCacheFacadeService
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.event.service.EventService
+import com.backgu.amaker.application.notification.service.NotificationEventService
 import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
@@ -25,6 +26,7 @@ import com.backgu.amaker.domain.chat.ChatType
 import com.backgu.amaker.domain.chat.DefaultChatWithUser
 import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.event.EventAssignedUser
+import com.backgu.amaker.domain.notifiacation.chat.NewChat
 import com.backgu.amaker.domain.user.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -42,6 +44,7 @@ class ChatFacadeService(
     private val eventAssignedUserService: EventAssignedUserService,
     private val chatUserCacheFacadeService: ChatUserCacheFacadeService,
     private val eventPublisher: ApplicationEventPublisher,
+    private val notificationEventService: NotificationEventService,
 ) {
     @Transactional
     fun createChat(
@@ -57,6 +60,7 @@ class ChatFacadeService(
         chatRoomService.save(chatRoom.updateLastChatId(chat))
 
         eventPublisher.publishEvent(DefaultChatSaveEvent.of(chatRoomId, chat.createDefaultChatWithUser(user)))
+        notificationEventService.publishNotificationEvent(NewChat.of(user, chat, chatRoom))
 
         return DefaultChatWithUserDto.of(chat, user)
     }

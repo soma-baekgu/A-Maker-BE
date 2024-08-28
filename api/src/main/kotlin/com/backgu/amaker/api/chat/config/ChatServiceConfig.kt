@@ -10,7 +10,7 @@ import com.backgu.amaker.application.chat.service.ChatUserCacheFacadeService
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.user.service.UserCacheService
 import com.backgu.amaker.application.user.service.UserService
-import com.backgu.amaker.infra.jpa.chat.repository.ChatRepository
+import com.backgu.amaker.infra.jpa.chat.query.ChatRepository
 import com.backgu.amaker.infra.jpa.chat.repository.ChatRoomRepository
 import com.backgu.amaker.infra.jpa.chat.repository.ChatRoomUserRepository
 import com.backgu.amaker.infra.redis.chat.repository.ChatCacheRepository

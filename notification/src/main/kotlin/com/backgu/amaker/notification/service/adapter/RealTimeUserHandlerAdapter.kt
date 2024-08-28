@@ -34,7 +34,7 @@ class RealTimeUserHandlerAdapter(
             realTimeService.findByIdsToSet(sessions.mapTo(mutableSetOf()) { it.realtimeId })
         val successUser =
             realTimeServerSet.map {
-                realTimeHandler.handleUserRealTimeNotification(notification.userId, it, notification)
+                realTimeHandler.handleUserRealTimeNotification(listOf(notification.userId), it, notification)
             }
 
         if (successUser.isEmpty()) {

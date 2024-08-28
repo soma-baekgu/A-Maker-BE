@@ -37,4 +37,7 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select w from Workspace w where w.id = :id")
     fun getLockedWorkspaceById(id: Long): WorkspaceEntity?
+
+    @Query("select ch.workspaceId from ChatRoom ch where ch.id = :chatRoomId")
+    fun getWorkspaceIdByChatRoomId(chatRoomId: Long): Long?
 }
