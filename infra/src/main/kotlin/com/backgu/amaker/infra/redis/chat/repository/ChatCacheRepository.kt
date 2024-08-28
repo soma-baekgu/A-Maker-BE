@@ -27,7 +27,7 @@ class ChatCacheRepository(
 
         redisChatTemplate
             .opsForZSet()
-            .removeRange(key(chatRoomId), 0, -201)
+            .removeRange(key(chatRoomId), 0, -76)
     }
 
     fun updateFinishedCount(
@@ -85,7 +85,7 @@ class ChatCacheRepository(
     ): List<ChatWithUserCache<*>> =
         redisChatTemplate
             .opsForZSet()
-            .rangeByScore(key(chatRoomId), Double.NEGATIVE_INFINITY, (cursor - 1).toDouble(), 0, count.toLong())
+            .reverseRangeByScore(key(chatRoomId), Double.NEGATIVE_INFINITY, (cursor - 1).toDouble(), 0, count.toLong())
             ?.map { chat ->
                 timeObjectMapper.readValue(chat, ChatWithUserCache::class.java)
             } ?: emptyList()
@@ -97,7 +97,7 @@ class ChatCacheRepository(
     ): List<ChatWithUserCache<*>> =
         redisChatTemplate
             .opsForZSet()
-            .rangeByScore(key(chatRoomId), (cursor + 1).toDouble(), Double.MAX_VALUE, 0, count.toLong())
+            .rangeByScore(key(chatRoomId), (cursor + 1).toDouble(), Double.POSITIVE_INFINITY, 0, count.toLong())
             ?.map { chat ->
                 timeObjectMapper.readValue(chat, ChatWithUserCache::class.java)
             } ?: emptyList()

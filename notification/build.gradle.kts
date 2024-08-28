@@ -20,6 +20,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.google.firebase:firebase-admin:6.8.1")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("software.amazon.awssdk:ses:2.27.8")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
 
     testImplementation(kotlin("test"))
     testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")

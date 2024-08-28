@@ -44,5 +44,5 @@ kafka_data
 
 .run
 
-/*/src/*/resources/application-test.yaml
+/*/src/*/resources/application-test*.yaml
 /notification/src/*/resources/firebase/*.json

@@ -23,7 +23,10 @@ class WorkspaceService(
 
     @Transactional
     fun updateBelonging(workspace: Workspace) {
-        workspaceRepository.updateBelongingWithLimit(workspace.id, workspace.workspacePlan.belongingLimit) != 1 &&
+        workspaceRepository.updateBelongingWithLimit(
+            workspace.id,
+            workspace.workspacePlan.belongingLimit,
+        ) != 1 &&
             throw BusinessException(StatusCode.INVALID_WORKSPACE_JOIN)
     }
 
@@ -46,5 +49,9 @@ class WorkspaceService(
 
     fun getWorkspaceById(workspaceId: Long): Workspace =
         workspaceRepository.findByIdOrNull(workspaceId)?.toDomain()
+            ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
+
+    fun getWorkspaceIdByChatRoomId(chatRoomId: Long): Long =
+        workspaceRepository.getWorkspaceIdByChatRoomId(chatRoomId)
             ?: throw BusinessException(StatusCode.WORKSPACE_NOT_FOUND)
 }

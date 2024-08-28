@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.chat.dto.response
 
 import com.backgu.amaker.api.chat.dto.ChatWithUserDto
+import com.backgu.amaker.api.chat.dto.DefaultChatWithUserDto
 import com.backgu.amaker.api.chat.dto.EventChatWithUserDto
 import com.backgu.amaker.api.user.dto.response.UserResponse
 import com.backgu.amaker.domain.chat.ChatType
@@ -32,7 +33,7 @@ interface ChatWithUserResponse<T> {
         fun of(chatWithUserDto: ChatWithUserDto<*>): ChatWithUserResponse<*> =
             when (chatWithUserDto) {
                 is EventChatWithUserDto -> EventChatWithUserResponse.of(chatWithUserDto)
-                else -> DefaultChatWithUserResponse.of(chatWithUserDto)
+                is DefaultChatWithUserDto -> DefaultChatWithUserResponse.of(chatWithUserDto)
             }
     }
 }

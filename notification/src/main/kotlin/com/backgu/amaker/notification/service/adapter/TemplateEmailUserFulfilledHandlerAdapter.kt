@@ -4,7 +4,7 @@ import com.backgu.amaker.domain.notifiacation.Notification
 import com.backgu.amaker.domain.notifiacation.UserFulfilledNotification
 import com.backgu.amaker.domain.notifiacation.method.NotificationMethod
 import com.backgu.amaker.domain.notifiacation.method.TemplateEmailNotificationMethod
-import com.backgu.amaker.notification.email.templated.TemplateEmailHandler
+import com.backgu.amaker.notification.email.service.TemplateEmailHandler
 import org.springframework.stereotype.Component
 
 @Component

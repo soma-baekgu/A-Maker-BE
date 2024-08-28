@@ -3,7 +3,7 @@ package com.backgu.amaker.domain.chat
 import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
-interface ChatWithUser<T> {
+sealed interface ChatWithUser<T> {
     val id: Long
     val chatRoomId: Long
     val content: T

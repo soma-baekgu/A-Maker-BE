@@ -20,6 +20,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
     testImplementation(kotlin("test"))
     testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")
     testImplementation("org.testcontainers:testcontainers:1.19.0")

@@ -49,6 +49,13 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 
+amazon:
+  ses:
+    sender: ${EMAIL_SENDER}
+    access-key: ${AWS_SES_ACCESS}
+    secret-key: ${AWS_SES_SECRET}
+    region: ${AWS_REGION}
+
 fcm:
   file: hi.json
   base-url: https://fcm.googleapis.com/v1/projects/a-maker-2b48b

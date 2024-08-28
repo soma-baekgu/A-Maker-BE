@@ -59,4 +59,10 @@ class UserService(
         if (users.isEmpty()) throw BusinessException(StatusCode.USER_NOT_FOUND)
         return users
     }
+
+    fun getByChatRoomId(chatRoomId: Long): List<User> {
+        val users = userRepository.findByChatRoomId(chatRoomId).map { it.toDomain() }
+        if (users.isEmpty()) throw BusinessException(StatusCode.USER_NOT_FOUND)
+        return users
+    }
 }

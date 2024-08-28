@@ -1,4 +1,4 @@
-package com.backgu.amaker.infra.mail.config
+package com.backgu.amaker.notification.email.gmail.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration

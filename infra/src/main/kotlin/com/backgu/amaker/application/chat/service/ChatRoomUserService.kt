@@ -67,4 +67,6 @@ class ChatRoomUserService(
 
     fun findAllByChatRoom(chatRoom: ChatRoom): List<ChatRoomUser> =
         chatRoomUserRepository.findAllByChatRoomId(chatRoom.id).map { it.toDomain() }
+
+    fun findUserIdsByChatRoomId(chatRoomId: Long): List<String> = chatRoomUserRepository.findUserIdsByChatRoomId(chatRoomId)
 }

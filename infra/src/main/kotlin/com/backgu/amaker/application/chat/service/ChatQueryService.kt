@@ -3,7 +3,7 @@ package com.backgu.amaker.application.chat.service
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.DefaultChatWithUser
-import com.backgu.amaker.infra.jpa.chat.repository.ChatRepository
+import com.backgu.amaker.infra.jpa.chat.query.ChatRepository
 import org.springframework.stereotype.Service
 
 @Service

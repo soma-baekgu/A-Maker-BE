@@ -26,7 +26,7 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
     @Modifying
     @Query(
         "update Workspace w " +
-            "set w.belongingNumber = w.belongingNumber " +
+            "set w.belongingNumber = w.belongingNumber + 1 " +
             "where w.id = :workspaceId and w.belongingNumber < :limit",
     )
     fun updateBelongingWithLimit(
@@ -37,4 +37,7 @@ interface WorkspaceRepository : JpaRepository<WorkspaceEntity, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select w from Workspace w where w.id = :id")
     fun getLockedWorkspaceById(id: Long): WorkspaceEntity?
+
+    @Query("select ch.workspaceId from ChatRoom ch where ch.id = :chatRoomId")
+    fun getWorkspaceIdByChatRoomId(chatRoomId: Long): Long?
 }

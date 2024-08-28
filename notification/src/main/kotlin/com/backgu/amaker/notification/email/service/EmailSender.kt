@@ -1,4 +1,4 @@
-package com.backgu.amaker.application.notification.mail.service
+package com.backgu.amaker.notification.email.service
 
 interface EmailSender {
     fun sendEmail(

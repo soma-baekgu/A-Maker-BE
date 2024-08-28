@@ -2,5 +2,4 @@ FROM openjdk:17
 RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo "Asia/Seoul" > /etc/timezone
 ARG JAR_FILE=realtime/build/libs/*.jar
 COPY ${JAR_FILE} /root/app.jar
-ENV HOST_IP=host.docker.internal
-CMD ["java", "-jar", "/root/app.jar"]
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/root/app.jar"]

@@ -10,10 +10,11 @@ import com.backgu.amaker.application.chat.service.ChatUserCacheFacadeService
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.user.service.UserCacheService
 import com.backgu.amaker.application.user.service.UserService
-import com.backgu.amaker.infra.jpa.chat.repository.ChatRepository
+import com.backgu.amaker.infra.jpa.chat.query.ChatRepository
 import com.backgu.amaker.infra.jpa.chat.repository.ChatRoomRepository
 import com.backgu.amaker.infra.jpa.chat.repository.ChatRoomUserRepository
 import com.backgu.amaker.infra.redis.chat.repository.ChatCacheRepository
+import com.backgu.amaker.infra.redis.chat.repository.ChatPipelinedQueryRepository
 import com.backgu.amaker.infra.redis.chat.repository.ChatRoomUserCacheRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -43,12 +44,14 @@ class ChatServiceConfig {
     fun chatUserCacheService(
         chatCacheService: ChatCacheService,
         userCacheService: UserCacheService,
+        chatPipelinedQueryRepository: ChatPipelinedQueryRepository,
         chatRoomUserCacheService: ChatRoomUserCacheService,
         userService: UserService,
         chatService: ChatService,
         eventAssignedUserService: EventAssignedUserService,
     ) = ChatUserCacheFacadeService(
         chatCacheService,
+        chatPipelinedQueryRepository,
         userCacheService,
         chatRoomUserCacheService,
         userService,
