@@ -35,7 +35,7 @@ class RealTimeUserHandlerAdapter(
         val successUser =
             realTimeServerSet
                 .map {
-                    realTimeHandler.handleUserRealTimeNotification(notification.userId, it, notification)
+                    realTimeHandler.handleUserRealTimeNotification(listOf(notification.userId), it, notification)
                 }.flatten()
 
         if (successUser.isEmpty()) {
