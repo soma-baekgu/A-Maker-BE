@@ -4,6 +4,7 @@ import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.realtime.common.excpetion.RealTimeException
 import com.backgu.amaker.realtime.session.session.RealTimeSession
 import org.springframework.stereotype.Component
+import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.WebSocketSession
 import java.util.concurrent.ConcurrentHashMap
 
@@ -16,7 +17,10 @@ class SessionStorage {
     }
 
     fun removeSession(id: String) {
-        sessionsMap.remove(id)
+        sessionsMap[id]?.let {
+            it.session.close(CloseStatus.NORMAL)
+            sessionsMap.remove(id)
+        }
     }
 
     fun getSessions(ids: Collection<String>): List<RealTimeSession<WebSocketSession>> = ids.mapNotNull { sessionsMap[it] }
