@@ -24,7 +24,7 @@ class SessionFacadeService(
     ) {
         workspaceUserService.validUserInWorkspace(userId, workspaceId)
 
-        workspaceSessionService.findDropOutSessionIfLimit(workspaceId, userId)?.let {
+        workspaceSessionService.findDropOutSessionIfLimit(workspaceId, userId).forEach {
             if (it.realtimeId != serverConfig.id) {
                 sessionDeletePublisher.publish(it.realtimeId, SessionRedisData.of(it))
             } else {

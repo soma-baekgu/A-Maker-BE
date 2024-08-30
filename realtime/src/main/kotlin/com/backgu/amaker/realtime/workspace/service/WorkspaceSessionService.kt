@@ -54,7 +54,7 @@ class WorkspaceSessionService(
     fun findDropOutSessionIfLimit(
         workspaceId: Long,
         userId: String,
-    ): Session? {
+    ): List<Session> {
         val workspaceSessions =
             workspaceSessionRepository
                 .findWorkspaceSessionByWorkspaceId(workspaceId)
@@ -62,9 +62,9 @@ class WorkspaceSessionService(
                 .filter { it.userId == userId }
 
         if (workspaceSessions.size >= RealTimeSession.WORKSPACE_USER_SESSION_LIMIT) {
-            return workspaceSessions.last()
+            return workspaceSessions.drop(RealTimeSession.WORKSPACE_USER_SESSION_LIMIT - 1)
         }
 
-        return null
+        return emptyList()
     }
 }
