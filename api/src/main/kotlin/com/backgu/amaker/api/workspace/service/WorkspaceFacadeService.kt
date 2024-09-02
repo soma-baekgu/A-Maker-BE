@@ -62,10 +62,8 @@ class WorkspaceFacadeService(
         userId: String,
         workspaceId: Long,
     ): WorkspaceDto {
-        val user: User = userService.getById(userId)
+        workspaceUserService.validateUserInWorkspace(userId, workspaceId)
         val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
-
-        workspaceUserService.validUserInWorkspace(user, workspace)
 
         return WorkspaceDto.of(workspace)
     }
@@ -94,7 +92,7 @@ class WorkspaceFacadeService(
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
 
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         val workspaceUsers = workspaceUserService.findWorkSpaceUserByWorkspaceId(workspaceId)
 
@@ -120,7 +118,7 @@ class WorkspaceFacadeService(
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getWorkspaceById(workspaceId)
 
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         return ChatRoomDto
             .of(chatRoomService.getDefaultChatRoomByWorkspace(workspace))

@@ -22,7 +22,7 @@ class SessionFacadeService(
         workspaceId: Long,
         workspaceRealTimeSession: RealTimeSession<WebSocketSession>,
     ) {
-        workspaceUserService.validUserInWorkspace(userId, workspaceId)
+        workspaceUserService.validateUserWorkspaceInActive(userId, workspaceId)
 
         workspaceSessionService.findDropOutSessionIfLimit(workspaceId, userId).forEach {
             if (it.realtimeId != serverConfig.id) {
