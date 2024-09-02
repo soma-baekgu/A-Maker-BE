@@ -33,7 +33,7 @@ class WorkspaceUserServiceTest : IntegrationTest() {
 
         // when & then
         assertThatCode {
-            workspaceUserService.validUserInWorkspace(user, workspace)
+            workspaceUserService.validateUserWorkspaceInActive(user, workspace)
         }.doesNotThrowAnyException()
     }
 
@@ -50,7 +50,7 @@ class WorkspaceUserServiceTest : IntegrationTest() {
         fixtures.workspaceUser.createPersistedWorkspaceUser(workspaceId = workspace.id, leaderId = diffUser)
 
         // when & then
-        assertThatThrownBy { workspaceUserService.validUserInWorkspace(user, workspace) }
+        assertThatThrownBy { workspaceUserService.validateUserWorkspaceInActive(user, workspace) }
             .isInstanceOf(BusinessException::class.java)
             .hasMessage("워크스페이스에 접근할 수 없습니다.")
             .extracting("statusCode")

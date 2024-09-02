@@ -33,7 +33,16 @@ class WorkspaceUserService(
     fun findWorkSpaceUserByWorkspaceId(workspaceId: Long): List<WorkspaceUser> =
         workspaceUserRepository.findByWorkspaceId(workspaceId).map { it.toDomain() }
 
-    fun validUserInWorkspace(
+    fun validateUserInWorkspace(
+        userId: String,
+        workspaceId: Long,
+    ) {
+        if (!workspaceUserRepository.existsByUserIdAndWorkspaceId(userId, workspaceId)) {
+            throw BusinessException(StatusCode.WORKSPACE_UNREACHABLE)
+        }
+    }
+
+    fun validateUserWorkspaceInActive(
         userId: String,
         workspaceId: Long,
     ) {
@@ -47,11 +56,11 @@ class WorkspaceUserService(
         }
     }
 
-    fun validUserInWorkspace(
+    fun validateUserWorkspaceInActive(
         user: User,
         workspace: Workspace,
     ) {
-        validUserInWorkspace(user.id, workspace.id)
+        validateUserWorkspaceInActive(user.id, workspace.id)
     }
 
     fun validateUserNotRelatedInWorkspace(
