@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.event.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
+import com.backgu.amaker.api.event.dto.ReactionEventCreateDto
 import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.fixture.EventFixtureFacade
 import com.backgu.amaker.domain.chat.ChatRoom
@@ -38,7 +39,6 @@ class EventFacadeServiceTest : IntegrationTest() {
     @DisplayName("reply 이벤트 생성 테스트")
     fun createReplyEvent() {
         // given
-
         val replyEventCreateDto =
             ReplyEventCreateDto(
                 eventTitle = "eventTitle",
@@ -61,6 +61,34 @@ class EventFacadeServiceTest : IntegrationTest() {
         // then
         assertThat(replyEvent).isNotNull()
         assertThat(replyEvent.deadLine).isEqualTo(replyEventCreateDto.deadLine)
+    }
+
+    @Test
+    @DisplayName("reaction 이벤트 생성 테스트")
+    fun createReactionEvent() {
+        // given
+        val reactionEventCreateDto =
+            ReactionEventCreateDto(
+                eventTitle = "eventTitle",
+                deadLine = LocalDateTime.now().plusDays(1),
+                notificationStartHour = 1,
+                notificationStartMinute = 30,
+                interval = 10,
+                options = listOf("option1", "option2"),
+                assignees = listOf("$DEFAULT_USER_ID@email.com"),
+            )
+
+        // when
+        val replyEvent =
+            eventFacadeService.createReactionEvent(
+                userId = DEFAULT_USER_ID,
+                chatRoomId = chatRoom.id,
+                reactionEventCreateDto = reactionEventCreateDto,
+            )
+
+        // then
+        assertThat(replyEvent).isNotNull()
+        assertThat(replyEvent.deadLine).isEqualTo(reactionEventCreateDto.deadLine)
     }
 
     @Test
