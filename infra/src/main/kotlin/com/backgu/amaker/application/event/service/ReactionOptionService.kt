@@ -16,4 +16,6 @@ class ReactionOptionService(
         reactionOptionRepository
             .saveAll(options.map { ReactionOptionEntity.of(it) })
             .map { it.toDomain() }
+
+    fun getAllByEventId(eventId: Long): List<ReactionOption> = reactionOptionRepository.findAllByEventId(eventId).map { it.toDomain() }
 }

@@ -142,4 +142,59 @@ class EventFacadeServiceTest : IntegrationTest() {
         assertThat(result.waitingUser.size).isEqualTo(2)
         assertThat(result.eventCreator.id).isEqualTo(anotherUser)
     }
+
+    @Test
+    @DisplayName("reaction 이벤트 조회 테스트")
+    fun getReactionEvent() {
+        // given
+        val anotherUser = "another-user"
+        val chat =
+            fixtures.chatFixtureFacade.chatFixture.createPersistedChat(
+                chatRoomId = chatRoom.id,
+                userId = DEFAULT_USER_ID,
+                chatType = ChatType.REACTION,
+            )
+        val reactionEvent = fixtures.reactionEventFixture.createPersistedReactionEvent(chat.id)
+        fixtures.reactionOptionFixture.createPersistedReactionOptions(reactionEvent.id)
+        fixtures.eventAssignedUserFixture.createPersistedEventAssignedUser(DEFAULT_USER_ID, reactionEvent.id)
+        fixtures.chatFixtureFacade.userFixture.createPersistedUser(anotherUser)
+        fixtures.eventAssignedUserFixture.createPersistedEventAssignedUser(anotherUser, reactionEvent.id)
+
+        // when
+        val result = eventFacadeService.getReactionEvent(DEFAULT_USER_ID, chatRoom.id, reactionEvent.id)
+
+        // then
+        assertThat(result).isNotNull()
+        assertThat(result.id).isEqualTo(chat.id)
+        assertThat(result.waitingUser.size).isEqualTo(2)
+        assertThat(result.eventCreator.id).isEqualTo(DEFAULT_USER_ID)
+    }
+
+    @Test
+    @DisplayName("reaction 이벤트 조회 테스트 - 다른 유저가 생성")
+    fun getReactionEventCreateAnotherUser() {
+        // given
+        val anotherUser = "another-user"
+        fixtures.chatFixtureFacade.userFixture.createPersistedUser(anotherUser)
+        val chat =
+            fixtures.chatFixtureFacade.chatFixture.createPersistedChat(
+                chatRoomId = chatRoom.id,
+                userId = anotherUser,
+                chatType = ChatType.REACTION,
+            )
+        val reactionEvent = fixtures.reactionEventFixture.createPersistedReactionEvent(chat.id)
+        fixtures.reactionOptionFixture.createPersistedReactionOptions(reactionEvent.id)
+        fixtures.eventAssignedUserFixture.createPersistedEventAssignedUser(DEFAULT_USER_ID, reactionEvent.id)
+        fixtures.eventAssignedUserFixture.createPersistedEventAssignedUser(anotherUser, reactionEvent.id)
+
+        // when
+        val result = eventFacadeService.getReactionEvent(DEFAULT_USER_ID, chatRoom.id, reactionEvent.id)
+
+        // then
+        assertThat(result).isNotNull()
+        assertThat(result.id).isEqualTo(chat.id)
+        assertThat(result.waitingUser.size).isEqualTo(2)
+        assertThat(result.eventCreator.id).isEqualTo(anotherUser)
+        assertThat(result.options.size).isEqualTo(3)
+    }
 }
