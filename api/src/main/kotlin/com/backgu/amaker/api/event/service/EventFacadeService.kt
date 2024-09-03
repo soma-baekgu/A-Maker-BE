@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.event.service
 
 import com.backgu.amaker.api.event.dto.ReactionEventCreateDto
+import com.backgu.amaker.api.event.dto.ReactionEventDetailDto
 import com.backgu.amaker.api.event.dto.ReactionEventDto
 import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.event.dto.ReplyEventDetailDto
@@ -58,6 +59,47 @@ class EventFacadeService(
 
         return ReplyEventDetailDto.of(
             replyEvent = replyEvent,
+            eventCreator = UserDto.of(users[chat.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND)),
+            finishUser =
+                finishedUsers.map {
+                    UserDto.of(
+                        users[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+                    )
+                },
+            waitingUser =
+                waitingUsers.map {
+                    UserDto.of(
+                        users[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+                    )
+                },
+        )
+    }
+
+    @Transactional
+    fun getReactionEvent(
+        userId: String,
+        chatRoomId: Long,
+        eventId: Long,
+    ): ReactionEventDetailDto {
+        val user = userService.getById(userId)
+        val chatRoom = chatRoomService.getById(chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        val chat = chatService.getById(eventId)
+        val eventAssignedUsers = eventAssignedUserService.findAllByEventId(eventId)
+        val eventAssignedUserIds = eventAssignedUsers.map { it.userId }
+
+        val users = userService.findAllByUserIdsToMap(eventAssignedUserIds.union(listOf(chat.userId)).toList())
+
+        val reactionEvent = reactionEventService.getById(eventId)
+
+        val reactionOptions = reactionOptionService.getAllByEventId(eventId)
+
+        val (finishedUsers, waitingUsers) = eventAssignedUsers.partition { it.isFinished }
+
+        return ReactionEventDetailDto.of(
+            reactionEvent = reactionEvent,
+            reactionOptions = reactionOptions,
             eventCreator = UserDto.of(users[chat.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND)),
             finishUser =
                 finishedUsers.map {
@@ -137,7 +179,8 @@ class EventFacadeService(
                 ),
             )
 
-        val reactionOptions = reactionOptionService.saveAll(reactionEvent.createReactionOption(reactionEventCreateDto.options))
+        val reactionOptions =
+            reactionOptionService.saveAll(reactionEvent.createReactionOption(reactionEventCreateDto.options))
 
         val users = userService.getAllByUserEmails(reactionEventCreateDto.assignees)
         chatRoomUserService.validateUsersInChatRoom(users, chatRoom)

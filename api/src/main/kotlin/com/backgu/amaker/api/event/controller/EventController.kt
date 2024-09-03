@@ -2,6 +2,7 @@ package com.backgu.amaker.api.event.controller
 
 import com.backgu.amaker.api.event.dto.request.ReactionEventCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
+import com.backgu.amaker.api.event.dto.response.ReactionEventDetailResponse
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
 import com.backgu.amaker.api.event.service.EventFacadeService
 import com.backgu.amaker.common.http.ApiHandler
@@ -36,6 +37,26 @@ class EventController(
                 apiHandler.onSuccess(
                     ReplyEventDetailResponse.of(
                         eventFacadeService.getReplyEvent(
+                            token.id,
+                            chatRoomId,
+                            eventId,
+                        ),
+                    ),
+                ),
+            )
+
+    @GetMapping("/events/{event-id}/reaction")
+    override fun getReactionEvent(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @PathVariable("event-id") eventId: Long,
+    ): ResponseEntity<ApiResult<ReactionEventDetailResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    ReactionEventDetailResponse.of(
+                        eventFacadeService.getReactionEvent(
                             token.id,
                             chatRoomId,
                             eventId,
