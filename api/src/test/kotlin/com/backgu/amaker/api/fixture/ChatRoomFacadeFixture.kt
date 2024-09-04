@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.fixture
 
+import com.backgu.amaker.api.fixture.dto.ChatRoomFixtureDto
 import com.backgu.amaker.domain.user.User
 import com.backgu.amaker.domain.workspace.Workspace
 import com.backgu.amaker.domain.workspace.WorkspaceUser
