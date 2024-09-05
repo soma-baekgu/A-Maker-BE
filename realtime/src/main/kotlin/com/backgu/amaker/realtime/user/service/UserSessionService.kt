@@ -1,5 +1,6 @@
 package com.backgu.amaker.realtime.user.service
 
+import com.backgu.amaker.domain.session.Session
 import com.backgu.amaker.infra.redis.session.user.repository.UserSessionRepository
 import com.backgu.amaker.realtime.server.config.ServerConfig
 import com.backgu.amaker.realtime.session.session.RealTimeSession
@@ -48,5 +49,16 @@ class UserSessionService(
             realTimeSession.toDomain(),
         )
         sessionStorage.removeSession(realTimeSession.id)
+    }
+
+    fun dropOut(
+        userId: String,
+        session: Session,
+    ) {
+        userSessionRepository.removeUserSession(
+            userId,
+            session,
+        )
+        sessionStorage.removeSession(session.id)
     }
 }

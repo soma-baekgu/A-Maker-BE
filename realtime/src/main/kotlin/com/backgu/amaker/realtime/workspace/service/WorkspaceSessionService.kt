@@ -1,5 +1,6 @@
 package com.backgu.amaker.realtime.workspace.service
 
+import com.backgu.amaker.domain.session.Session
 import com.backgu.amaker.infra.redis.session.workspace.repository.WorkspaceSessionRepository
 import com.backgu.amaker.realtime.server.config.ServerConfig
 import com.backgu.amaker.realtime.session.session.RealTimeSession
@@ -32,6 +33,14 @@ class WorkspaceSessionService(
         sessionStorage.removeSession(session.id)
     }
 
+    fun dropOut(
+        workspaceId: Long,
+        session: Session,
+    ) {
+        workspaceSessionRepository.removeWorkspaceSession(workspaceId, session)
+        sessionStorage.removeSession(session.id)
+    }
+
     fun getWorkspaceSession(workspaceId: Long): List<RealTimeSession<WebSocketSession>> {
         val workspaceSessions =
             workspaceSessionRepository
@@ -40,5 +49,22 @@ class WorkspaceSessionService(
                 .filter { it.isBelongToServer(serverConfig.id) }
 
         return sessionStorage.getSessions(workspaceSessions.map { it.id })
+    }
+
+    fun findDropOutSessionIfLimit(
+        workspaceId: Long,
+        userId: String,
+    ): List<Session> {
+        val workspaceSessions =
+            workspaceSessionRepository
+                .findWorkspaceSessionByWorkspaceId(workspaceId)
+                .map { it.toDomain() }
+                .filter { it.userId == userId }
+
+        if (workspaceSessions.size >= RealTimeSession.WORKSPACE_USER_SESSION_LIMIT) {
+            return workspaceSessions.drop(RealTimeSession.WORKSPACE_USER_SESSION_LIMIT - 1)
+        }
+
+        return emptyList()
     }
 }

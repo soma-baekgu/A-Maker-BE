@@ -37,7 +37,7 @@ class ChatRoomFacadeService(
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getById(workspaceId)
 
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         // 유저의 채팅방 목록 조회
         val chatRoomMys: List<ChatRoomUser> = chatRoomUserService.findAllByUser(user)
@@ -86,7 +86,7 @@ class ChatRoomFacadeService(
     ): BriefChatRoomViewDto {
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getById(workspaceId)
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         val chatRooms: List<ChatRoom> = chatRoomService.findChatRoomsByWorkspaceId(workspaceId)
         val chatRoomUserMap: Map<Long, List<ChatRoomUser>> =
@@ -111,7 +111,7 @@ class ChatRoomFacadeService(
     ): BriefChatRoomViewDto {
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getById(workspaceId)
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         val chatRooms: List<ChatRoom> = chatRoomService.findNotRegisteredChatRoomsByWorkspaceId(workspaceId, userId)
         val chatRoomUserMap: Map<Long, List<ChatRoomUser>> =
@@ -154,7 +154,7 @@ class ChatRoomFacadeService(
     ): ChatRoomUser {
         val user: User = userService.getById(userId)
         val workspace: Workspace = workspaceService.getById(workspaceId)
-        workspaceUserService.validUserInWorkspace(user, workspace)
+        workspaceUserService.validateUserWorkspaceInActive(user, workspace)
 
         val chatRoom = chatRoomService.getChatRoomByWorkspaceIdAndChatRoomId(workspaceId, chatRoomId)
         chatRoomUserService.validateUserNotInChatRoom(user, chatRoom)

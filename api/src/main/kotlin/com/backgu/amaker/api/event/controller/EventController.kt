@@ -1,6 +1,8 @@
 package com.backgu.amaker.api.event.controller
 
+import com.backgu.amaker.api.event.dto.request.ReactionEventCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
+import com.backgu.amaker.api.event.dto.response.ReactionEventDetailResponse
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
 import com.backgu.amaker.api.event.service.EventFacadeService
 import com.backgu.amaker.common.http.ApiHandler
@@ -23,6 +25,46 @@ class EventController(
     private val eventFacadeService: EventFacadeService,
     private val apiHandler: ApiHandler,
 ) : EventSwagger {
+    @GetMapping("/events/{event-id}/reply")
+    override fun getReplyEvent(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @PathVariable("event-id") eventId: Long,
+    ): ResponseEntity<ApiResult<ReplyEventDetailResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    ReplyEventDetailResponse.of(
+                        eventFacadeService.getReplyEvent(
+                            token.id,
+                            chatRoomId,
+                            eventId,
+                        ),
+                    ),
+                ),
+            )
+
+    @GetMapping("/events/{event-id}/reaction")
+    override fun getReactionEvent(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @PathVariable("event-id") eventId: Long,
+    ): ResponseEntity<ApiResult<ReactionEventDetailResponse>> =
+        ResponseEntity
+            .ok()
+            .body(
+                apiHandler.onSuccess(
+                    ReactionEventDetailResponse.of(
+                        eventFacadeService.getReactionEvent(
+                            token.id,
+                            chatRoomId,
+                            eventId,
+                        ),
+                    ),
+                ),
+            )
+
     @PostMapping("/events/reply")
     override fun createReplyEvent(
         @AuthenticationPrincipal token: JwtAuthentication,
@@ -44,23 +86,24 @@ class EventController(
                     ).toUri(),
             ).build()
 
-    @GetMapping("/events/{event-id}/reply")
-    override fun getReplyEvent(
+    @PostMapping("/events/reaction")
+    override fun createReactionEvent(
         @AuthenticationPrincipal token: JwtAuthentication,
         @PathVariable("chat-room-id") chatRoomId: Long,
-        @PathVariable("event-id") eventId: Long,
-    ): ResponseEntity<ApiResult<ReplyEventDetailResponse>> =
+        @RequestBody @Valid request: ReactionEventCreateRequest,
+    ): ResponseEntity<Unit> =
         ResponseEntity
-            .ok()
-            .body(
-                apiHandler.onSuccess(
-                    ReplyEventDetailResponse.of(
-                        eventFacadeService.getReplyEvent(
-                            token.id,
-                            chatRoomId,
-                            eventId,
-                        ),
-                    ),
-                ),
-            )
+            .created(
+                ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/api/v1/events/{id}/reply")
+                    .buildAndExpand(
+                        eventFacadeService
+                            .createReactionEvent(
+                                token.id,
+                                chatRoomId,
+                                request.toDto(),
+                            ).id,
+                    ).toUri(),
+            ).build()
 }

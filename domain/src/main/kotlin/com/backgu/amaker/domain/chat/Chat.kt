@@ -1,5 +1,7 @@
 package com.backgu.amaker.domain.chat
 
+import com.backgu.amaker.domain.event.Event
+import com.backgu.amaker.domain.event.ReactionEvent
 import com.backgu.amaker.domain.event.ReplyEvent
 import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
@@ -31,6 +33,22 @@ class Chat(
         eventDetails = eventDetails,
     )
 
+    fun createReactionEvent(
+        deadLine: LocalDateTime,
+        notificationStartHour: Int,
+        notificationStartMinute: Int,
+        notificationInterval: Int,
+    ) = ReactionEvent(
+        id = id,
+        eventTitle = content,
+        deadLine = deadLine,
+        notificationStartTime =
+            deadLine
+                .minusHours(notificationStartHour.toLong())
+                .minusMinutes(notificationStartMinute.toLong()),
+        notificationInterval = notificationInterval,
+    )
+
     fun createDefaultChatWithUser(user: User) =
         DefaultChatWithUser(
             id = id,
@@ -43,7 +61,7 @@ class Chat(
         )
 
     fun createEventChatWithUser(
-        event: ReplyEvent,
+        event: Event,
         user: User,
         assignedUsers: List<User>,
     ) = EventChatWithUser(

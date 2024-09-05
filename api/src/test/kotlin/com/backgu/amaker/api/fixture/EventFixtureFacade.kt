@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component
 class EventFixtureFacade(
     val chatFixtureFacade: ChatFixtureFacade,
     val replyEventFixture: ReplyEventFixture,
+    val reactionEventFixture: ReactionEventFixture,
+    val reactionOptionFixture: ReactionOptionFixture,
     val eventAssignedUserFixture: EventAssignedUserFixture,
 ) {
     fun setUp(
