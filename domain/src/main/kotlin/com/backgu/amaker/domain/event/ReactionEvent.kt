@@ -18,4 +18,13 @@ class ReactionEvent(
                 content = it,
             )
         }
+
+    fun createReactionComment(
+        userId: String,
+        optionId: Long,
+    ) = ReactionComment(
+        eventId = id,
+        userId = userId,
+        optionId = optionId,
+    )
 }
