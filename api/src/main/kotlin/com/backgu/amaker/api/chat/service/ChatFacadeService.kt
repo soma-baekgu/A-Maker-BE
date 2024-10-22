@@ -185,9 +185,9 @@ class ChatFacadeService(
         userMap: Map<String, User>,
     ): ChatWithUserDto<*> =
         if (ChatType.isEventChat(chat.chatType)) {
-            val event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
-            val eventUsers = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
-            val finishedNumber = eventUserMap[event.id]?.count { it.isFinished } ?: 0
+            val event: Event = eventMap[chat.id] ?: throw BusinessException(StatusCode.EVENT_NOT_FOUND)
+            val eventUsers: List<User> = eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
+            val finishedNumber: Int = eventUserMap[event.id]?.count { it.isFinished } ?: 0
             EventChatWithUserDto.of(chat, EventWithUserDto.of(event, eventUsers, finishedNumber))
         } else {
             DefaultChatWithUserDto.of(chat)
