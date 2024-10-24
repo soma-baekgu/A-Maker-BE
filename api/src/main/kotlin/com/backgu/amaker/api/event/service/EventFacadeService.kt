@@ -7,6 +7,8 @@ import com.backgu.amaker.api.event.dto.ReactionEventDto
 import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.event.dto.ReplyEventDetailDto
 import com.backgu.amaker.api.event.dto.ReplyEventDto
+import com.backgu.amaker.api.event.dto.TaskEventCreateDto
+import com.backgu.amaker.api.event.dto.TaskEventDto
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.application.chat.event.EventChatSaveEvent
 import com.backgu.amaker.application.chat.service.ChatRoomService
@@ -17,6 +19,7 @@ import com.backgu.amaker.application.event.service.EventService
 import com.backgu.amaker.application.event.service.ReactionEventService
 import com.backgu.amaker.application.event.service.ReactionOptionService
 import com.backgu.amaker.application.event.service.ReplyEventService
+import com.backgu.amaker.application.event.service.TaskEventService
 import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
@@ -39,6 +42,7 @@ class EventFacadeService(
     private val chatRoomUserService: ChatRoomUserService,
     private val chatService: ChatService,
     private val replyEventService: ReplyEventService,
+    private val taskEventService: TaskEventService,
     private val reactionEventService: ReactionEventService,
     private val reactionOptionService: ReactionOptionService,
     private val eventAssignedUserService: EventAssignedUserService,
@@ -162,6 +166,45 @@ class EventFacadeService(
         )
 
         return ReplyEventDto.of(replyEvent)
+    }
+
+    @Transactional
+    fun createTaskEvent(
+        userId: String,
+        chatRoomId: Long,
+        taskEventCreateDto: TaskEventCreateDto,
+    ): TaskEventDto {
+        val user = userService.getById(userId)
+        val chatRoom = chatRoomService.getById(chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        val chat: Chat = chatService.save(chatRoom.createChat(user, taskEventCreateDto.eventTitle, ChatType.TASK))
+        chatRoomService.save(chatRoom.updateLastChatId(chat))
+
+        val taskEvent =
+            taskEventService.save(
+                chat.createTaskEvent(
+                    taskEventCreateDto.deadLine,
+                    taskEventCreateDto.notificationStartHour,
+                    taskEventCreateDto.notificationStartMinute,
+                    taskEventCreateDto.interval,
+                    taskEventCreateDto.eventDetails,
+                ),
+            )
+
+        val users = userService.getAllByUserEmails(taskEventCreateDto.assignees)
+        chatRoomUserService.validateUsersInChatRoom(users, chatRoom)
+
+        eventAssignedUserService.saveAll(taskEvent.createAssignedUsers(users))
+
+        eventPublisher.publishEvent(
+            EventChatSaveEvent.of(
+                chatRoomId,
+                chat.createEventChatWithUser(taskEvent, user, users),
+            ),
+        )
+
+        return TaskEventDto.of(taskEvent)
     }
 
     @Transactional

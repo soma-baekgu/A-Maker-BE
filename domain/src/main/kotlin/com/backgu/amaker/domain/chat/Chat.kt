@@ -3,6 +3,7 @@ package com.backgu.amaker.domain.chat
 import com.backgu.amaker.domain.event.Event
 import com.backgu.amaker.domain.event.ReactionEvent
 import com.backgu.amaker.domain.event.ReplyEvent
+import com.backgu.amaker.domain.event.TaskEvent
 import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
@@ -15,6 +16,24 @@ class Chat(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
+    fun createTaskEvent(
+        deadLine: LocalDateTime,
+        notificationStartHour: Int,
+        notificationStartMinute: Int,
+        notificationInterval: Int,
+        eventDetails: String,
+    ) = TaskEvent(
+        id = id,
+        eventTitle = content,
+        deadLine = deadLine,
+        notificationStartTime =
+            deadLine
+                .minusHours(notificationStartHour.toLong())
+                .minusMinutes(notificationStartMinute.toLong()),
+        notificationInterval = notificationInterval,
+        eventDetails = eventDetails,
+    )
+
     fun createReplyEvent(
         deadLine: LocalDateTime,
         notificationStartHour: Int,
