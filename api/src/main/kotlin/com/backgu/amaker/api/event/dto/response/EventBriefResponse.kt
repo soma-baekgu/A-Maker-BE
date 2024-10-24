@@ -6,6 +6,11 @@ import java.time.LocalDateTime
 
 data class EventBriefResponse(
     @Schema(
+        description = "이벤트 타입",
+        example = "TASK",
+    )
+    val eventType: String,
+    @Schema(
         description = "이벤트 아이디",
         example = "2",
     )
@@ -71,6 +76,7 @@ data class EventBriefResponse(
             finishedCount = event.finishedCount,
             totalAssignedCount = event.totalAssignedCount,
             isMine = event.users.any { it.id == userId },
+            eventType = event.eventType,
         )
     }
 }
