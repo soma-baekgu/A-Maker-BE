@@ -16,6 +16,7 @@ data class EventWithUserAndChatRoomDto(
     val users: List<UserDto>,
     val finishedCount: Int,
     val totalAssignedCount: Int,
+    val eventType: String,
 ) {
     companion object {
         fun of(
@@ -34,6 +35,7 @@ data class EventWithUserAndChatRoomDto(
                 users = users.map { UserDto.of(it) },
                 finishedCount = finishedCount,
                 totalAssignedCount = users.size,
+                eventType = event.getEventType(),
             )
     }
 }
