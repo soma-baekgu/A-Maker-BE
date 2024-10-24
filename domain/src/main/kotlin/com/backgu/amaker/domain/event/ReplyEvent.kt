@@ -13,6 +13,10 @@ class ReplyEvent(
     createdAt: LocalDateTime = LocalDateTime.now(),
     updatedAt: LocalDateTime = LocalDateTime.now(),
 ) : Event(id, eventTitle, deadLine, notificationStartTime, notificationInterval, createdAt, updatedAt) {
+    companion object {
+        const val EVENT_TYPE = "REPLY"
+    }
+
     fun addReplyComment(
         user: User,
         content: String,
@@ -21,4 +25,6 @@ class ReplyEvent(
         eventId = id,
         content = content,
     )
+
+    override fun getEventType(): String = EVENT_TYPE
 }

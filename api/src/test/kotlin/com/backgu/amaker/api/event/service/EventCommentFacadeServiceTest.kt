@@ -1,7 +1,9 @@
 package com.backgu.amaker.api.event.service
 
 import com.backgu.amaker.api.common.container.IntegrationTest
+import com.backgu.amaker.api.event.dto.ReactionCommentCreateDto
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
+import com.backgu.amaker.api.fixture.ReactionCommentFixtureFacade
 import com.backgu.amaker.api.fixture.ReplyCommentFixtureFacade
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
@@ -22,6 +24,9 @@ class EventCommentFacadeServiceTest : IntegrationTest() {
 
     @Autowired
     lateinit var replyCommentFixtures: ReplyCommentFixtureFacade
+
+    @Autowired
+    lateinit var reactionCommentFixtures: ReactionCommentFixtureFacade
 
     @Test
     @DisplayName("reply comment 생성 테스트")
@@ -114,5 +119,67 @@ class EventCommentFacadeServiceTest : IntegrationTest() {
         }.isInstanceOf(BusinessException::class.java)
             .extracting("statusCode")
             .isEqualTo(StatusCode.WORKSPACE_UNREACHABLE)
+    }
+
+    @Test
+    @DisplayName("reaction comment 생성 테스트")
+    fun createReactionComment() {
+        // given
+        val userId = "test-user-id"
+        val (reactionEvent, options) = reactionCommentFixtures.setUp(userId = "test-user-id")
+        val reactionCommentCreateDto = ReactionCommentCreateDto(options[0].id)
+
+        // when
+        val result =
+            eventCommentFacadeService.createReactionComment(userId, reactionEvent.id, reactionCommentCreateDto)
+
+        // then
+        assertThat(result).isNotNull
+        assertThat(result.eventId).isEqualTo(reactionEvent.id)
+        assertThat(result.optionId).isEqualTo(options[0].id)
+    }
+
+    @Test
+    @DisplayName("reaction comment 변경 테스트")
+    fun toggleReactionComment() {
+        // given
+        val userId = "test-user-id"
+        val (reactionEvent, options) = reactionCommentFixtures.setUp(userId = "test-user-id")
+        reactionCommentFixtures.reactionCommentFixture.createPersistedReactionComment(
+            userId,
+            reactionEvent.id,
+            options[0].id,
+        )
+        val reactionCommentCreateDto = ReactionCommentCreateDto(options[1].id)
+
+        // when
+        val result =
+            eventCommentFacadeService.createReactionComment(userId, reactionEvent.id, reactionCommentCreateDto)
+
+        // then
+        assertThat(result).isNotNull
+        assertThat(result.eventId).isEqualTo(reactionEvent.id)
+        assertThat(result.optionId).isEqualTo(options[1].id)
+    }
+
+    @Test
+    @DisplayName("reaction comment 생성 실패 테스트 - 할당되지 않은 유저")
+    fun failCreateReactionCommentNotAssignedUser() {
+        // given
+        val userId = "diff-user-id"
+        val (reactionEvent, options) = reactionCommentFixtures.setUp(userId = "test-user-id")
+        val reactionCommentCreateDto = ReactionCommentCreateDto(options[0].id)
+        reactionCommentFixtures.userFixture.createPersistedUser(userId)
+
+        // when & then
+        assertThatThrownBy {
+            eventCommentFacadeService.createReactionComment(
+                userId,
+                reactionEvent.id,
+                reactionCommentCreateDto,
+            )
+        }.isInstanceOf(BusinessException::class.java)
+            .extracting("statusCode")
+            .isEqualTo(StatusCode.EVENT_ASSIGNED_USER_NOT_FOUND)
     }
 }

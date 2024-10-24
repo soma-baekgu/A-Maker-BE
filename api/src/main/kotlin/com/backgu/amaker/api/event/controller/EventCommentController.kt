@@ -1,6 +1,7 @@
 package com.backgu.amaker.api.event.controller
 
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
+import com.backgu.amaker.api.event.dto.request.ReactionCommentCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentsViewResponse
@@ -29,16 +30,6 @@ class EventCommentController(
     private val eventCommentFacadeService: EventCommentFacadeService,
     private val apiHandler: ApiHandler,
 ) : EventCommentSwagger {
-    @PostMapping("/events/{event-id}/reply/comments")
-    override fun createReplyComment(
-        @AuthenticationPrincipal token: JwtAuthentication,
-        @PathVariable("event-id") eventId: Long,
-        @RequestBody @Valid replyCommentCreateRequest: ReplyCommentCreateRequest,
-    ): ResponseEntity<Unit> {
-        eventCommentFacadeService.createReplyComment(token.id, eventId, replyCommentCreateRequest.toDto())
-        return ResponseEntity.status(HttpStatus.CREATED).build()
-    }
-
     @GetMapping("/events/{event-id}/reply/comments")
     override fun findReplyComments(
         @AuthenticationPrincipal token: JwtAuthentication,
@@ -62,5 +53,25 @@ class EventCommentController(
                 ),
             ),
         )
+    }
+
+    @PostMapping("/events/{event-id}/reply/comments")
+    override fun createReplyComment(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("event-id") eventId: Long,
+        @RequestBody @Valid replyCommentCreateRequest: ReplyCommentCreateRequest,
+    ): ResponseEntity<Unit> {
+        eventCommentFacadeService.createReplyComment(token.id, eventId, replyCommentCreateRequest.toDto())
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @PostMapping("/events/{event-id}/reaction/comments")
+    override fun createReactionComment(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("event-id") eventId: Long,
+        @RequestBody @Valid reactionCommentCreateRequest: ReactionCommentCreateRequest,
+    ): ResponseEntity<Unit> {
+        eventCommentFacadeService.createReactionComment(token.id, eventId, reactionCommentCreateRequest.toDto())
+        return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 }

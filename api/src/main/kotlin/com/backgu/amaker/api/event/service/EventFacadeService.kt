@@ -1,5 +1,6 @@
 package com.backgu.amaker.api.event.service
 
+import com.backgu.amaker.api.event.dto.EventWithUserAndChatRoomDto
 import com.backgu.amaker.api.event.dto.ReactionEventCreateDto
 import com.backgu.amaker.api.event.dto.ReactionEventDetailDto
 import com.backgu.amaker.api.event.dto.ReactionEventDto
@@ -12,14 +13,20 @@ import com.backgu.amaker.application.chat.service.ChatRoomService
 import com.backgu.amaker.application.chat.service.ChatRoomUserService
 import com.backgu.amaker.application.chat.service.ChatService
 import com.backgu.amaker.application.event.service.EventAssignedUserService
+import com.backgu.amaker.application.event.service.EventService
 import com.backgu.amaker.application.event.service.ReactionEventService
 import com.backgu.amaker.application.event.service.ReactionOptionService
 import com.backgu.amaker.application.event.service.ReplyEventService
 import com.backgu.amaker.application.user.service.UserService
+import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
 import com.backgu.amaker.domain.chat.Chat
 import com.backgu.amaker.domain.chat.ChatType
+import com.backgu.amaker.domain.event.Event
+import com.backgu.amaker.domain.event.EventAssignedUser
+import com.backgu.amaker.domain.event.EventStatus
+import com.backgu.amaker.domain.user.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -36,6 +43,8 @@ class EventFacadeService(
     private val reactionOptionService: ReactionOptionService,
     private val eventAssignedUserService: EventAssignedUserService,
     private val eventPublisher: ApplicationEventPublisher,
+    private val eventService: EventService,
+    private val workspaceUserService: WorkspaceUserService,
 ) {
     @Transactional
     fun getReplyEvent(
@@ -195,5 +204,30 @@ class EventFacadeService(
         )
 
         return ReactionEventDto.of(reactionEvent, reactionOptions)
+    }
+
+    fun getEvents(
+        userId: String,
+        workspaceId: Long,
+        eventStatus: EventStatus,
+    ): List<EventWithUserAndChatRoomDto> {
+        workspaceUserService.validateUserInWorkspace(userId, workspaceId)
+        val events: List<Event> = eventService.findEventByWorkspaceId(workspaceId)
+        val eventUserMap: Map<Long, List<EventAssignedUser>> =
+            eventAssignedUserService.findByEventIdsToEventIdMapped(events.map { it.id })
+        val filteredEvents =
+            events.filter { eventStatus.filter(it, eventUserMap[it.id] ?: emptyList()) }
+        val chatToMap = chatService.findAllByIdsToMap(filteredEvents.map { it.id })
+
+        val userMap = userService.findAllByUserIdsToMap(eventUserMap.values.flatten().map { it.userId })
+
+        return filteredEvents.map { event: Event ->
+            val eventAssignedUsers: List<User> =
+                eventUserMap[event.id]?.mapNotNull { userMap[it.userId] } ?: emptyList()
+            val finishedNumber = eventUserMap[event.id]?.count { it.isFinished } ?: 0
+            val chat = chatToMap[event.id] ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
+
+            EventWithUserAndChatRoomDto.of(event, chat, eventAssignedUsers, finishedNumber)
+        }
     }
 }

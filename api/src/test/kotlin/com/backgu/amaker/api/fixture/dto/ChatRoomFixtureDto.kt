@@ -1,4 +1,4 @@
-package com.backgu.amaker.api.fixture
+package com.backgu.amaker.api.fixture.dto
 
 import com.backgu.amaker.domain.chat.ChatRoom
 import com.backgu.amaker.domain.user.User
