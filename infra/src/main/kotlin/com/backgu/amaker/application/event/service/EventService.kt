@@ -18,4 +18,6 @@ class EventService(
 
     fun findEventByIdsToMap(eventIds: List<Long>): Map<Long, Event> =
         eventRepository.findAllById(eventIds).map { it.toDomain() }.associateBy { it.id }
+
+    fun findEventByWorkspaceId(workspaceId: Long): List<Event> = eventRepository.findAllByWorkspaceId(workspaceId).map { it.toDomain() }
 }

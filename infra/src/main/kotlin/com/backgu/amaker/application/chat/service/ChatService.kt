@@ -29,5 +29,8 @@ class ChatService(
 
     fun findAllByIds(chatIds: List<Long>): List<Chat> = chatRepository.findAllById(chatIds).map { it.toDomain() }
 
+    fun findAllByIdsToMap(chatIds: List<Long>): Map<Long, Chat> =
+        chatRepository.findAllById(chatIds).map { it.toDomain() }.associateBy { it.id }
+
     fun getById(chatId: Long) = chatRepository.findByIdOrNull(chatId)?.toDomain() ?: throw BusinessException(StatusCode.CHAT_NOT_FOUND)
 }

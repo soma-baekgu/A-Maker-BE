@@ -8,7 +8,7 @@ import kotlin.test.Test
 class EventAssignedUserTest {
     @Test
     @DisplayName("isFinished 업데이트 테스트")
-    fun updateIsFinished() {
+    fun updateIsAchieved() {
         // given
         val eventAssignedUser =
             EventAssignedUser(

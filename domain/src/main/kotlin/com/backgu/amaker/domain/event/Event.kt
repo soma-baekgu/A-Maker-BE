@@ -29,4 +29,10 @@ abstract class Event(
             finishedCount,
             totalAssignedCount,
         )
+
+    fun isAchieved(user: List<EventAssignedUser>): Boolean = user.size == user.count { it.isFinished }
+
+    fun isClosed(): Boolean = LocalDateTime.now().isAfter(deadLine)
+
+    abstract fun getEventType(): String
 }

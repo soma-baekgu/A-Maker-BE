@@ -11,6 +11,10 @@ class ReactionEvent(
     createdAt: LocalDateTime = LocalDateTime.now(),
     updatedAt: LocalDateTime = LocalDateTime.now(),
 ) : Event(id, eventTitle, deadLine, notificationStartTime, notificationInterval, createdAt, updatedAt) {
+    companion object {
+        const val EVENT_TYPE = "REPLY"
+    }
+
     fun createReactionOption(contents: List<String>) =
         contents.map {
             ReactionOption(
@@ -18,4 +22,15 @@ class ReactionEvent(
                 content = it,
             )
         }
+
+    fun createReactionComment(
+        userId: String,
+        optionId: Long,
+    ) = ReactionComment(
+        eventId = id,
+        userId = userId,
+        optionId = optionId,
+    )
+
+    override fun getEventType(): String = EVENT_TYPE
 }
