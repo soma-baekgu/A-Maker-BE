@@ -90,10 +90,10 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh api1 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
-            ssh api1 docker-compose -f $COMPOSE down
-            ssh api1 docker pull ${{secrets.IMAGE_API}}
-            ssh api1 docker-compose -p api -f $COMPOSE up -d
+            ssh api01 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
+            ssh api01 docker-compose -f $COMPOSE down
+            ssh api01 docker pull ${{secrets.IMAGE_API}}
+            ssh api01 docker-compose -p api -f $COMPOSE up -d
 
   build-notification:
     runs-on: ubuntu-latest
@@ -179,10 +179,10 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh notification1 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
-            ssh notification1 docker-compose -f $COMPOSE down
-            ssh notification1 docker pull ${{secrets.IMAGE_NOTIFICATION}}
-            ssh notification1 docker-compose -p notification -f $COMPOSE up -d
+            ssh notification01 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
+            ssh notification01 docker-compose -f $COMPOSE down
+            ssh notification01 docker pull ${{secrets.IMAGE_NOTIFICATION}}
+            ssh notification01 docker-compose -p notification -f $COMPOSE up -d
 
   build-batch:
     runs-on: ubuntu-latest
@@ -266,10 +266,10 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh batch1 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
-            ssh batch1 docker-compose -f $COMPOSE down
-            ssh batch1 docker pull ${{secrets.IMAGE_BATCH}}
-            ssh batch1 docker-compose -p batch -f $COMPOSE up -d
+            ssh batch01 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
+            ssh batch01 docker-compose -f $COMPOSE down
+            ssh batch01 docker pull ${{secrets.IMAGE_BATCH}}
+            ssh batch01 docker-compose -p batch -f $COMPOSE up -d
 
   build-realtime:
     runs-on: ubuntu-latest
@@ -353,8 +353,8 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            ssh realtime1 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
-            ssh realtime1 docker-compose -f $COMPOSE down
-            ssh realtime1 docker pull ${{secrets.IMAGE_REALTIME}}
-            ssh realtime1 docker-compose -p realtime -f $COMPOSE up -d
+            ssh realtime01 "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}"
+            ssh realtime01 docker-compose -f $COMPOSE down
+            ssh realtime01 docker pull ${{secrets.IMAGE_REALTIME}}
+            ssh realtime01 docker-compose -p realtime -f $COMPOSE up -d
 
