@@ -12,7 +12,7 @@ class ReactionEvent(
     updatedAt: LocalDateTime = LocalDateTime.now(),
 ) : Event(id, eventTitle, deadLine, notificationStartTime, notificationInterval, createdAt, updatedAt) {
     companion object {
-        const val EVENT_TYPE = "REPLY"
+        const val EVENT_TYPE = "REACTION"
     }
 
     fun createReactionOption(contents: List<String>) =
