@@ -2,6 +2,7 @@ package com.backgu.amaker.api.event.controller
 
 import com.backgu.amaker.api.event.dto.request.ReactionEventCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
+import com.backgu.amaker.api.event.dto.request.TaskEventCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReactionEventDetailResponse
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
 import com.backgu.amaker.api.event.service.EventFacadeService
@@ -100,6 +101,27 @@ class EventController(
                     .buildAndExpand(
                         eventFacadeService
                             .createReactionEvent(
+                                token.id,
+                                chatRoomId,
+                                request.toDto(),
+                            ).id,
+                    ).toUri(),
+            ).build()
+
+    @PostMapping("/events/task")
+    override fun createTaskEvent(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @RequestBody @Valid request: TaskEventCreateRequest,
+    ): ResponseEntity<Unit> =
+        ResponseEntity
+            .created(
+                ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/api/v1/events/{id}/task")
+                    .buildAndExpand(
+                        eventFacadeService
+                            .createTaskEvent(
                                 token.id,
                                 chatRoomId,
                                 request.toDto(),
