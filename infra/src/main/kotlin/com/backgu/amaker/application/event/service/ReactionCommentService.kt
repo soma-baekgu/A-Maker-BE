@@ -21,4 +21,8 @@ class ReactionCommentService(
         event: ReactionEvent,
         user: User,
     ): ReactionComment? = reactionCommentRepository.findByEventIdAndUserId(event.id, user.id)?.toDomain()
+
+    fun findAllByEventIdGroupByReactionOptions(eventId: Long): Map<Long, List<ReactionComment>> {
+        return reactionCommentRepository.findByEventId(eventId).map { it.toDomain() }.groupBy { it.optionId }
+    }
 }

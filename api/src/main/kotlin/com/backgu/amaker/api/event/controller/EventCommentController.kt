@@ -3,6 +3,7 @@ package com.backgu.amaker.api.event.controller
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
 import com.backgu.amaker.api.event.dto.request.ReactionCommentCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
+import com.backgu.amaker.api.event.dto.response.ReactionOptionWithCommentResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentsViewResponse
 import com.backgu.amaker.api.event.service.EventCommentFacadeService
@@ -54,6 +55,19 @@ class EventCommentController(
             ),
         )
     }
+
+    @GetMapping("/events/{event-id}/reaction/comments")
+    override fun findReactionComments(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("event-id") eventId: Long,
+    ): ResponseEntity<ApiResult<List<ReactionOptionWithCommentResponse>>> =
+        ResponseEntity.ok(
+            apiHandler.onSuccess(
+                eventCommentFacadeService
+                    .findReactionComment(token.id, eventId)
+                    .map { ReactionOptionWithCommentResponse.of(it) },
+            ),
+        )
 
     @PostMapping("/events/{event-id}/reply/comments")
     override fun createReplyComment(

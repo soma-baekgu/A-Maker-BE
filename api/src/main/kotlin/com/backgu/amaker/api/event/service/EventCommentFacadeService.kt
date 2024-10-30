@@ -2,6 +2,7 @@ package com.backgu.amaker.api.event.service
 
 import com.backgu.amaker.api.event.dto.ReactionCommentCreateDto
 import com.backgu.amaker.api.event.dto.ReactionCommentDto
+import com.backgu.amaker.api.event.dto.ReactionOptionWithCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
 import com.backgu.amaker.api.event.dto.ReplyCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentWithUserDto
@@ -16,6 +17,8 @@ import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
 import com.backgu.amaker.common.status.StatusCode
+import com.backgu.amaker.domain.event.ReactionComment
+import com.backgu.amaker.domain.user.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -98,6 +101,31 @@ class EventCommentFacadeService(
             ReplyCommentWithUserDto.of(
                 it,
                 userMap[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+            )
+        }
+    }
+
+    fun findReactionComment(
+        userId: String,
+        eventId: Long,
+    ): List<ReactionOptionWithCommentDto> {
+        workspaceUserService.validByUserIdAndChatIdInWorkspace(userId, eventId)
+        val reactionOptions = reactionOptionService.getAllByEventId(eventId)
+        val reactionCommentGroupByOption: Map<Long, List<ReactionComment>> =
+            reactionCommentService.findAllByEventIdGroupByReactionOptions(eventId)
+        val userMap: Map<String, User> =
+            userService.findAllByUserIdsToMap(
+                reactionCommentGroupByOption.flatMap {
+                    it.value.map { it.userId }.toList()
+                },
+            )
+
+        return reactionOptions.map {
+            ReactionOptionWithCommentDto.of(
+                it,
+                reactionCommentGroupByOption[it.id]
+                    ?: emptyList(),
+                userMap,
             )
         }
     }
