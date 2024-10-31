@@ -8,7 +8,5 @@ interface Notification : Serializable {
     val keyPrefix: String
     val keyValue: String
 
-    fun getNotificationKey(): String {
-        return "$keyPrefix:$keyValue"
-    }
+    fun getNotificationKey(): String = "$keyPrefix:$keyValue"
 }

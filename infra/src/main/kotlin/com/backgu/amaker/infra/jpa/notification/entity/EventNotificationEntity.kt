@@ -1,5 +1,6 @@
 package com.backgu.amaker.infra.jpa.notification.entity
 
+import com.backgu.amaker.domain.notifiacation.EventNotification
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Entity
@@ -14,4 +15,13 @@ class EventNotificationEntity(
     userId: String,
     @Column(nullable = false)
     val eventId: Long,
-) : NotificationEntity(title = title, content = content, userId = userId)
+) : NotificationEntity(title = title, content = content, userId = userId) {
+    fun toDomain(): EventNotification =
+        EventNotification(
+            id = id,
+            title = title,
+            content = content,
+            userId = userId,
+            eventId = eventId,
+        )
+}

@@ -18,7 +18,7 @@ import kotlin.test.Test
 
 @DisplayName("EventFacadeService 테스트")
 @Transactional
-class EventCommentFacadeServiceTest : IntegrationTest() {
+class NotificationFacadeServiceTest : IntegrationTest() {
     @Autowired
     lateinit var eventCommentFacadeService: EventCommentFacadeService
 
