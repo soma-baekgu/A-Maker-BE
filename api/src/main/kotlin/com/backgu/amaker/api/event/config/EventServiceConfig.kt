@@ -7,6 +7,7 @@ import com.backgu.amaker.application.event.service.ReactionEventService
 import com.backgu.amaker.application.event.service.ReactionOptionService
 import com.backgu.amaker.application.event.service.ReplyCommentService
 import com.backgu.amaker.application.event.service.ReplyEventService
+import com.backgu.amaker.application.event.service.TaskCommentService
 import com.backgu.amaker.application.event.service.TaskEventService
 import com.backgu.amaker.infra.jpa.event.repository.EventAssignedUserRepository
 import com.backgu.amaker.infra.jpa.event.repository.EventRepository
@@ -15,6 +16,7 @@ import com.backgu.amaker.infra.jpa.event.repository.ReactionEventRepository
 import com.backgu.amaker.infra.jpa.event.repository.ReactionOptionRepository
 import com.backgu.amaker.infra.jpa.event.repository.ReplyCommentRepository
 import com.backgu.amaker.infra.jpa.event.repository.ReplyEventRepository
+import com.backgu.amaker.infra.jpa.event.repository.TaskCommentRepository
 import com.backgu.amaker.infra.jpa.event.repository.TaskEventRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -49,4 +51,7 @@ class EventServiceConfig {
 
     @Bean
     fun taskEventService(taskEventRepository: TaskEventRepository): TaskEventService = TaskEventService(taskEventRepository)
+
+    @Bean
+    fun taskCommentService(taskCommentRepository: TaskCommentRepository): TaskCommentService = TaskCommentService(taskCommentRepository)
 }

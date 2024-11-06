@@ -6,6 +6,8 @@ import com.backgu.amaker.api.event.dto.ReactionOptionWithCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentCreateDto
 import com.backgu.amaker.api.event.dto.ReplyCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentWithUserDto
+import com.backgu.amaker.api.event.dto.TaskCommentCreateDto
+import com.backgu.amaker.api.event.dto.TaskCommentDto
 import com.backgu.amaker.application.chat.event.FinishedCountUpdateEvent
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.event.service.ReactionCommentService
@@ -13,6 +15,8 @@ import com.backgu.amaker.application.event.service.ReactionEventService
 import com.backgu.amaker.application.event.service.ReactionOptionService
 import com.backgu.amaker.application.event.service.ReplyCommentService
 import com.backgu.amaker.application.event.service.ReplyEventService
+import com.backgu.amaker.application.event.service.TaskCommentService
+import com.backgu.amaker.application.event.service.TaskEventService
 import com.backgu.amaker.application.user.service.UserService
 import com.backgu.amaker.application.workspace.WorkspaceUserService
 import com.backgu.amaker.common.exception.BusinessException
@@ -33,10 +37,12 @@ class EventCommentFacadeService(
     private val reactionEventService: ReactionEventService,
     private val eventAssignedUserService: EventAssignedUserService,
     private val replyCommentService: ReplyCommentService,
+    private val taskCommentService: TaskCommentService,
     private val reactionCommentService: ReactionCommentService,
     private val reactionOptionService: ReactionOptionService,
     private val workspaceUserService: WorkspaceUserService,
     private val eventPublisher: ApplicationEventPublisher,
+    private val taskEventService: TaskEventService,
 ) {
     @Transactional
     fun createReplyComment(
@@ -59,6 +65,26 @@ class EventCommentFacadeService(
     }
 
     @Transactional
+    fun createTaskComment(
+        userId: String,
+        eventId: Long,
+        taskCommentCreateDto: TaskCommentCreateDto,
+    ): TaskCommentDto {
+        val user = userService.getById(userId)
+        val event = taskEventService.getById(eventId)
+
+        val eventAssignedUser = eventAssignedUserService.getByUserAndEvent(user, event)
+
+        val taskComment = taskCommentService.save(event.addTaskComment(user, taskCommentCreateDto.path))
+
+        eventAssignedUserService.save(eventAssignedUser.updateIsFinished(true))
+
+        eventPublisher.publishEvent(FinishedCountUpdateEvent.of(chatId = event.id))
+
+        return TaskCommentDto.of(taskComment)
+    }
+
+    @Transactional
     fun createReactionComment(
         userId: String,
         eventId: Long,
@@ -75,8 +101,10 @@ class EventCommentFacadeService(
             reactionCommentService.save(
                 reactionCommentService
                     .findByEventIdAndUserId(event, user)
-                    ?.also { it.toggleOptionId(reactionCommentCreateDto.optionId) }
-                    ?: event.createReactionComment(userId, reactionCommentCreateDto.optionId),
+                    ?.also { it.toggleOptionId(reactionCommentCreateDto.optionId) } ?: event.createReactionComment(
+                    userId,
+                    reactionCommentCreateDto.optionId,
+                ),
             )
 
         eventAssignedUserService.save(eventAssignedUser.updateIsFinished(true))
