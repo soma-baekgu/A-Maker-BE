@@ -3,6 +3,7 @@ package com.backgu.amaker.api.event.controller
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
 import com.backgu.amaker.api.event.dto.request.ReactionCommentCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
+import com.backgu.amaker.api.event.dto.request.TaskCommentCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReactionOptionWithCommentResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
 import com.backgu.amaker.common.http.response.ApiResult
@@ -60,6 +61,21 @@ interface EventCommentSwagger {
         token: JwtAuthentication,
         eventId: Long,
         replyCommentCreateRequest: ReplyCommentCreateRequest,
+    ): ResponseEntity<Unit>
+
+    @Operation(summary = "task 이벤트 응답 생성", description = "task 이벤트 응답 생성합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "task 이벤트 응답 생성 성공",
+            ),
+        ],
+    )
+    fun createTaskComment(
+        token: JwtAuthentication,
+        eventId: Long,
+        taskCommentCreateRequest: TaskCommentCreateRequest,
     ): ResponseEntity<Unit>
 
     @Operation(summary = "reaction 이벤트 응답 생성", description = "reaction 이벤트 응답 생성합니다.")
