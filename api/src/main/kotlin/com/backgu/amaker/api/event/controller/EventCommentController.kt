@@ -3,6 +3,7 @@ package com.backgu.amaker.api.event.controller
 import com.backgu.amaker.api.event.dto.query.ReplyQueryRequest
 import com.backgu.amaker.api.event.dto.request.ReactionCommentCreateRequest
 import com.backgu.amaker.api.event.dto.request.ReplyCommentCreateRequest
+import com.backgu.amaker.api.event.dto.request.TaskCommentCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReplyCommentWithUserResponse
 import com.backgu.amaker.api.event.dto.response.ReplyCommentsViewResponse
 import com.backgu.amaker.api.event.service.EventCommentFacadeService
@@ -72,6 +73,16 @@ class EventCommentController(
         @RequestBody @Valid reactionCommentCreateRequest: ReactionCommentCreateRequest,
     ): ResponseEntity<Unit> {
         eventCommentFacadeService.createReactionComment(token.id, eventId, reactionCommentCreateRequest.toDto())
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @PostMapping("/events/{event-id}/task/comments")
+    override fun createTaskComment(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("event-id") eventId: Long,
+        @RequestBody @Valid taskCommentCreateRequest: TaskCommentCreateRequest,
+    ): ResponseEntity<Unit> {
+        eventCommentFacadeService.createTaskComment(token.id, eventId, taskCommentCreateRequest.toDto())
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 }
