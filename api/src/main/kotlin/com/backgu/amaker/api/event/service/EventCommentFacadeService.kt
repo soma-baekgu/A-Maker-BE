@@ -8,6 +8,7 @@ import com.backgu.amaker.api.event.dto.ReplyCommentDto
 import com.backgu.amaker.api.event.dto.ReplyCommentWithUserDto
 import com.backgu.amaker.api.event.dto.TaskCommentCreateDto
 import com.backgu.amaker.api.event.dto.TaskCommentDto
+import com.backgu.amaker.api.event.dto.TaskCommentWithUserDto
 import com.backgu.amaker.application.chat.event.FinishedCountUpdateEvent
 import com.backgu.amaker.application.event.service.EventAssignedUserService
 import com.backgu.amaker.application.event.service.ReactionCommentService
@@ -25,6 +26,7 @@ import com.backgu.amaker.domain.event.ReactionComment
 import com.backgu.amaker.domain.user.User
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -127,6 +129,25 @@ class EventCommentFacadeService(
 
         return replyComments.map {
             ReplyCommentWithUserDto.of(
+                it,
+                userMap[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+            )
+        }
+    }
+
+    fun findTaskComments(
+        userId: String,
+        eventId: Long,
+        pageable: PageRequest,
+    ): Page<TaskCommentWithUserDto> {
+        workspaceUserService.validByUserIdAndChatIdInWorkspace(userId, eventId)
+
+        val taskComments = taskCommentService.findAllByEventId(eventId, pageable)
+
+        val userMap = userService.findAllByUserIdsToMap(taskComments.map { it.userId }.toList())
+
+        return taskComments.map {
+            TaskCommentWithUserDto.of(
                 it,
                 userMap[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
             )
