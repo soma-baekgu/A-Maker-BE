@@ -8,6 +8,7 @@ import com.backgu.amaker.api.event.dto.ReplyEventCreateDto
 import com.backgu.amaker.api.event.dto.ReplyEventDetailDto
 import com.backgu.amaker.api.event.dto.ReplyEventDto
 import com.backgu.amaker.api.event.dto.TaskEventCreateDto
+import com.backgu.amaker.api.event.dto.TaskEventDetailDto
 import com.backgu.amaker.api.event.dto.TaskEventDto
 import com.backgu.amaker.api.user.dto.UserDto
 import com.backgu.amaker.application.chat.event.EventChatSaveEvent
@@ -113,6 +114,43 @@ class EventFacadeService(
         return ReactionEventDetailDto.of(
             reactionEvent = reactionEvent,
             reactionOptions = reactionOptions,
+            eventCreator = UserDto.of(users[chat.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND)),
+            finishUser =
+                finishedUsers.map {
+                    UserDto.of(
+                        users[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+                    )
+                },
+            waitingUser =
+                waitingUsers.map {
+                    UserDto.of(
+                        users[it.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND),
+                    )
+                },
+        )
+    }
+
+    fun getTaskEvent(
+        userId: String,
+        chatRoomId: Long,
+        eventId: Long,
+    ): TaskEventDetailDto {
+        val user = userService.getById(userId)
+        val chatRoom = chatRoomService.getById(chatRoomId)
+        chatRoomUserService.validateUserInChatRoom(user, chatRoom)
+
+        val chat = chatService.getById(eventId)
+        val eventAssignedUsers = eventAssignedUserService.findAllByEventId(eventId)
+        val eventAssignedUserIds = eventAssignedUsers.map { it.userId }
+
+        val users = userService.findAllByUserIdsToMap(eventAssignedUserIds.union(listOf(chat.userId)).toList())
+
+        val taskEvent = taskEventService.getById(eventId)
+
+        val (finishedUsers, waitingUsers) = eventAssignedUsers.partition { it.isFinished }
+
+        return TaskEventDetailDto.of(
+            taskEvent = taskEvent,
             eventCreator = UserDto.of(users[chat.userId] ?: throw BusinessException(StatusCode.USER_NOT_FOUND)),
             finishUser =
                 finishedUsers.map {
