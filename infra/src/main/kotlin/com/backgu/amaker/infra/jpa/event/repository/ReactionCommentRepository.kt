@@ -8,4 +8,6 @@ interface ReactionCommentRepository : JpaRepository<ReactionCommentEntity, Long>
         eventId: Long,
         userId: String,
     ): ReactionCommentEntity?
+
+    fun findByEventId(eventId: Long): List<ReactionCommentEntity>
 }

@@ -5,6 +5,7 @@ import com.backgu.amaker.api.event.dto.request.ReplyEventCreateRequest
 import com.backgu.amaker.api.event.dto.request.TaskEventCreateRequest
 import com.backgu.amaker.api.event.dto.response.ReactionEventDetailResponse
 import com.backgu.amaker.api.event.dto.response.ReplyEventDetailResponse
+import com.backgu.amaker.api.event.dto.response.TaskEventDetailResponse
 import com.backgu.amaker.common.http.response.ApiResult
 import com.backgu.amaker.common.security.jwt.authentication.JwtAuthentication
 import io.swagger.v3.oas.annotations.Operation
@@ -48,6 +49,21 @@ interface EventSwagger {
         chatRoomId: Long,
         eventId: Long,
     ): ResponseEntity<ApiResult<ReactionEventDetailResponse>>
+
+    @Operation(summary = "task 이벤트 상세조회", description = "task 이벤트 상세조회합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "task 이벤트 상세조회 성공",
+            ),
+        ],
+    )
+    fun geTaskEvent(
+        @AuthenticationPrincipal token: JwtAuthentication,
+        @PathVariable("chat-room-id") chatRoomId: Long,
+        @PathVariable("event-id") eventId: Long,
+    ): ResponseEntity<ApiResult<TaskEventDetailResponse>>
 
     @Operation(summary = "reply 이벤트 생성", description = "reply 이벤트 생성합니다.")
     @ApiResponses(

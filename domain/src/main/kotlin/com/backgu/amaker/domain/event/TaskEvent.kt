@@ -1,5 +1,6 @@
 package com.backgu.amaker.domain.event
 
+import com.backgu.amaker.domain.user.User
 import java.time.LocalDateTime
 
 class TaskEvent(
@@ -17,4 +18,14 @@ class TaskEvent(
     }
 
     override fun getEventType(): String = EVENT_TYPE
+
+    fun addTaskComment(
+        user: User,
+        path: String,
+    ): TaskComment =
+        TaskComment(
+            userId = user.id,
+            eventId = id,
+            path = path,
+        )
 }
