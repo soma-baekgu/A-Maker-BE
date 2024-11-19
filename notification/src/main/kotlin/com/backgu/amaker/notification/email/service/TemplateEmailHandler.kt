@@ -18,6 +18,7 @@ class TemplateEmailHandler(
                 "email" to user.email,
                 "title" to email.title,
                 "content" to email.message,
+                "detail" to email.detail,
             )
 
         emailSender.sendEmail(
