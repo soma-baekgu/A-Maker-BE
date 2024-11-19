@@ -4,7 +4,7 @@
     <title>워크스페이스 초대</title>
 </head>
 <body>
-<h1 th:text="${title}">이승환님은 조별과제1 워크스페이스에 초대되었습니다.</h1>
-<a th:href="@{'https://a-maker.com/invite?id=' + ${workspaceId}}">초대 수락하시겠습니까?</a>
+<h1 th:text="${title}"></h1>
+<p th:text="${detail}">초대 메시지가 여기에 표시됩니다.</p>
 </body>
 </html>
