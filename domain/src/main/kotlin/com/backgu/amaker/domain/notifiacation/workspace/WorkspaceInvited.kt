@@ -20,7 +20,7 @@ class WorkspaceInvited private constructor(
         ): String =
             "${user.name}님이 ${workspace.name}에 초대되었습니다.\n " +
                 "가입하시려면 링크를 클릭하세요. " +
-                "https://a-maker.co.kr/workspace/${workspace.id}/invite"
+                "https://a-maker.co.kr/invite/${workspace.id}"
 
         fun of(
             workspace: Workspace,
